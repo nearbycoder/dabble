@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Dabble — open-source to-dos that sync without a server</title>
-  <meta name="description" content="Dabble is a beautiful, open-source to-do app for Mac, iPhone and iPad. Your devices sync directly with each other. No server, no account.">
+  <meta name="description" content="Dabble is a beautiful, open-source to-do app for Mac, iPhone and iPad. Your devices sync directly with each other. No server required, no account. Optionally add your own end-to-end encrypted sync server.">
   <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0d0d0f" media="(prefers-color-scheme: dark)">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Dabble — open-source to-dos that sync without a server">
-  <meta property="og:description" content="A beautiful to-do app for Mac, iPhone and iPad. Your devices sync with each other. No server, no account.">
+  <meta property="og:description" content="A beautiful to-do app for Mac, iPhone and iPad. Your devices sync with each other. No server required, no account.">
   <meta property="og:url" content="https://nearbycoder.github.io/dabble/">
   <meta property="og:image" content="https://nearbycoder.github.io/dabble/assets/icon.png">
   <meta name="twitter:card" content="summary">
@@ -60,6 +60,7 @@
     <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2.8" width="11" height="18.4" rx="2.8"/><path d="M10.5 5.6h3"/></symbol>
     <symbol id="i-hammer" viewBox="0 0 24 24"><path d="m13.4 9.2-8.6 8.6a1.6 1.6 0 0 0 0 2.3l.1.1a1.6 1.6 0 0 0 2.3 0l8.6-8.6"/><path d="m11.8 5.2 2.4-2.4c1.8 0 3.5.6 4.8 1.9l1.4 1.4-1.5 1.5 1 1-2.4 2.4-1-1-1.6 1.6-3.1-3.1z"/></symbol>
     <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.2 19 6v5.6c0 4.4-3 7.9-7 9.2-4-1.3-7-4.8-7-9.2V6z"/><path d="m9 12 2.2 2.2L15.4 10"/></symbol>
+    <symbol id="i-server" viewBox="0 0 24 24"><rect x="3.5" y="4" width="17" height="7" rx="2"/><rect x="3.5" y="13" width="17" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01" style="stroke-width:2.4"/></symbol>
     <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.8h.01"/></symbol>
     <symbol id="i-github" viewBox="0 0 16 16"><path class="fill" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></symbol>
   </defs>
@@ -72,6 +73,7 @@
       <a class="opt" href="#features">Features</a>
       <a class="opt" href="#sync">How sync works</a>
       <a class="opt" href="#download">Download</a>
+      <a class="opt" href="#server">Sync server</a>
       <a class="opt" href="#faq">FAQ</a>
       <a class="gh" href="https://github.com/nearbycoder/dabble"><svg class="i" aria-hidden="true"><use href="#i-github"/></svg>GitHub</a>
     </nav>
@@ -86,7 +88,7 @@
       <img class="hero-icon" src="assets/icon.png" alt="Dabble app icon" width="112" height="112">
       <h1 id="title"><span class="grad">Dabble</span></h1>
       <p class="lede">A beautiful, open-source to-do app.</p>
-      <p class="sub">Your devices sync with each other. <strong>No server, no account.</strong> Plan your day on the Mac, check things off on your iPhone, and keep it all in step over your own network.</p>
+      <p class="sub">Your devices sync with each other. <strong>No server required, no account.</strong> Plan your day on the Mac, check things off on your iPhone, and keep it all in step over your own network, or through <a href="#server">your own encrypted sync server</a> when you're apart.</p>
       <div class="cta">
         <a class="btn btn-primary" href="https://github.com/nearbycoder/dabble/releases/latest/download/Dabble-macOS.zip">
           <svg class="i" aria-hidden="true"><use href="#i-download"/></svg>Download for Mac
@@ -222,12 +224,15 @@
         <figure class="diagram" style="margin:0">
           <svg viewBox="0 0 640 450" role="img" aria-labelledby="dg-title dg-desc">
             <title id="dg-title">Mac, iPhone and iPad syncing directly</title>
-            <desc id="dg-desc">A Mac, an iPad and an iPhone connected to each other by encrypted links over the local network. A crossed-out cloud above them shows that no server is involved.</desc>
+            <desc id="dg-desc">A Mac, an iPad and an iPhone connected to each other by encrypted links over the local network. Above them, a dashed box labeled "Your sync server, optional" connects to the devices with dashed lines: an encrypted relay you can add for syncing when devices are apart.</desc>
 
-            <!-- crossed-out cloud -->
-            <path class="dg-cloud" d="M290 76H352A18 18 0 0 0 355 40.3A26 26 0 0 0 305 34A21 21 0 0 0 290 76Z"/>
-            <path class="dg-strike" d="M286 26 358 88"/>
-            <text class="dg-small" x="320" y="112" text-anchor="middle">No server. No account.</text>
+            <!-- optional relay -->
+            <path class="dg-wire" d="M244 64 C150 64 130 96 130 146"/>
+            <path class="dg-wire" d="M396 64 C490 64 514 90 514 124"/>
+            <rect class="dg-relay" x="244" y="28" width="152" height="72" rx="14"/>
+            <g transform="translate(262 46) scale(1.05)"><rect class="dg-relay-icon" x="3.5" y="4" width="17" height="7" rx="2"/><rect class="dg-relay-icon" x="3.5" y="13" width="17" height="7" rx="2"/><path class="dg-relay-icon" d="M7 7.5h.01M7 16.5h.01" style="stroke-width:2.4"/></g>
+            <text class="dg-relay-title" x="292" y="60">Your server</text>
+            <text class="dg-small" x="292" y="80" style="font-size:12.5px">optional · ciphertext only</text>
 
             <!-- links -->
             <path class="dg-link" d="M228 212H432"/>
@@ -286,9 +291,10 @@
             <li><div><h3>Talk privately</h3><p>Every connection starts with a fresh key exchange mixed with your sync key, then everything is encrypted. Devices without the key can't connect or read a thing.</p></div></li>
             <li><div><h3>Send only what changed</h3><p>Devices ask each other for "everything since last time", so syncs are tiny. Changes hop along too: iPad → Mac → iPhone, even if the iPad and iPhone never meet.</p></div></li>
             <li><div><h3>Merge without conflicts</h3><p>Each field of a to-do carries a timestamp. Rename it on your Mac and set a deadline on your iPhone, and you keep both. All devices settle on the same result.</p></div></li>
+            <li><div><h3>Optional: sync while apart</h3><p>Run the tiny open-source <a href="#server">sync server</a> on a machine you control. Devices push encrypted changes to it and pick up each other's within a second or two. It never sees what's on your list.</p></div></li>
           </ol>
           <div class="pills">
-            <span class="pill"><svg class="i"><use href="#i-nocloud"/></svg>No server</span>
+            <span class="pill"><svg class="i"><use href="#i-nocloud"/></svg>No server required</span>
             <span class="pill"><svg class="i"><use href="#i-person"/></svg>No account</span>
             <span class="pill"><svg class="i"><use href="#i-lock"/></svg>Encrypted end to end</span>
             <span class="pill"><svg class="i"><use href="#i-wifi"/></svg>Works without internet</span>
@@ -298,7 +304,7 @@
       </div>
       <div class="callout" style="max-width:860px;margin:44px auto 0">
         <svg class="i" aria-hidden="true"><use href="#i-info"/></svg>
-        <div><p><strong>Good to know:</strong> devices sync while Dabble is open on both of them. iOS doesn't let apps keep a network connection in the background, so open Dabble on your iPhone and it catches up in a second or two.</p></div>
+        <div><p><strong>Good to know:</strong> devices sync while Dabble is open on both of them, or, with a sync server, whenever each one is open. iOS doesn't let apps keep a network connection in the background, so open Dabble on your iPhone and it catches up in a second or two.</p></div>
       </div>
     </div>
   </section>
@@ -356,8 +362,45 @@
     </div>
   </section>
 
+  <!-- ======================================================== server -->
+  <section id="server">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Optional sync server</span>
+        <h2>Apart most of the time? Bring your own relay.</h2>
+        <p>Nearby devices never need it. But if your iPhone and Mac are rarely on the same network, run Dabble's tiny open-source relay on any machine you control, and your devices sync through it from anywhere.</p>
+      </div>
+
+      <div class="server-grid">
+        <article class="card server-card">
+          <div class="tile"><svg class="i"><use href="#i-server"/></svg></div>
+          <h3>Sync relay</h3>
+          <p class="req">Optional · one file · Node 22.13+ or Docker</p>
+          <div class="term"><code><span class="p">$ </span>git clone https://github.com/nearbycoder/dabble.git
+<span class="p">$ </span>cd dabble/server
+<span class="p">$ </span>docker compose up -d</code><button class="copy" type="button" data-copy="git clone https://github.com/nearbycoder/dabble.git &amp;&amp; cd dabble/server &amp;&amp; docker compose up -d">Copy</button></div>
+          <p style="margin-top:14px">No Docker? <code>node server.mjs</code> works too. It listens on port <code>8787</code>.</p>
+          <ol>
+            <li>Put it behind HTTPS: Caddy, a Cloudflare Tunnel, <code>tailscale serve</code> or Fly.io all work.</li>
+            <li>On each device, open <strong>Settings → Sync → Sync Server</strong>, enter the address and choose <strong>Use Server</strong>.</li>
+            <li>Adding a device that's never nearby? Copy the <strong>sync key</strong> from one that's set up, then use <strong>Join with Sync Key</strong>.</li>
+            <li>Once everything's connected, set <code>REGISTRATION=closed</code> so nobody else can use your server.</li>
+          </ol>
+          <a class="btn btn-secondary" href="https://github.com/nearbycoder/dabble/tree/main/server"><svg class="i" aria-hidden="true"><use href="#i-github"/></svg>View the server</a>
+        </article>
+
+        <div class="server-points">
+          <div><h3><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg>End-to-end encrypted</h3><p>Every key the server uses is derived from your sync key, and each field is sealed on your device with ChaCha20-Poly1305. The server stores ciphertext and timestamps, never your to-dos.</p></div>
+          <div><h3><svg class="i" aria-hidden="true"><use href="#i-bolt"/></svg>Fast</h3><p>Changes go up about a second after you make them. Other devices long-poll, so they see them a second or two later.</p></div>
+          <div><h3><svg class="i" aria-hidden="true"><use href="#i-backup"/></svg>Small</h3><p>It keeps only the newest version of each field, so storage grows with your list, not your history. Zero dependencies: one Node file and SQLite.</p></div>
+          <div><h3><svg class="i" aria-hidden="true"><use href="#i-wifi"/></svg>Works alongside nearby sync</h3><p>Devices on the same network still sync directly. The relay just fills the gaps when they're apart. Remove it any time; nothing else changes.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ======================================================== shortcuts -->
-  <section id="shortcuts">
+  <section id="shortcuts" class="alt">
     <div class="wrap">
       <div class="section-head">
         <span class="eyebrow">Keyboard shortcuts</span>
@@ -373,7 +416,7 @@
             <tr><td>New project</td><td><kbd>⌥</kbd><kbd>⌘</kbd><kbd>N</kbd></td></tr>
             <tr><td>New heading</td><td><kbd>⇧</kbd><kbd>⌘</kbd><kbd>N</kbd></td></tr>
             <tr><td>Quick Entry, from any app</td><td><kbd>⌃</kbd><kbd>Space</kbd></td></tr>
-            <tr><td>Quick Find</td><td><kbd>⌘F</kbd> or just start typing</td></tr>
+            <tr><td>Quick Find</td><td><kbd>⌘</kbd><kbd>F</kbd> or just start typing</td></tr>
             <tr><td>Undo / Redo</td><td><kbd>⌘</kbd><kbd>Z</kbd> · <kbd>⇧</kbd><kbd>⌘</kbd><kbd>Z</kbd></td></tr>
           </tbody>
         </table>
@@ -410,7 +453,7 @@
   </section>
 
   <!-- ======================================================== FAQ -->
-  <section id="faq" class="alt">
+  <section id="faq">
     <div class="wrap">
       <div class="section-head">
         <span class="eyebrow">FAQ</span>
@@ -454,7 +497,7 @@
   </section>
 
   <!-- ======================================================== closing -->
-  <section class="closing">
+  <section class="closing alt">
     <div class="wrap">
       <img src="assets/icon.png" alt="" width="84" height="84">
       <h2>Get things done. Keep them yours.</h2>
@@ -473,6 +516,7 @@
     <nav aria-label="Footer">
       <a href="https://github.com/nearbycoder/dabble">GitHub</a>
       <a href="https://github.com/nearbycoder/dabble/releases">Releases</a>
+      <a href="https://github.com/nearbycoder/dabble/tree/main/server">Sync server</a>
       <a href="https://github.com/nearbycoder/dabble/blob/main/SECURITY.md">Security</a>
       <a href="privacy.html">Privacy</a>
       <a href="https://github.com/nearbycoder/dabble/blob/main/LICENSE">MIT License</a>

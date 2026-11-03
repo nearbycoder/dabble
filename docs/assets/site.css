@@ -357,3 +357,24 @@ footer .legal { flex-basis: 100%; }
   .kb td:last-child { white-space: normal; }
   kbd { min-width: 22px; padding: 2px 5px; }
 }
+
+/* ---------- optional sync server ---------- */
+.dg-relay { fill: var(--surface); stroke: var(--text-3); stroke-width: 2; stroke-dasharray: 6 5; }
+.dg-relay-icon { fill: none; stroke: var(--text-2); stroke-width: 1.8; stroke-linecap: round; }
+.dg-relay-title { fill: var(--text); font: 600 15px var(--font); }
+.dg-wire { fill: none; stroke: var(--text-3); stroke-width: 2; stroke-dasharray: 3 7; stroke-linecap: round; opacity: 0.85; }
+
+.server-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+.server-card { padding: 28px; display: flex; flex-direction: column; min-width: 0; }
+.server-card h3 { font-size: 22px; margin: 14px 0 4px; }
+.server-card .req { color: var(--text-3); font-size: 14px; font-weight: 600; margin: 0 0 4px; }
+.server-card ol { margin: 14px 0 0; padding-left: 20px; color: var(--text-2); font-size: 15.5px; display: grid; gap: 8px; }
+.server-card ol li::marker { color: var(--text-3); font-weight: 600; }
+.server-card .btn { margin-top: 22px; align-self: flex-start; }
+.server-points { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 26px 24px; padding-top: 6px; }
+.server-points h3 { display: flex; align-items: center; gap: 9px; font-size: 17px; margin: 0 0 6px; }
+.server-points h3 .i { width: 21px; height: 21px; color: var(--accent); flex: none; }
+.server-points p { color: var(--text-2); font-size: 15px; line-height: 1.5; margin: 0; }
+@media (max-width: 900px) { .server-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 520px) { .server-points { grid-template-columns: minmax(0, 1fr); } .server-card { padding: 22px 20px; } .server-card .btn { width: 100%; justify-content: center; } }
+.server-card li code { white-space: nowrap; }
