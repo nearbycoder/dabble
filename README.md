@@ -117,7 +117,7 @@ Requires iOS / iPadOS 18 or later. Dabble isn't on the App Store, so there are t
 
 ## How sync works
 
-Dabble has no server. Each device keeps a complete copy of your data and syncs directly with the other devices in its **sync group**.
+Dabble doesn't need a server. Each device keeps a complete copy of your data and syncs directly with the other devices in its **sync group**. If your devices are rarely on the same network, you can add an [optional sync server](#optional-sync-server) that you host yourself. It only ever stores encrypted data.
 
 ```mermaid
 flowchart LR
@@ -128,7 +128,7 @@ flowchart LR
     classDef none stroke-dasharray: 5 5,color:#999,stroke:#999
 ```
 
-There is no cloud server in that picture. The dashed box is only there to show what's missing.
+There is no cloud server in that picture. The dashed box is only there to show what's missing (unless you run [your own relay](#optional-sync-server)).
 
 ### 1. Data model: a CRDT of last-writer-wins fields
 
@@ -191,11 +191,31 @@ There's no secret to guess, so nothing can be brute-forced. A man in the middle 
 ### Limitations
 
 - **Both apps need to be open.** iOS doesn't allow background networking for this kind of sync, so the iPhone and iPad catch up when you open Dabble. The Mac syncs whenever it's running.
-- Devices sync with peers they can reach. Two devices that never share a network (or a VPN) will only converge through a third device that meets both.
+- Devices sync with peers they can reach. Two devices that never share a network (or a VPN) will only converge through a third device that meets both, or through an [optional sync server](#optional-sync-server).
+
+## Optional sync server
+
+For devices that are apart most of the time, Dabble can also sync through a tiny relay you host yourself, in [`server/`](server/). It's the same design as [Axolotl](https://github.com/nearbycoder/axolotl)'s relay. Nearby sync keeps working alongside it.
+
+- **Zero dependencies.** One Node file (`node:sqlite`, Node 22.13+) or a Docker image.
+- **End-to-end encrypted.** Every key the server uses comes from your sync group key through HKDF: a group id, a bearer token and a ChaCha20-Poly1305 key. Each field of each record is sealed on the device. The server sees an opaque per-field key (an HMAC), the field's HLC timestamp and ciphertext. It never sees titles, notes, dates or the group key.
+- **Small.** The server keeps only the newest row per field (comparing HLCs), so storage stays proportional to your data, not your edit history.
+- **Fast.** Devices push changes about a second after you make them. They long-poll for changes from others, so updates arrive within a second or two.
+
+```sh
+cd server
+node server.mjs                  # listens on :8787, stores data in ./data
+# or
+docker compose up -d
+```
+
+Put it behind HTTPS (Caddy, Cloudflare Tunnel, `tailscale serve`, Fly.io…). Then on each device open **Settings → Sync → Sync Server** and enter its address. Plain `http://` only works for addresses on your local network. Once your devices have connected, set `REGISTRATION=closed` so nobody else can create a group on your server. Details are in [server/README.md](server/README.md).
+
+**Joining from far away.** Pairing needs the devices to be near each other. To add a device that never is, copy the **sync key** on a device that's already set up (**Settings → Sync → Advanced**, or the Sync tab's Advanced section on the Mac). Then choose **Join with Sync Key** on the new device and paste it. Treat the key like a password, because it grants full access.
 
 ## Privacy
 
-Dabble collects nothing. There is no server, account, analytics, crash reporting or tracking.
+Dabble collects nothing. There is no Dabble-run server, account, analytics, crash reporting or tracking. The optional sync server is one you run, and it only stores ciphertext.
 
 - Your data is a JSON file (`dabble.json`) in the app's sandboxed container, under `Library/Application Support/Dabble/`. On the Mac that's `~/Library/Containers/com.nearbycoder.dabble/Data/Library/Application Support/Dabble/`.
 - The sync group key and known peers are in `sync.json` next to it.
@@ -284,8 +304,9 @@ Packages/DabbleKit/ The core, a Swift package with no UI
   Sources/DabbleKit/
     Model/          Record (CRDT), HLC, entities, When, Day, RepeatRule
     Store/          DabbleStore, actions, list queries, reminders, URL scheme
-    Sync/           SyncEngine (discovery, pairing, delta sync), SecureChannel
-  Tests/            Unit tests for the store, merging and sync
+    Sync/           SyncEngine (discovery, pairing, delta sync), SecureChannel, Relay (server client)
+  Tests/            Unit tests for the store, merging, sync and the relay
+server/             Optional zero-dependency sync relay (Node) + Dockerfile
 docs/               This project's website (GitHub Pages, plain HTML/CSS)
 scripts/            make-icon.swift, package-release.sh
 project.yml         XcodeGen spec → Dabble.xcodeproj

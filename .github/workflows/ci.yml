@@ -37,6 +37,14 @@ jobs:
             git diff --stat -- Dabble.xcodeproj
           fi
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Test sync server
+        working-directory: server
+        run: npm test
+
       - name: Test DabbleKit
         working-directory: Packages/DabbleKit
         run: swift test

@@ -282,7 +282,7 @@
         <div>
           <ol class="steps">
             <li><div><h3>Pair once by comparing a code</h3><p>Pick your other device, check that both show the same six digits, and tap Codes Match on each. Now they share a secret sync key. That key is the only "account" there is.</p></div></li>
-            <li><div><h3>Find each other nearby</h3><p>Devices discover each other on your Wi‑Fi, or over Apple's peer-to-peer Wi‑Fi when there's no router at all. Away from home? Add an address, for example over Tailscale.</p></div></li>
+            <li><div><h3>Find each other nearby</h3><p>Devices discover each other on your Wi‑Fi, or over Apple's peer-to-peer Wi‑Fi when there's no router at all. Away from home? Add an address over a VPN like Tailscale, or run your own encrypted sync server.</p></div></li>
             <li><div><h3>Talk privately</h3><p>Every connection starts with a fresh key exchange mixed with your sync key, then everything is encrypted. Devices without the key can't connect or read a thing.</p></div></li>
             <li><div><h3>Send only what changed</h3><p>Devices ask each other for "everything since last time", so syncs are tiny. Changes hop along too: iPad → Mac → iPhone, even if the iPad and iPhone never meet.</p></div></li>
             <li><div><h3>Merge without conflicts</h3><p>Each field of a to-do carries a timestamp. Rename it on your Mac and set a deadline on your iPhone, and you keep both. All devices settle on the same result.</p></div></li>
@@ -419,7 +419,7 @@
       <div class="faq">
         <details>
           <summary>Is there a server?</summary>
-          <div class="a"><p>No. There is no Dabble server, no account and no sign-up. Your to-dos live in a file on each of your devices, and devices send changes straight to each other. If this website disappeared tomorrow, your copy of Dabble would keep working and syncing.</p></div>
+          <div class="a"><p>Not unless you want one. There is no Dabble-run server, no account and no sign-up. Your to-dos live in a file on each of your devices, and devices send changes straight to each other. If this website disappeared tomorrow, your copy of Dabble would keep working and syncing.</p><p>If your devices are rarely in the same place, you can run your own tiny <a href="https://github.com/nearbycoder/dabble/tree/main/server">sync server</a>. It's one file, or one Docker container, and it only ever stores encrypted data.</p></div>
         </details>
         <details>
           <summary>What happens when I'm offline?</summary>
@@ -427,7 +427,7 @@
         </details>
         <details>
           <summary>Can I sync over the internet?</summary>
-          <div class="a"><p>Yes, through a private network you control. Install a VPN such as <a href="https://tailscale.com">Tailscale</a> on your devices, then in <strong>Settings → Sync</strong> add the other device's address, for example <code>my-mac.tailnet.ts.net:52384</code>. Dabble listens on port <code>52384</code> by default. We don't recommend opening that port on your router to the whole internet.</p></div>
+          <div class="a"><p>Yes, two ways. <strong>Run your own sync server:</strong> start the relay from the repo's <a href="https://github.com/nearbycoder/dabble/tree/main/server"><code>server/</code></a> folder (<code>node server.mjs</code> or <code>docker compose up</code>) behind HTTPS, then enter its address under <strong>Settings → Sync → Sync Server</strong> on each device. It only stores end-to-end encrypted data, and changes arrive within a second or two.</p><p><strong>Or use a VPN:</strong> install one such as <a href="https://tailscale.com">Tailscale</a>, then add the other device's address, for example <code>my-mac.tailnet.ts.net:52384</code>. Dabble listens on port <code>52384</code> by default. We don't recommend opening that port on your router to the whole internet.</p><p>To add a device that's never near your others, copy the <strong>sync key</strong> from one that's set up and paste it into <strong>Join with Sync Key</strong>.</p></div>
         </details>
         <details>
           <summary>Is my data encrypted?</summary>

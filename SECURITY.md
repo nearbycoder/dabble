@@ -36,6 +36,18 @@ Pairing has no password to guess. Its security comes from you checking that both
 
 The code is 6 digits, so an active man in the middle who gets you to compare codes has a one-in-a-million chance of making them match on a single attempt. They don't get a second try without you starting pairing again.
 
+### The optional sync server
+
+If you add a sync server, it stores your data, but only as ciphertext. Every key it uses comes from your sync group key through HKDF: the group id and bearer token it sees can't be reversed, and rows are sealed with ChaCha20-Poly1305 under a separate derived key. A malicious or compromised server **can**:
+
+- see how much you sync and when, how many records and fields you have, and each field's HLC timestamp. That includes the short random device id embedded in it, so it can tell roughly how many devices you use;
+- withhold or delay rows, or serve old ones. Old rows lose to newer ones when merged, so it can't roll back what a device has already seen. It can keep a device from learning about changes, though;
+- refuse service.
+
+It **can't** read or forge your to-dos without the group key. The bearer token proves knowledge of a key derived from the group key, so anyone who can reach your server and learns that token could fill your group with junk rows. Junk rows fail to decrypt and are ignored. Use HTTPS, and set `REGISTRATION=closed` once your devices are set up.
+
+The **sync key** (`DBL1-…`) that you can copy to join a group from far away *is* the group key. Anyone who has it can read and change everything you sync. Share it only between your own devices, and don't leave it in a notes app or chat history.
+
 ### Every device in the group is fully trusted
 
 - Any member can read and change everything, and can claim any device name or id. There's no per-device signing.

@@ -1,0 +1,14 @@
+{
+  "name": "dabble-sync",
+  "version": "1.0.0",
+  "description": "Optional end-to-end encrypted sync relay for the Dabble to-do app",
+  "type": "module",
+  "main": "server.mjs",
+  "bin": { "dabble-sync": "server.mjs" },
+  "engines": { "node": ">=22.13" },
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test test.mjs"
+  },
+  "license": "MIT"
+}

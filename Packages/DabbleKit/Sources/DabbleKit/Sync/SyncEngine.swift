@@ -15,6 +15,10 @@ import UIKit
 /// key and exchanges the records the other hasn't seen, then keeps pushing
 /// changes while connected.
 ///
+/// Optionally, the group can also sync through a self-hosted relay (see
+/// `server/` and `Relay.swift`) for devices that are rarely on the same
+/// network. The relay only ever stores ciphertext.
+///
 /// A new device joins the group by pairing. Both devices show the same
 /// six-digit code, derived from their handshake with a commit/reveal step
 /// (as in Bluetooth numeric comparison); once the user confirms the codes
@@ -73,6 +77,19 @@ public final class SyncEngine {
     public private(set) var lastSync: Date?
     public private(set) var manualPeers: [String] = []
 
+    public enum ServerStatus: Equatable, Sendable {
+        /// No server configured, sync is off, or there's no sync group yet.
+        case off
+        case connecting
+        case connected
+        case error(String)
+    }
+
+    /// The optional sync server, if one is set.
+    public private(set) var serverURL: URL?
+    public private(set) var serverStatus: ServerStatus = .off
+    public private(set) var serverLastSync: Date?
+
     public var deviceName: String {
         didSet {
             guard deviceName != oldValue else { return }
@@ -122,13 +139,17 @@ public final class SyncEngine {
         var enabled = true
         var peers: [String: PeerRecord] = [:]
         var manualPeers: [String] = []
+        // Optional sync server. Optional fields so older settings files still decode.
+        var serverURL: String?
+        var serverPushed: Int64?
+        var serverCursor: Int?
     }
 
     private enum Message: Codable {
         case hello(deviceID: String, name: String, platform: String)
         case request(since: Int64)
         case changes(records: [Record], upTo: Int64)
-        case grant(groupKey: Data)
+        case grant(groupKey: Data, server: String?)
         // Pairing: the joiner commits to a nonce, the host sends its own, the
         // joiner reveals. Both then derive the comparison code.
         case commit(Data)
@@ -202,6 +223,7 @@ public final class SyncEngine {
         }
         deviceName = settings.deviceName ?? Self.defaultDeviceName
         manualPeers = settings.manualPeers
+        serverURL = settings.serverURL.flatMap(URL.init(string:))
         refreshPeers()
     }
 
@@ -247,9 +269,18 @@ public final class SyncEngine {
     public func start() {
         guard settings.enabled, !isRunning else { return }
         isRunning = true
-        if observerToken == nil {
-            observerToken = store.observe { [weak self] _ in self?.schedulePush() }
+        if settings.serverURL != nil && settings.groupKey == nil {
+            // A server needs a group to sync into.
+            adoptGroupKey(SymmetricKey(size: .bits256).withUnsafeBytes { Data($0) })
+            saveSettings(immediately: true)
         }
+        if observerToken == nil {
+            observerToken = store.observe { [weak self] _ in
+                self?.schedulePush()
+                self?.scheduleRelayPush()
+            }
+        }
+        startRelay()
         startListener(port: preferredPort ?? Self.defaultPort, allowFallback: preferredPort == nil)
         if discovery { startBrowser() }
         timer = Swift.Task { [weak self] in
@@ -271,6 +302,7 @@ public final class SyncEngine {
         browser = nil
         listenerPort = nil
         for session in sessions.values where session.purpose == .sync { session.channel.close() }
+        stopRelay()
         refreshPeers()
     }
 
@@ -292,6 +324,11 @@ public final class SyncEngine {
     public func syncNow() {
         resume()
         schedulePush()
+        if isRunning {
+            // Cut a long poll short so the server round-trips right away.
+            stopRelay()
+            startRelay()
+        }
     }
 
     // MARK: - Group management
@@ -300,8 +337,11 @@ public final class SyncEngine {
     /// The data on this device stays.
     public func leaveGroup() {
         stop()
-        settings.groupKey = nil
+        adoptGroupKey(nil)
         settings.peers = [:]
+        settings.serverURL = nil
+        serverURL = nil
+        serverLastSync = nil
         saveSettings(immediately: true)
         refreshPeers()
         // Stay ready to pair again.
@@ -341,7 +381,7 @@ public final class SyncEngine {
 
     /// Joins a group directly with its key. Used by tests and backups.
     public func setGroupKey(_ key: Data) {
-        settings.groupKey = key
+        adoptGroupKey(key)
         saveSettings(immediately: true)
         if isRunning { restart() }
     }
@@ -349,7 +389,7 @@ public final class SyncEngine {
     private func ensureGroup() -> Data {
         if let key = settings.groupKey { return key }
         let key = SymmetricKey(size: .bits256).withUnsafeBytes { Data($0) }
-        settings.groupKey = key
+        adoptGroupKey(key)
         saveSettings(immediately: true)
         if settings.enabled { restart() }
         return key
@@ -444,7 +484,7 @@ public final class SyncEngine {
 
     private func grant(to session: Session) {
         guard let key = settings.groupKey, let peerID = session.peerID else { return }
-        send(.grant(groupKey: key), on: session)
+        send(.grant(groupKey: key, server: settings.serverURL), on: session)
         settings.peers[peerID] = settings.peers[peerID] ?? PeerRecord(name: session.peerName, platform: session.platform, cursor: 0)
         saveSettings()
         let name = session.peerName
@@ -724,14 +764,19 @@ public final class SyncEngine {
             session.confirmedThere = true
             if session.purpose == .hostPairing && session.confirmedHere { grant(to: session) }
 
-        case (.grant(let key), .joinPairing):
+        case (.grant(let key, let server), .joinPairing):
             // Only accept the key once the user has confirmed the codes match here.
             guard session.confirmedHere, session.confirmedThere, key.count == 32 else {
                 session.channel.close(SecureChannel.ChannelError.protocolViolation)
                 return
             }
             pairingSession = nil
-            settings.groupKey = key
+            adoptGroupKey(key)
+            // Pick up the group's sync server unless this device already uses one.
+            if settings.serverURL == nil, let server, let url = Self.normalizedServerURL(server) {
+                settings.serverURL = url.absoluteString
+                serverURL = url
+            }
             if let peerID = session.peerID {
                 settings.peers[peerID] = settings.peers[peerID] ?? PeerRecord(name: session.peerName, platform: session.platform, cursor: 0)
             }
@@ -809,6 +854,182 @@ public final class SyncEngine {
             send(.changes(records: chunk, upTo: upTo), on: session)
         } while start < changes.count
         session.sentCursor = store.seq
+    }
+
+    // MARK: - Sync key (joining without being nearby)
+
+    /// The group key as text, for joining from a device that's never on the
+    /// same network (e.g. syncing only through a server). Anyone with it can
+    /// join the group, so share it like a password.
+    public var syncKey: String? {
+        guard let key = settings.groupKey else { return nil }
+        let base64 = key.base64EncodedString().replacingOccurrences(of: "+", with: "-").replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: "=", with: "")
+        return "DBL1-" + base64
+    }
+
+    /// Joins the group a `syncKey` belongs to. Data on this device is kept and merged.
+    @discardableResult
+    public func join(syncKey text: String) -> Bool {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard trimmed.hasPrefix("DBL1-") else { return false }
+        var base64 = String(trimmed.dropFirst(5)).replacingOccurrences(of: "-", with: "+").replacingOccurrences(of: "_", with: "/")
+        while base64.count % 4 != 0 { base64 += "=" }
+        guard let key = Data(base64Encoded: base64), key.count == 32 else { return false }
+        guard key != settings.groupKey else { return true }
+        adoptGroupKey(key)
+        settings.peers = [:]
+        settings.enabled = true
+        saveSettings(immediately: true)
+        refreshPeers()
+        restart()
+        return true
+    }
+
+    /// Switches groups. Server cursors belong to a group, so they start over.
+    private func adoptGroupKey(_ key: Data?) {
+        if key != settings.groupKey {
+            settings.serverPushed = nil
+            settings.serverCursor = nil
+        }
+        settings.groupKey = key
+    }
+
+    // MARK: - Sync server
+
+    static func normalizedServerURL(_ text: String) -> URL? {
+        var trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return nil }
+        if !trimmed.contains("://") { trimmed = "https://" + trimmed }
+        while trimmed.hasSuffix("/") { trimmed.removeLast() }
+        guard let url = URL(string: trimmed), let scheme = url.scheme?.lowercased(), scheme == "https" || scheme == "http",
+              let host = url.host, !host.isEmpty else { return nil }
+        return url
+    }
+
+    /// Sets (or with nil/empty, removes) the sync server. Creates a sync group if
+    /// this device doesn't have one yet. Throws if the address isn't a valid URL.
+    public func setServer(_ text: String?) throws {
+        let trimmed = text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let url: URL?
+        if trimmed.isEmpty {
+            url = nil
+        } else {
+            guard let parsed = Self.normalizedServerURL(trimmed) else { throw RelayClient.ServerError(status: 0, message: "Enter an address like https://sync.example.com") }
+            url = parsed
+        }
+        guard url != serverURL else { return }
+        stopRelay()
+        serverURL = url
+        settings.serverURL = url?.absoluteString
+        settings.serverPushed = nil
+        settings.serverCursor = nil
+        serverLastSync = nil
+        if url != nil { _ = ensureGroup() }
+        saveSettings(immediately: true)
+        if isRunning { startRelay() }
+    }
+
+    /// Checks that `text` points at a reachable Dabble sync server.
+    public func testServer(_ text: String) async throws {
+        guard let url = Self.normalizedServerURL(text) else { throw RelayClient.ServerError(status: 0, message: "Enter an address like https://sync.example.com") }
+        let keys = RelayKeys(groupKey: settings.groupKey ?? Data(count: 32))
+        try await RelayClient(baseURL: url, keys: keys).health()
+    }
+
+    @ObservationIgnored private var relayTask: Swift.Task<Void, Never>?
+    @ObservationIgnored private var relayPushTask: Swift.Task<Void, Never>?
+
+    private var relayClient: RelayClient? {
+        guard settings.enabled, let key = settings.groupKey, let serverURL else { return nil }
+        return RelayClient(baseURL: serverURL, keys: RelayKeys(groupKey: key))
+    }
+
+    private func stopRelay() {
+        relayTask?.cancel()
+        relayTask = nil
+        relayPushTask?.cancel()
+        relayPushTask = nil
+        serverStatus = .off
+    }
+
+    /// Push, then long-poll for changes, forever, backing off on errors.
+    private func startRelay() {
+        guard relayTask == nil, let client = relayClient else { return }
+        serverStatus = .connecting
+        relayTask = Swift.Task { [weak self] in
+            var backoff: Double = 2
+            var wait = 0
+            while !Swift.Task.isCancelled {
+                guard let self else { return }
+                do {
+                    try await self.relayPush(client)
+                    try await self.relayPull(client, wait: wait)
+                    try Swift.Task.checkCancellation()
+                    self.serverStatus = .connected
+                    backoff = 2
+                    wait = 25
+                } catch is CancellationError {
+                    return
+                } catch let error as URLError where error.code == .cancelled {
+                    return
+                } catch {
+                    guard !Swift.Task.isCancelled else { return }
+                    self.serverStatus = .error(error.localizedDescription)
+                    try? await Swift.Task.sleep(for: .seconds(backoff))
+                    backoff = min(backoff * 2, 60)
+                    wait = 0
+                }
+            }
+        }
+    }
+
+    private func scheduleRelayPush() {
+        guard relayTask != nil, let client = relayClient else { return }
+        relayPushTask?.cancel()
+        relayPushTask = Swift.Task { [weak self] in
+            try? await Swift.Task.sleep(for: .seconds(1))
+            guard let self, !Swift.Task.isCancelled else { return }
+            do {
+                try await self.relayPush(client)
+            } catch {
+                if !Swift.Task.isCancelled, !(error is CancellationError) { self.serverStatus = .error(error.localizedDescription) }
+            }
+        }
+    }
+
+    /// Uploads records changed since the last push. The server drops rows it
+    /// already has a newer (or the same) version of.
+    private func relayPush(_ client: RelayClient) async throws {
+        while true {
+            let since = settings.serverPushed ?? 0
+            let batch = store.changes(since: since, limit: 300)
+            guard let upTo = batch.last?.seq else { return }
+            try await client.push(batch)
+            try Swift.Task.checkCancellation()
+            settings.serverPushed = max(settings.serverPushed ?? 0, upTo)
+            serverLastSync = Date()
+            saveSettings()
+        }
+    }
+
+    private func relayPull(_ client: RelayClient, wait: Int) async throws {
+        var wait = wait
+        while true {
+            let result = try await client.pull(since: settings.serverCursor ?? 0, wait: wait)
+            try Swift.Task.checkCancellation()
+            if !result.records.isEmpty {
+                // What came from the server doesn't need to go back to it. If we
+                // had nothing pending before merging, skip past the merge.
+                let caughtUp = (settings.serverPushed ?? 0) >= store.seq
+                store.merge(result.records)
+                if caughtUp { settings.serverPushed = store.seq }
+            }
+            settings.serverCursor = result.cursor
+            serverLastSync = Date()
+            saveSettings()
+            if !result.more { return }
+            wait = 0
+        }
     }
 
     // MARK: - Bookkeeping

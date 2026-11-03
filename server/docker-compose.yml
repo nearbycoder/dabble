@@ -1,0 +1,13 @@
+services:
+  dabble-sync:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8787:8787"
+    volumes:
+      - dabble-data:/data
+    environment:
+      # Set to "closed" once your devices have connected to stop new sync groups registering.
+      REGISTRATION: open
+volumes:
+  dabble-data:

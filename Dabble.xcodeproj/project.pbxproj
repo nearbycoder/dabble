@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00897C93DDB2CC7267B9DFE5 /* ListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A203A9D0EC88C17E384AFC6D /* ListScreen.swift */; };
+		08030625AA06592DBC0AC550 /* SyncServerSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F789D4FAD78B1067BA89096 /* SyncServerSection.swift */; };
 		1796D97E1671E991A93149D1 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A895E33689551206F7F0BF /* RootView.swift */; };
 		29603726FFDC7D8D65C17C6D /* WelcomeContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BE369E889EBD85944E6D31 /* WelcomeContent.swift */; };
 		30369F1341138B68E2464079 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3C260662505D9593BB37A3 /* SettingsView.swift */; };
@@ -35,6 +36,7 @@
 		8D4B6498E37D0A1A93446799 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DD086A9DAAFE98FBDA62A7 /* AppModel.swift */; };
 		90792B5C6EE5700A0FE0C7EF /* ListTitleHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF4C4091A8361679D163770 /* ListTitleHeader.swift */; };
 		93E1EEFCADF59AC4098210D8 /* AppIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F54AAD8E03332E5C625F0BF /* AppIntents.swift */; };
+		98542382244B5BBB69418AD4 /* SyncServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209E1D131CE6C17D002007A8 /* SyncServerView.swift */; };
 		9CE003ED43BD35893CA23CC0 /* MagicPlusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EFAC78950B298B834A8D81 /* MagicPlusButton.swift */; };
 		9E7829D62F664707F05BA3B0 /* SyncSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7920C1F3F723DB8BA15804D /* SyncSettingsView.swift */; };
 		ACA5CD4E95C6284AB0E05CEE /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904D2A9ADDF4555C50BF9E3B /* Theme.swift */; };
@@ -66,6 +68,7 @@
 		10FDA86C978A823F5E649C45 /* ToDoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoRow.swift; sourceTree = "<group>"; };
 		14DD086A9DAAFE98FBDA62A7 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		1E9FC0EAD29A32EDAEA78D00 /* QuickFind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickFind.swift; sourceTree = "<group>"; };
+		209E1D131CE6C17D002007A8 /* SyncServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncServerView.swift; sourceTree = "<group>"; };
 		2484CB450A45405AAE28E940 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		278C3F75EA5E51771BB1AA67 /* KeyPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPopover.swift; sourceTree = "<group>"; };
 		2B5BD3ED143ECEF82BC64A4F /* ToDoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoDetailView.swift; sourceTree = "<group>"; };
@@ -79,6 +82,7 @@
 		65D7B408C1D313509D3ACC7C /* DabbleMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DabbleMacApp.swift; sourceTree = "<group>"; };
 		6D3C260662505D9593BB37A3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		6F54AAD8E03332E5C625F0BF /* AppIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntents.swift; sourceTree = "<group>"; };
+		6F789D4FAD78B1067BA89096 /* SyncServerSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncServerSection.swift; sourceTree = "<group>"; };
 		72BE369E889EBD85944E6D31 /* WelcomeContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeContent.swift; sourceTree = "<group>"; };
 		74969CD6336A5463E006261B /* HotKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotKey.swift; sourceTree = "<group>"; };
 		74CBCB0B598D966F4EE25880 /* Support.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Support.swift; sourceTree = "<group>"; };
@@ -161,6 +165,7 @@
 				827C7AF1867A02E40E561659 /* SettingsView.swift */,
 				0BC8380AF2F1B4F3F746BF1A /* Sidebar.swift */,
 				74CBCB0B598D966F4EE25880 /* Support.swift */,
+				6F789D4FAD78B1067BA89096 /* SyncServerSection.swift */,
 				D5C752EA1769A0E6BB918D21 /* SyncSettingsView.swift */,
 				FF2981FEC13C7C7FAA6454BA /* TextFields.swift */,
 				EDA04B8AF1E8558DE10FA6BD /* ToDoEditor.swift */,
@@ -183,6 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				6D3C260662505D9593BB37A3 /* SettingsView.swift */,
+				209E1D131CE6C17D002007A8 /* SyncServerView.swift */,
 				D7920C1F3F723DB8BA15804D /* SyncSettingsView.swift */,
 			);
 			path = Settings;
@@ -399,6 +405,7 @@
 				1796D97E1671E991A93149D1 /* RootView.swift in Sources */,
 				AE6AFE08714AFB7DED84A3F1 /* Router.swift in Sources */,
 				30369F1341138B68E2464079 /* SettingsView.swift in Sources */,
+				98542382244B5BBB69418AD4 /* SyncServerView.swift in Sources */,
 				9E7829D62F664707F05BA3B0 /* SyncSettingsView.swift in Sources */,
 				F85B6BE60A9F70582B3F0910 /* TagPicker.swift in Sources */,
 				4CB83866556DB3963188045D /* Theme.swift in Sources */,
@@ -427,6 +434,7 @@
 				6A6E56C35C5AC25B00E80396 /* SettingsView.swift in Sources */,
 				D84CB920C92DBAA85E9BF2D3 /* Sidebar.swift in Sources */,
 				48558628D9D6BF0E690F215E /* Support.swift in Sources */,
+				08030625AA06592DBC0AC550 /* SyncServerSection.swift in Sources */,
 				757EE870CFEBCC3C81E073C5 /* SyncSettingsView.swift in Sources */,
 				CD158F75B3FA2F2A7D205580 /* TextFields.swift in Sources */,
 				ACA5CD4E95C6284AB0E05CEE /* Theme.swift in Sources */,
@@ -550,7 +558,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -620,7 +628,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;

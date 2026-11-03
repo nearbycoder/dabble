@@ -63,8 +63,27 @@ struct SyncSettingsView: View {
                 } label: {
                     Label("Join a Device", systemImage: "link.circle.fill")
                 }
+                NavigationLink {
+                    JoinWithKeyView()
+                } label: {
+                    Label("Join with Sync Key", systemImage: "key.fill")
+                }
             } footer: {
-                Text("Devices sync directly with each other over your local network — there's no server and no account. Dabble needs to be open on both devices for them to sync.")
+                Text("Devices sync directly with each other over your local network — there's no account. Dabble needs to be open on both devices for them to sync.")
+            }
+
+            Section {
+                NavigationLink {
+                    SyncServerView()
+                } label: {
+                    LabeledContent {
+                        SyncServerSummary()
+                    } label: {
+                        Label("Sync Server", systemImage: "server.rack")
+                    }
+                }
+            } footer: {
+                Text("Optional. Add your own encrypted relay to sync when your devices are apart.")
             }
 
             if sync.hasGroup {
@@ -606,6 +625,14 @@ struct AdvancedSyncView: View {
             }
 
             Section {
+                CopySyncKeyButton()
+            } header: {
+                Text("Sync Key")
+            } footer: {
+                Text("Paste the key into Join with Sync Key on a device that's never nearby. Anyone with it can read and change your to-dos.")
+            }
+
+            Section {
                 Button("Sync Now") { sync.syncNow() }
                     .disabled(!sync.isEnabled)
             }
@@ -614,7 +641,7 @@ struct AdvancedSyncView: View {
                 Section {
                     Button("Leave Sync Group", role: .destructive) { confirmLeave = true }
                 } footer: {
-                    Text("This device stops syncing and forgets its paired devices. Your to-dos stay on this device.")
+                    Text("This device stops syncing, forgets its paired devices and its sync server. Your to-dos stay on this device.")
                 }
             }
         }

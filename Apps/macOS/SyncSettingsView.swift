@@ -39,7 +39,7 @@ struct SyncSettingsView: View {
                 }
                 .padding(.vertical, 4)
             } footer: {
-                Text("Dabble syncs directly between your devices over the local network — no server, no account. Changes are end-to-end encrypted with your group's key.")
+                Text("Dabble syncs directly between your devices over the local network — no account, and no server unless you add your own. Changes are end-to-end encrypted with your group's key.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -66,6 +66,8 @@ struct SyncSettingsView: View {
                     .disabled(!sync.isEnabled || !sync.hasGroup)
                 }
             }
+
+            SyncServerSection()
 
             if let error = sync.lastError {
                 Section {
@@ -116,6 +118,7 @@ struct SyncSettingsView: View {
                     }
                 }
                 .padding(.vertical, 2)
+                SyncKeyRow()
                 if sync.hasGroup {
                     HStack {
                         Text("Stop syncing this Mac and forget paired devices.")
@@ -128,14 +131,14 @@ struct SyncSettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(height: 600)
+        .frame(height: 680)
         .onAppear { deviceName = sync.deviceName }
         .sheet(isPresented: $showPair) { PairDeviceSheet() }
         .sheet(isPresented: $showJoin) { JoinDeviceSheet() }
         .confirmationDialog("Leave the sync group?", isPresented: $confirmLeave) {
             Button("Leave Sync Group", role: .destructive) { sync.leaveGroup() }
         } message: {
-            Text("This Mac stops syncing and forgets its paired devices. Your to-dos stay on this Mac.")
+            Text("This Mac stops syncing, forgets its paired devices and its sync server. Your to-dos stay on this Mac.")
         }
     }
 
