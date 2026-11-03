@@ -281,7 +281,7 @@
 
         <div>
           <ol class="steps">
-            <li><div><h3>Pair once with a 6-digit code</h3><p>One device shows a code, you type it on the other. Now they share a secret sync key. That key is the only "account" there is.</p></div></li>
+            <li><div><h3>Pair once by comparing a code</h3><p>Pick your other device, check that both show the same six digits, and tap Codes Match on each. Now they share a secret sync key. That key is the only "account" there is.</p></div></li>
             <li><div><h3>Find each other nearby</h3><p>Devices discover each other on your Wi‑Fi, or over Apple's peer-to-peer Wi‑Fi when there's no router at all. Away from home? Add an address, for example over Tailscale.</p></div></li>
             <li><div><h3>Talk privately</h3><p>Every connection starts with a fresh key exchange mixed with your sync key, then everything is encrypted. Devices without the key can't connect or read a thing.</p></div></li>
             <li><div><h3>Send only what changed</h3><p>Devices ask each other for "everything since last time", so syncs are tiny. Changes hop along too: iPad → Mac → iPhone, even if the iPad and iPhone never meet.</p></div></li>
@@ -373,7 +373,7 @@
             <tr><td>New project</td><td><kbd>⌥</kbd><kbd>⌘</kbd><kbd>N</kbd></td></tr>
             <tr><td>New heading</td><td><kbd>⇧</kbd><kbd>⌘</kbd><kbd>N</kbd></td></tr>
             <tr><td>Quick Entry, from any app</td><td><kbd>⌃</kbd><kbd>Space</kbd></td></tr>
-            <tr><td>Quick Find</td><td>just start typing</td></tr>
+            <tr><td>Quick Find</td><td><kbd>⌘F</kbd> or just start typing</td></tr>
             <tr><td>Undo / Redo</td><td><kbd>⌘</kbd><kbd>Z</kbd> · <kbd>⇧</kbd><kbd>⌘</kbd><kbd>Z</kbd></td></tr>
           </tbody>
         </table>
@@ -435,7 +435,7 @@
         </details>
         <details>
           <summary>How do I add another device?</summary>
-          <div class="a"><p>On a device that's already set up, open <strong>Settings → Sync</strong> and choose <strong>Pair New Device</strong>. It shows a 6-digit code for five minutes. On the new device, pick the first one from the list and type the code. You can pair as many devices as you like, from any device already in the group.</p><p>Pair on a network you trust, like your home Wi‑Fi. The short code is safe against people who only listen in, but not against someone actively attacking your network during those five minutes. <a href="https://github.com/nearbycoder/dabble/blob/main/SECURITY.md">Here's why</a>.</p></div>
+          <div class="a"><p>On a device that's already set up, open <strong>Settings → Sync</strong> and choose <strong>Pair New Device</strong>. On the new device, choose <strong>Join Another Device</strong> and pick the first one from the list. Both devices then show the same 6-digit code. Check that it matches and tap <strong>Codes Match</strong> on each. You can pair as many devices as you like, from any device already in the group.</p><p>Comparing the codes is what keeps pairing safe. There's no password to guess, and someone trying to sit in the middle would show you different codes. <a href="https://github.com/nearbycoder/dabble/blob/main/SECURITY.md">Details</a>.</p></div>
         </details>
         <details>
           <summary>Does it import from Things?</summary>

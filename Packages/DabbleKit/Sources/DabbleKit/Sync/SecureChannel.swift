@@ -7,10 +7,10 @@ import Network
 /// Handshake: each side sends `version || nonce(32) || X25519 public key(32)`.
 /// Both derive two directional ChaChaPoly keys with
 /// `HKDF(ECDH shared secret || pre-shared key, salt: both hellos sorted)`.
-/// Mixing in the ECDH secret gives forward secrecy and stops a passive
-/// listener from brute-forcing a short pairing code; mixing in the PSK means
-/// only devices holding the sync group key (or the pairing code) can talk.
-/// A wrong key shows up as the first message failing to decrypt.
+/// The ECDH secret gives forward secrecy; mixing in the PSK means only devices
+/// holding the sync group key can talk. A wrong key shows up as the first
+/// message failing to decrypt. Pairing channels use a public PSK and are then
+/// authenticated by the user comparing a code bound to `transcript`.
 ///
 /// Frames are `UInt32 big-endian length || payload`. After the handshake the
 /// payload is `ciphertext || tag`, with a per-direction counter as the nonce,
@@ -47,6 +47,9 @@ final class SecureChannel {
     private var buffer = Data()
     private var closed = false
     private var receivedFirstMessage = false
+    /// Hash of both handshake hellos. A man in the middle ends up with a
+    /// different transcript on each side.
+    private(set) var transcript: Data?
 
     var onReady: (() -> Void)?
     var onMessage: ((Data) -> Void)?
@@ -163,6 +166,7 @@ final class SecureChannel {
             info: Data("dabble/v1/\(purpose)".utf8),
             outputByteCount: 64
         )
+        transcript = Data(SHA256.hash(data: first + second))
         let bytes = derived.withUnsafeBytes { Data($0) }
         let keyA = SymmetricKey(data: bytes.prefix(32))
         let keyB = SymmetricKey(data: bytes.suffix(32))

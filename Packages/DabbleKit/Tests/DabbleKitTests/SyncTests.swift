@@ -25,18 +25,38 @@ final class SyncTests: XCTestCase {
         let existing = macStore.addToDo("Already on the Mac", in: .today)
         let phoneOnly = phoneStore.addToDo("Made on the phone before pairing")
 
-        // Pair: the Mac shows a code, the phone enters it.
+        // Pair: the Mac waits, the phone joins, both show a code to compare.
         mac.startHostingPairing()
         try await waitUntil { mac.pairingPort != nil }
-        guard case .hosting(let code) = mac.pairingStatus else { return XCTFail("not hosting") }
+        XCTAssertEqual(mac.pairingStatus, .hosting)
+        let host = SyncEngine.PairingHost.address("127.0.0.1", port: mac.pairingPort!)
 
-        phone.join(.address("127.0.0.1", port: mac.pairingPort!), code: "000000" == code ? "111111" : "000000")
-        try await waitUntil { if case .failed = phone.pairingStatus { true } else { false } }
-        XCTAssertFalse(phone.hasGroup, "a wrong code must not hand over the group key")
+        // First attempt: the user says the codes don't match.
+        phone.join(host)
+        try await waitUntil { if case .confirm = phone.pairingStatus { true } else { false } }
+        phone.rejectPairing()
+        try await waitUntil { mac.pairingStatus == .hosting }
+        XCTAssertFalse(phone.hasGroup)
 
-        phone.join(.address("127.0.0.1", port: mac.pairingPort!), code: code)
+        // Second attempt: codes match and both sides confirm.
+        phone.join(host)
+        try await waitUntil {
+            if case .confirm = phone.pairingStatus, case .confirm = mac.pairingStatus { true } else { false }
+        }
+        guard case .confirm(let macSees, let macCode) = mac.pairingStatus,
+              case .confirm(let phoneSees, let phoneCode) = phone.pairingStatus else { return XCTFail() }
+        XCTAssertEqual(macCode, phoneCode)
+        XCTAssertEqual(macSees, "phone")
+        XCTAssertEqual(phoneSees, "mac")
+
+        phone.confirmPairing()
+        try await waitUntil { phone.pairingStatus == .waiting(device: "mac") }
+        XCTAssertFalse(phone.hasGroup, "no key until both sides confirm")
+        mac.confirmPairing()
         try await waitUntil { phone.hasGroup }
         XCTAssertEqual(phone.groupID, mac.groupID)
+        XCTAssertEqual(mac.pairingStatus, .paired(with: "phone"))
+        XCTAssertEqual(phone.pairingStatus, .paired(with: "mac"))
 
         // Connect over a manual address, as you would over a VPN.
         mac.start()
@@ -63,6 +83,14 @@ final class SyncTests: XCTestCase {
 
         mac.stop()
         phone.stop()
+    }
+
+    func testComparisonCodeDependsOnTranscriptAndBothNonces() {
+        let t = Data(repeating: 1, count: 32), a = Data(repeating: 2, count: 32), b = Data(repeating: 3, count: 32)
+        let code = SyncEngine.comparisonCode(transcript: t, hostNonce: a, joinerNonce: b)
+        XCTAssertEqual(code.count, 7)
+        XCTAssertNotEqual(code, SyncEngine.comparisonCode(transcript: Data(repeating: 9, count: 32), hostNonce: a, joinerNonce: b))
+        XCTAssertNotEqual(code, SyncEngine.comparisonCode(transcript: t, hostNonce: b, joinerNonce: a))
     }
 
     func testDevicesWithDifferentKeysCannotSync() async throws {

@@ -17,11 +17,12 @@ The details are in [README → How sync works](README.md#how-sync-works) and in 
 - **Sync group key.** Devices that sync together share a random 256-bit key. Holding that key is what makes a device a member of the group. There are no accounts or per-device identities beyond it.
 - **Channel.** Every connection starts with an ephemeral **X25519** key exchange. The shared secret and the group key are combined with **HKDF-SHA256** (salted with both sides' random hellos) into two directional **ChaCha20-Poly1305** keys. Frames use a counter nonce, so they can't be replayed, reordered or silently dropped. A device without the group key can't complete a session.
 - **Forward secrecy.** Because each session uses fresh ephemeral keys, a recording of past traffic can't be decrypted later, even by someone who later obtains the group key.
-- **Pairing.** A new device joins by entering a 6-digit code shown on a device already in the group. The code is hashed into a key that takes the group key's place in the same handshake, and the host sends the group key over that channel. The code is valid for 5 minutes and is replaced after 5 failed attempts.
+- **Pairing** uses numeric comparison, as in Bluetooth Secure Simple Pairing. The two devices run the same X25519 handshake (without a group key) and then a commit/reveal exchange: the joining device sends `SHA-256(nonce_j ‖ transcript)`, the host replies with `nonce_h`, and the joiner reveals `nonce_j`. Both show a 6-digit code derived from `SHA-256(transcript ‖ nonce_h ‖ nonce_j)`, where the transcript is a hash of both handshake hellos. The host sends the group key only after the user confirms the codes match **on both devices**. The joiner accepts a key only after confirming on its own side.
 
 ## What this protects against
 
-- **Passive eavesdroppers** on your network (or on a VPN path) can't read your data or learn your group key. That includes the pairing exchange: since the session key also depends on the ephemeral X25519 secret, someone who only *listens* can't brute-force the 6-digit code from captured traffic.
+- **Passive eavesdroppers** on your network (or on a VPN path) can't read your data or learn your group key. That includes the pairing exchange, which is encrypted under the ephemeral X25519 secret.
+- **Active attackers during pairing.** There's no secret code to brute-force, online or offline. A man in the middle ends up with a different handshake transcript on each side. Because the joiner commits to its nonce before seeing the host's, the attacker can't steer both codes to match: they get one try with a 1-in-1,000,000 chance, and you'd see the mismatch.
 - **Devices outside your group** can't connect, read or inject changes. They fail at the first encrypted message.
 - **Tampering in transit**: modified, replayed or reordered frames are rejected and the connection is closed.
 
@@ -29,22 +30,11 @@ The details are in [README → How sync works](README.md#how-sync-works) and in 
 
 We'd rather you know these than discover them.
 
-### Pairing is only as safe as the network you pair on
+### Pairing relies on you comparing the codes
 
-The 6-digit code has about 20 bits of entropy, and the pairing handshake isn't a PAKE (password-authenticated key exchange). That leaves a gap against an **active attacker on the same network during the 5-minute pairing window**:
+Pairing has no password to guess. Its security comes from you checking that both devices show the same six digits and confirming on both. If you tap **Codes Match** without looking, an attacker on the same network during the 5-minute pairing window could pair in your place. A real mismatch means something is wrong: tap **Codes Don't Match** and pair again on a network you trust.
 
-- An attacker can connect to the device showing the code (its pairing service is advertised over Bonjour) and complete the X25519 exchange. They then hold the session's ECDH secret and receive a message encrypted under a key derived from it and the code. They can try all 1,000,000 codes **offline** against that message in seconds, then connect again with the right code and receive the group key.
-- Likewise, an attacker who gets the *joining* device to connect to them (for example by advertising a pairing service under the same name) can recover the code from the joiner's first message, and could hand the joiner a group key they control.
-
-The "rotate after 5 failures" rule only limits *online* guessing. It doesn't stop the offline guessing described above, because the attacker doesn't need to fail even once against the real device.
-
-**Until pairing uses a PAKE** (CPace or SPAKE2, on the [roadmap](README.md#roadmap)):
-
-- Pair on a network you trust, such as your home Wi-Fi, not public or shared Wi-Fi. Apple's peer-to-peer Wi-Fi works too, with the devices next to each other.
-- Start pairing only when you're ready, and finish it promptly. Pairing stops listening as soon as it succeeds or the 5 minutes run out.
-- If your version of Dabble shows a **group ID** in Sync settings, check that it matches on both devices after pairing.
-
-Once a device has joined, normal sync no longer depends on the code. It uses the full 256-bit group key.
+The code is 6 digits, so an active man in the middle who gets you to compare codes has a one-in-a-million chance of making them match on a single attempt. They don't get a second try without you starting pairing again.
 
 ### Every device in the group is fully trusted
 

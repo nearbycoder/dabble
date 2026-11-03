@@ -198,7 +198,7 @@ private struct PeerRow: View {
 
 // MARK: - Pairing (host)
 
-/// Shows a 6-digit code for another device to enter.
+/// Makes this device discoverable, then has the user compare codes with the joining device.
 struct PairHostView: View {
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss
@@ -208,8 +208,12 @@ struct PairHostView: View {
         ScrollView {
             VStack(spacing: 22) {
                 switch sync.pairingStatus {
-                case .hosting(let code):
-                    hosting(code: code, sync: sync)
+                case .hosting:
+                    hosting(sync: sync)
+                case .confirm(let device, let code):
+                    ConfirmCodeView(device: device, code: code)
+                case .waiting(let device):
+                    WaitingForConfirmation(device: device)
                 case .paired(let name):
                     PairingSuccess(name: name) { dismiss() }
                 case .failed(let message):
@@ -237,21 +241,19 @@ struct PairHostView: View {
     }
 
     @ViewBuilder
-    private func hosting(code: String, sync: SyncEngine) -> some View {
+    private func hosting(sync: SyncEngine) -> some View {
         Image(systemName: "dot.radiowaves.left.and.right")
             .font(.system(size: 46, weight: .medium))
             .foregroundStyle(.tint)
             .symbolEffect(.variableColor.iterative, options: .repeating)
         VStack(spacing: 6) {
-            Text("Enter This Code")
+            Text("Ready to Pair")
                 .font(.title2.bold())
-            Text("On your other device, open Settings → Sync → Join a Device and choose “\(sync.deviceName)”.")
+            Text("On your other device, open Settings → Sync → Join a Device and choose “\(sync.deviceName)”. You'll then check that both devices show the same code.")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
         }
-        CodeBoxes(code: code, size: .large)
-            .accessibilityLabel("Pairing code \(code.map(String.init).joined(separator: " "))")
         HStack(spacing: 8) {
             ProgressView()
             Text("Waiting for the other device…")
@@ -275,7 +277,7 @@ struct PairHostView: View {
                 .padding(.top, 8)
             }
         }
-        Text("The code is valid for 5 minutes.")
+        Text("This device stays discoverable for 5 minutes.")
             .font(.footnote)
             .foregroundStyle(.tertiary)
     }
@@ -283,14 +285,12 @@ struct PairHostView: View {
 
 // MARK: - Pairing (join)
 
-/// Finds a device showing a code (or takes an address) and joins its sync group.
+/// Finds a device that's ready to pair (or takes an address), joins it, and compares codes.
 struct JoinDeviceView: View {
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss
     @State private var host: SyncEngine.PairingHost?
     @State private var address = ""
-    @State private var code = ""
-    @FocusState private var codeFocused: Bool
 
     var body: some View {
         let sync = model.sync
@@ -302,7 +302,7 @@ struct JoinDeviceView: View {
                         .padding(.top, 20)
                 }
             } else if let host {
-                codeEntry(host: host, sync: sync)
+                joinStatus(host: host, sync: sync)
             } else {
                 hostList(sync: sync)
             }
@@ -351,7 +351,7 @@ struct JoinDeviceView: View {
             } header: {
                 Text("Nearby Devices")
             } footer: {
-                Text("On the device you want to sync with, open Settings → Sync → Pair New Device. It appears here while it shows a code.")
+                Text("On the device you want to sync with, open Settings → Sync → Pair New Device. It appears here while it's ready to pair.")
             }
 
             Section {
@@ -367,65 +367,33 @@ struct JoinDeviceView: View {
             } header: {
                 Text("Enter an Address")
             } footer: {
-                Text("If the device isn't listed — for example over Tailscale or another VPN — enter the address shown under its code.")
+                Text("If the device isn't listed — for example over Tailscale or another VPN — enter the address shown on its pairing screen.")
             }
         }
     }
 
-    private func codeEntry(host: SyncEngine.PairingHost, sync: SyncEngine) -> some View {
+    private func joinStatus(host: SyncEngine.PairingHost, sync: SyncEngine) -> some View {
         ScrollView {
             VStack(spacing: 22) {
-                Image(systemName: "lock.shield")
-                    .font(.system(size: 44, weight: .medium))
-                    .foregroundStyle(.tint)
-                    .symbolRenderingMode(.hierarchical)
-                VStack(spacing: 6) {
-                    Text("Enter the Code")
-                        .font(.title2.bold())
-                    Text("Type the 6-digit code shown on “\(host.name)”.")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
-                }
-                ZStack {
-                    TextField("", text: $code)
-                        .keyboardType(.numberPad)
-                        .textContentType(.oneTimeCode)
-                        .focused($codeFocused)
-                        .foregroundStyle(.clear)
-                        .tint(.clear)
-                        .frame(width: 1, height: 1)
-                        .opacity(0.02)
-                        .onChange(of: code) { _, newValue in
-                            let digits = String(newValue.filter(\.isNumber).prefix(6))
-                            if digits != newValue { code = digits }
-                            if digits.count == 6 { sync.join(host, code: digits) }
-                        }
-                    CodeBoxes(code: code, size: .regular, showsCursor: codeFocused)
-                        .onTapGesture { codeFocused = true }
-                }
-                .disabled(sync.pairingStatus == .joining)
-
                 switch sync.pairingStatus {
-                case .joining:
-                    HStack(spacing: 8) {
-                        ProgressView()
-                        Text("Joining…").foregroundStyle(.secondary)
-                    }
+                case .confirm(let device, let code):
+                    ConfirmCodeView(device: device, code: code)
+                case .waiting(let device):
+                    WaitingForConfirmation(device: device)
                 case .failed(let message):
-                    Label(message, systemImage: "exclamationmark.triangle.fill")
-                        .foregroundStyle(.red)
-                        .font(.subheadline)
-                        .multilineTextAlignment(.center)
-                        .onAppear { code = "" }
+                    PairingFailure(message: message) { sync.join(host) }
                 default:
-                    EmptyView()
+                    ProgressView()
+                        .controlSize(.large)
+                        .padding(.top, 60)
+                    Text("Connecting to “\(host.name)”…")
+                        .foregroundStyle(.secondary)
                 }
 
                 Button("Choose a Different Device") {
-                    code = ""
-                    self.host = nil
+                    sync.rejectPairing()
                     sync.resetPairingStatus()
+                    self.host = nil
                 }
                 .font(.subheadline)
                 .padding(.top, 8)
@@ -434,14 +402,14 @@ struct JoinDeviceView: View {
             .padding(.top, 12)
             .frame(maxWidth: 520)
             .frame(maxWidth: .infinity)
+            .animation(.snappy, value: sync.pairingStatus)
         }
-        .onAppear { codeFocused = true }
     }
 
     private func choose(_ candidate: SyncEngine.PairingHost) {
-        code = ""
         model.sync.resetPairingStatus()
         host = candidate
+        model.sync.join(candidate)
     }
 
     private func chooseAddress() {
@@ -460,7 +428,7 @@ struct CodeBoxes: View {
     var showsCursor = false
 
     var body: some View {
-        let digits = Array(code)
+        let digits = Array(code.filter(\.isNumber))
         let width: CGFloat = size == .large ? 48 : 44
         let height: CGFloat = size == .large ? 66 : 58
         HStack(spacing: size == .large ? 8 : 7) {
@@ -481,6 +449,60 @@ struct CodeBoxes: View {
                 if index == 2 { Spacer().frame(width: size == .large ? 10 : 8) }
             }
         }
+    }
+}
+
+/// Both devices show this code; the user confirms they match before the group key is shared.
+private struct ConfirmCodeView: View {
+    @Environment(AppModel.self) private var model
+    let device: String
+    let code: String
+
+    var body: some View {
+        VStack(spacing: 20) {
+            Image(systemName: "checkmark.shield")
+                .font(.system(size: 46, weight: .medium))
+                .foregroundStyle(.tint)
+                .symbolRenderingMode(.hierarchical)
+            Text("Does “\(device)” show this code?")
+                .font(.title2.bold())
+                .multilineTextAlignment(.center)
+            CodeBoxes(code: code, size: .large)
+                .accessibilityLabel("Code \(code)")
+            Text("Only continue if the codes match exactly. This makes sure you're pairing with your own device.")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+            VStack(spacing: 10) {
+                Button {
+                    model.sync.confirmPairing()
+                } label: {
+                    Text("Codes Match").frame(maxWidth: 260)
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+                Button("Codes Don't Match", role: .destructive) { model.sync.rejectPairing() }
+            }
+            .padding(.top, 4)
+        }
+        .padding(.top, 24)
+    }
+}
+
+private struct WaitingForConfirmation: View {
+    let device: String
+
+    var body: some View {
+        VStack(spacing: 16) {
+            ProgressView().controlSize(.large)
+            Text("Confirm on “\(device)”")
+                .font(.title2.bold())
+                .multilineTextAlignment(.center)
+            Text("Tap Codes Match on the other device to finish pairing.")
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .padding(.top, 60)
     }
 }
 
@@ -601,7 +623,6 @@ struct AdvancedSyncView: View {
         .confirmationDialog("Leave the sync group?", isPresented: $confirmLeave, titleVisibility: .visible) {
             Button("Leave Sync Group", role: .destructive) {
                 sync.leaveGroup()
-                sync.start()
                 dismiss()
             }
         } message: {

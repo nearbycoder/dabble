@@ -15,8 +15,12 @@ import UIKit
 /// key and exchanges the records the other hasn't seen, then keeps pushing
 /// changes while connected.
 ///
-/// A new device joins the group by pairing: one device shows a six-digit code,
-/// the other enters it, and the code-keyed channel delivers the group key.
+/// A new device joins the group by pairing. Both devices show the same
+/// six-digit code, derived from their handshake with a commit/reveal step
+/// (as in Bluetooth numeric comparison); once the user confirms the codes
+/// match on both, the group key is handed over. There is no secret to guess,
+/// so nothing can be brute-forced offline, and a man in the middle gets one
+/// try with a one-in-a-million chance of producing matching codes.
 @MainActor
 @Observable
 public final class SyncEngine {
@@ -45,8 +49,14 @@ public final class SyncEngine {
 
     public enum PairingStatus: Equatable, Sendable {
         case idle
-        case hosting(code: String)
+        /// Discoverable and waiting for another device to join.
+        case hosting
+        /// Connecting to the chosen device.
         case joining
+        /// Both devices show `code`; the user must confirm it matches on both.
+        case confirm(device: String, code: String)
+        /// Confirmed here; waiting for the user to confirm on the other device.
+        case waiting(device: String)
         case paired(with: String)
         case failed(String)
     }
@@ -119,6 +129,12 @@ public final class SyncEngine {
         case request(since: Int64)
         case changes(records: [Record], upTo: Int64)
         case grant(groupKey: Data)
+        // Pairing: the joiner commits to a nonce, the host sends its own, the
+        // joiner reveals. Both then derive the comparison code.
+        case commit(Data)
+        case nonce(Data)
+        case reveal(Data)
+        case confirmed
     }
 
     private final class Session {
@@ -132,6 +148,13 @@ public final class SyncEngine {
         var helloReceived = false
         var requested = false
         var sentCursor: Int64 = 0
+        // Pairing state.
+        var myNonce = Data()
+        var theirCommitment: Data?
+        var theirNonce: Data?
+        var code: String?
+        var confirmedHere = false
+        var confirmedThere = false
 
         enum Purpose { case sync, hostPairing, joinPairing }
 
@@ -151,8 +174,7 @@ public final class SyncEngine {
     @ObservationIgnored private var browser: NWBrowser?
     @ObservationIgnored private var pairingListener: NWListener?
     @ObservationIgnored private var pairingBrowser: NWBrowser?
-    @ObservationIgnored private var pairingCode: String?
-    @ObservationIgnored private var pairingFailures = 0
+    @ObservationIgnored private var pairingSession: Session?
     @ObservationIgnored private var sessions: [ObjectIdentifier: Session] = [:]
     @ObservationIgnored private var browseResults: Set<NWBrowser.Result> = []
     @ObservationIgnored private var dialing: Set<String> = []
@@ -198,8 +220,25 @@ public final class SyncEngine {
         return digest.prefix(4).map { String(format: "%02x", $0) }.joined()
     }
 
-    static func pairingKey(_ code: String) -> SymmetricKey {
-        SymmetricKey(data: SHA256.hash(data: Data("dabble-pairing|\(code)".utf8)))
+    /// Pairing channels aren't keyed by a secret; they're authenticated by the
+    /// user comparing codes. This constant just separates them from sync channels.
+    static let pairingPSK = SymmetricKey(data: SHA256.hash(data: Data("dabble-pairing-v2".utf8)))
+
+    static func randomNonce() -> Data {
+        SymmetricKey(size: .bits256).withUnsafeBytes { Data($0) }
+    }
+
+    static func commitment(_ nonce: Data, transcript: Data) -> Data {
+        Data(SHA256.hash(data: Data("dabble-commit".utf8) + transcript + nonce))
+    }
+
+    /// Six digits both devices display. The joiner's nonce is committed before
+    /// the host's is known, so neither side (nor anyone in between) can steer it.
+    static func comparisonCode(transcript: Data, hostNonce: Data, joinerNonce: Data) -> String {
+        let digest = Array(SHA256.hash(data: Data("dabble-sas".utf8) + transcript + hostNonce + joinerNonce))
+        let value = (UInt32(digest[0]) << 24 | UInt32(digest[1]) << 16 | UInt32(digest[2]) << 8 | UInt32(digest[3])) % 1_000_000
+        let digits = String(format: "%06d", value)
+        return digits.prefix(3) + " " + digits.suffix(3)
     }
 
     // MARK: - Lifecycle
@@ -265,6 +304,8 @@ public final class SyncEngine {
         settings.peers = [:]
         saveSettings(immediately: true)
         refreshPeers()
+        // Stay ready to pair again.
+        start()
     }
 
     public func forget(peer id: String) {
@@ -290,7 +331,7 @@ public final class SyncEngine {
         saveSettings()
     }
 
-    static func parseAddress(_ address: String) -> (String, UInt16)? {
+    public static func parseAddress(_ address: String) -> (String, UInt16)? {
         guard let colon = address.lastIndex(of: ":"), let port = UInt16(address[address.index(after: colon)...]) else {
             return address.isEmpty ? nil : (address, defaultPort)
         }
@@ -310,20 +351,17 @@ public final class SyncEngine {
         let key = SymmetricKey(size: .bits256).withUnsafeBytes { Data($0) }
         settings.groupKey = key
         saveSettings(immediately: true)
-        if isRunning { restart() }
+        if settings.enabled { restart() }
         return key
     }
 
     // MARK: - Pairing (host side)
 
-    /// Shows a code other devices can enter to join this device's sync group.
+    /// Makes this device discoverable so another device can join its sync group.
     public func startHostingPairing() {
         stopHostingPairing()
         _ = ensureGroup()
-        let code = String(format: "%06d", Int.random(in: 0...999_999))
-        pairingCode = code
-        pairingFailures = 0
-        pairingStatus = .hosting(code: code)
+        pairingStatus = .hosting
 
         do {
             let listener = try NWListener(using: Self.parameters(), on: .any)
@@ -357,24 +395,69 @@ public final class SyncEngine {
         pairingListener?.cancel()
         pairingListener = nil
         pairingPort = nil
-        pairingCode = nil
-        if case .hosting = pairingStatus { pairingStatus = .idle }
+        if pairingSession?.purpose == .hostPairing {
+            pairingSession?.channel.close()
+            pairingSession = nil
+        }
+        switch pairingStatus {
+        case .hosting, .confirm, .waiting: pairingStatus = .idle
+        default: break
+        }
     }
 
     private func acceptPairing(_ connection: NWConnection) {
-        guard let code = pairingCode else {
+        // One pairing at a time.
+        guard pairingListener != nil, pairingSession == nil else {
             connection.cancel()
             return
         }
-        let channel = SecureChannel(connection: connection, psk: Self.pairingKey(code), purpose: "pair", outgoing: false)
+        let channel = SecureChannel(connection: connection, psk: Self.pairingPSK, purpose: "pair", outgoing: false)
         let session = Session(channel: channel, purpose: .hostPairing, expectedPeer: nil)
+        pairingSession = session
         attach(session)
         channel.start()
     }
 
+    /// The user checked that both devices show the same code.
+    public func confirmPairing() {
+        guard let session = pairingSession, session.code != nil, !session.confirmedHere else { return }
+        session.confirmedHere = true
+        send(.confirmed, on: session)
+        if session.purpose == .hostPairing && session.confirmedThere {
+            grant(to: session)
+        } else {
+            pairingStatus = .waiting(device: session.peerName)
+        }
+    }
+
+    /// The codes didn't match, or the user changed their mind.
+    public func rejectPairing() {
+        guard let session = pairingSession else { return }
+        pairingSession = nil
+        session.channel.close()
+        if session.purpose == .hostPairing && pairingListener != nil {
+            pairingStatus = .hosting
+        } else {
+            pairingStatus = .failed("Pairing was canceled.")
+        }
+    }
+
+    private func grant(to session: Session) {
+        guard let key = settings.groupKey, let peerID = session.peerID else { return }
+        send(.grant(groupKey: key), on: session)
+        settings.peers[peerID] = settings.peers[peerID] ?? PeerRecord(name: session.peerName, platform: session.platform, cursor: 0)
+        saveSettings()
+        let name = session.peerName
+        pairingSession = nil
+        stopHostingPairing()
+        pairingStatus = .paired(with: name)
+        refreshPeers()
+        connectToKnownPeers()
+    }
+
     // MARK: - Pairing (joining side)
 
-    /// Looks for devices showing a pairing code.
+    /// Looks for devices that are ready to pair.
     public func startBrowsingForPairing() {
         stopBrowsingForPairing()
         guard discovery else { return }
@@ -397,25 +480,25 @@ public final class SyncEngine {
         pairingHosts = []
     }
 
-    /// Joins the sync group of `host` using the code it displays. Data on this
-    /// device is kept and merged with the group's.
-    public func join(_ host: PairingHost, code: String) {
-        let digits = code.filter(\.isNumber)
-        guard digits.count == 6 else {
-            pairingStatus = .failed("Enter the 6-digit code shown on the other device.")
-            return
-        }
+    /// Starts joining the sync group of `host`. Both devices then show a code
+    /// to compare (`PairingStatus.confirm`). Data on this device is kept and
+    /// merged with the group's.
+    public func join(_ host: PairingHost) {
+        pairingSession?.channel.close()
         pairingStatus = .joining
         let connection = NWConnection(to: host.endpoint, using: Self.parameters())
-        let channel = SecureChannel(connection: connection, psk: Self.pairingKey(digits), purpose: "pair", outgoing: true)
+        let channel = SecureChannel(connection: connection, psk: Self.pairingPSK, purpose: "pair", outgoing: true)
         let session = Session(channel: channel, purpose: .joinPairing, expectedPeer: nil)
+        pairingSession = session
         attach(session)
         channel.start()
     }
 
     public func resetPairingStatus() {
-        if case .hosting = pairingStatus { return }
-        pairingStatus = .idle
+        switch pairingStatus {
+        case .hosting, .confirm, .waiting: return
+        default: pairingStatus = .idle
+        }
     }
 
     // MARK: - Networking
@@ -553,22 +636,16 @@ public final class SyncEngine {
     }
 
     private func sessionClosed(_ session: Session, error: Error?) {
-        switch session.purpose {
-        case .joinPairing:
-            if case .joining = pairingStatus {
-                if let error = error as? SecureChannel.ChannelError, error == .authenticationFailed {
-                    pairingStatus = .failed("That code didn't work. Check it and try again.")
-                } else {
-                    pairingStatus = .failed(error?.localizedDescription ?? "The other device disconnected.")
-                }
+        guard session.purpose != .sync, pairingSession === session else { return }
+        pairingSession = nil
+        switch pairingStatus {
+        case .joining, .confirm, .waiting:
+            if session.purpose == .hostPairing && pairingListener != nil {
+                pairingStatus = .hosting
+            } else {
+                pairingStatus = .failed(error?.localizedDescription ?? "The other device disconnected.")
             }
-        case .hostPairing:
-            if let error = error as? SecureChannel.ChannelError, error == .authenticationFailed {
-                pairingFailures += 1
-                // Rotate the code after repeated guesses so it can't be brute-forced online.
-                if pairingFailures >= 5, case .hosting = pairingStatus { startHostingPairing() }
-            }
-        case .sync:
+        default:
             break
         }
     }
@@ -611,7 +688,49 @@ public final class SyncEngine {
             saveSettings()
             refreshPeers()
 
+        case (.commit(let commitment), .hostPairing):
+            guard session.helloReceived, session.theirCommitment == nil, commitment.count == 32 else {
+                session.channel.close(SecureChannel.ChannelError.protocolViolation)
+                return
+            }
+            session.theirCommitment = commitment
+            session.myNonce = Self.randomNonce()
+            send(.nonce(session.myNonce), on: session)
+
+        case (.nonce(let nonce), .joinPairing):
+            guard session.theirNonce == nil, !session.myNonce.isEmpty, let transcript = session.channel.transcript else {
+                session.channel.close(SecureChannel.ChannelError.protocolViolation)
+                return
+            }
+            session.theirNonce = nonce
+            send(.reveal(session.myNonce), on: session)
+            session.code = Self.comparisonCode(transcript: transcript, hostNonce: nonce, joinerNonce: session.myNonce)
+            pairingStatus = .confirm(device: session.peerName, code: session.code!)
+
+        case (.reveal(let nonce), .hostPairing):
+            guard let commitment = session.theirCommitment, session.code == nil, let transcript = session.channel.transcript,
+                  Self.commitment(nonce, transcript: transcript) == commitment else {
+                session.channel.close(SecureChannel.ChannelError.protocolViolation)
+                return
+            }
+            session.code = Self.comparisonCode(transcript: transcript, hostNonce: session.myNonce, joinerNonce: nonce)
+            pairingStatus = .confirm(device: session.peerName, code: session.code!)
+
+        case (.confirmed, .hostPairing), (.confirmed, .joinPairing):
+            guard session.code != nil else {
+                session.channel.close(SecureChannel.ChannelError.protocolViolation)
+                return
+            }
+            session.confirmedThere = true
+            if session.purpose == .hostPairing && session.confirmedHere { grant(to: session) }
+
         case (.grant(let key), .joinPairing):
+            // Only accept the key once the user has confirmed the codes match here.
+            guard session.confirmedHere, session.confirmedThere, key.count == 32 else {
+                session.channel.close(SecureChannel.ChannelError.protocolViolation)
+                return
+            }
+            pairingSession = nil
             settings.groupKey = key
             if let peerID = session.peerID {
                 settings.peers[peerID] = settings.peers[peerID] ?? PeerRecord(name: session.peerName, platform: session.platform, cursor: 0)
@@ -632,19 +751,12 @@ public final class SyncEngine {
         guard let peerID = session.peerID else { return }
         switch session.purpose {
         case .hostPairing:
-            guard let key = settings.groupKey else { return }
-            send(.grant(groupKey: key), on: session)
-            settings.peers[peerID] = settings.peers[peerID] ?? PeerRecord(name: session.peerName, platform: session.platform, cursor: 0)
-            saveSettings()
-            pairingStatus = .paired(with: session.peerName)
-            stopHostingPairing()
-            pairingStatus = .paired(with: session.peerName)
-            refreshPeers()
-            // Start syncing right away rather than waiting for discovery.
-            connectToKnownPeers()
+            break // Wait for the joiner's commitment.
 
         case .joinPairing:
-            break // Wait for the grant.
+            guard let transcript = session.channel.transcript else { return }
+            session.myNonce = Self.randomNonce()
+            send(.commit(Self.commitment(session.myNonce, transcript: transcript)), on: session)
 
         case .sync:
             // Two devices often dial each other at once. Keep exactly one

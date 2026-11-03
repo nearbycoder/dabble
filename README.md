@@ -30,10 +30,6 @@ Dabble is a native SwiftUI to-do app modeled on [Things 3](https://culturedcode.
   <img src="docs/assets/screens/mac-today.png" width="49%" alt="Today on the Mac">
   <img src="docs/assets/screens/mac-project.png" width="49%" alt="A project with headings on the Mac">
 </p>
-<p align="center">
-  <img src="docs/assets/screens/ios-home.png" width="24%" alt="Lists on iPhone">
-  <img src="docs/assets/screens/ios-today.png" width="24%" alt="Today on iPhone">
-</p>
 
 ## Contents
 
@@ -85,7 +81,7 @@ Dabble is a native SwiftUI to-do app modeled on [Things 3](https://culturedcode.
 **Sync**
 - Device-to-device over Wi-Fi, Ethernet or Apple's peer-to-peer Wi-Fi (no router needed)
 - Optional manual addresses, e.g. over [Tailscale](https://tailscale.com), for syncing away from home
-- Pair with a 6-digit code; no account
+- Pair by comparing a 6-digit code on both devices; no account
 - Conflict-free merging, field by field
 - Light and dark mode everywhere
 
@@ -185,11 +181,12 @@ Mixing in the ephemeral ECDH secret gives **forward secrecy**: a recorded sessio
 
 ### 5. Pairing
 
-1. On a device, **Settings → Sync → Pair New Device** creates a sync group (a random 256-bit key) if there isn't one yet, and shows a **6-digit code** for 5 minutes. It advertises `_dabble-pair._tcp`.
-2. On the new device, pick that device from the list and enter the code.
-3. The two open the same secure channel, keyed with `SHA-256("dabble-pairing|" + code)` instead of the group key. If the code matches, the host sends the group key over that channel and the new device joins. Existing data on both devices is merged, not replaced.
+1. On a device, **Settings → Sync → Pair New Device** creates a sync group (a random 256-bit key) if there isn't one yet. It advertises `_dabble-pair._tcp` for 5 minutes.
+2. On the new device, **Join Another Device** lists it (or you can type its address). Pick it.
+3. The two run the same X25519 handshake, then a commit/reveal exchange, as in Bluetooth numeric comparison. The joiner commits to a random nonce, the host sends its nonce, and the joiner reveals its own. Both devices then show the same 6-digit code, derived from the handshake transcript and both nonces.
+4. Confirm that the codes match **on both devices**. Only then does the host send the group key. Existing data on both devices is merged, not replaced.
 
-The code rotates after 5 failed attempts. Read [SECURITY.md](SECURITY.md) for the limits of this scheme. In short, pair on a network you trust; replacing it with a PAKE is on the [roadmap](#roadmap).
+There's no secret to guess, so nothing can be brute-forced. A man in the middle gets a single 1-in-a-million chance of producing matching codes. See [SECURITY.md](SECURITY.md).
 
 ### Limitations
 
@@ -231,11 +228,13 @@ The Mac app follows the keyboard conventions of Things.
 | New project | <kbd>⌥⌘N</kbd> | When… | <kbd>⌘S</kbd> | Upcoming | <kbd>⌘3</kbd> |
 | New heading | <kbd>⇧⌘N</kbd> | Start Today / This Evening | <kbd>⌘T</kbd> / <kbd>⌘E</kbd> | Anytime | <kbd>⌘4</kbd> |
 | Quick Entry (any app) | <kbd>⌃Space</kbd> | Anytime / Someday | <kbd>⌘R</kbd> / <kbd>⌘O</kbd> | Someday | <kbd>⌘5</kbd> |
-| Quick Find | just start typing | Deadline | <kbd>⇧⌘D</kbd> | Logbook | <kbd>⌘6</kbd> |
+| Quick Find | <kbd>⌘F</kbd> or start typing | Deadline | <kbd>⇧⌘D</kbd> | Logbook | <kbd>⌘6</kbd> |
 | Undo / Redo | <kbd>⌘Z</kbd> / <kbd>⇧⌘Z</kbd> | Tags | <kbd>⇧⌘T</kbd> | Settings | <kbd>⌘,</kbd> |
 | | | Move to… | <kbd>⇧⌘M</kbd> | | |
 | | | Move up / down | <kbd>⌥⌘↑</kbd> / <kbd>⌥⌘↓</kbd> | | |
-| | | Extend selection | <kbd>⇧↑</kbd> / <kbd>⇧↓</kbd> | | |
+| | | Extend selection | <kbd>⇧↑</kbd> / <kbd>⇧↓</kbd> | Trash | <kbd>⌘7</kbd> |
+| | | Cancel / Duplicate | <kbd>⌥⌘K</kbd> / <kbd>⌘D</kbd> | | |
+| | | Move to Trash | <kbd>⌘⌫</kbd> | | |
 | | | Move to Trash | <kbd>⌫</kbd> | | |
 
 ## Building from source
@@ -306,7 +305,6 @@ Things features not built yet, plus sync improvements. Contributions welcome.
 - [ ] Import from Things
 - [ ] Markdown in notes
 - [ ] Background sync on iOS
-- [ ] A PAKE (e.g. CPace or SPAKE2) for pairing, so a 6-digit code is safe even against an active attacker
 - [ ] Removing a device from a group by rotating the group key
 
 ## Contributing

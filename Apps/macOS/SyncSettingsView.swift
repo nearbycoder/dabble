@@ -221,7 +221,7 @@ struct PeerRow: View {
     }
 }
 
-/// Shows a six-digit code for another device to enter.
+/// Makes this Mac discoverable, then has the user compare codes with the joining device.
 struct PairDeviceSheet: View {
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss
@@ -252,16 +252,19 @@ struct PairDeviceSheet: View {
                     Button("Try Again") { sync.startHostingPairing() }
                         .keyboardShortcut(.defaultAction)
                 }
-            case .hosting(let code):
+            case .confirm(let device, let code):
+                ConfirmCodeView(device: device, code: code)
+            case .waiting(let device):
+                WaitingForConfirmation(device: device)
+            case .hosting:
                 Image(systemName: "laptopcomputer.and.iphone")
                     .font(.system(size: 40))
                     .foregroundStyle(Color.accentColor)
                 Text("Pair a New Device")
                     .font(.title2.weight(.semibold))
-                Text("On your other device, open Dabble › Settings › Sync, choose **Join Another Device**, pick “\(sync.deviceName)” and enter this code:")
+                Text("On your other device, open Dabble › Settings › Sync, choose **Join Another Device** and pick “\(sync.deviceName)”. You'll then check that both devices show the same code.")
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.secondary)
-                CodeDisplay(code: code)
                 HStack(spacing: 6) {
                     ProgressView().controlSize(.small)
                     Text("Waiting for the other device…").foregroundStyle(.secondary)
@@ -298,7 +301,7 @@ struct CodeDisplay: View {
 
     var body: some View {
         HStack(spacing: 8) {
-            ForEach(Array(code.enumerated()), id: \.offset) { index, digit in
+            ForEach(Array(code.filter(\.isNumber).enumerated()), id: \.offset) { index, digit in
                 Text(String(digit))
                     .font(.system(size: 38, weight: .semibold, design: .rounded))
                     .monospacedDigit()
@@ -312,18 +315,70 @@ struct CodeDisplay: View {
     }
 }
 
-/// Finds a device showing a code (or takes an address) and joins its group.
+/// Both devices show this code; the user confirms they match before the group key is shared.
+struct ConfirmCodeView: View {
+    @Environment(AppModel.self) private var model
+    let device: String
+    let code: String
+
+    var body: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "checkmark.shield")
+                .font(.system(size: 40))
+                .foregroundStyle(Color.accentColor)
+            Text("Does “\(device)” show this code?")
+                .font(.title2.weight(.semibold))
+                .multilineTextAlignment(.center)
+            CodeDisplay(code: code)
+            Text("Only continue if the codes match exactly. This makes sure you're pairing with your own device.")
+                .font(.callout)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+            HStack {
+                Button("Codes Don't Match", role: .destructive) { model.sync.rejectPairing() }
+                    .keyboardShortcut(.cancelAction)
+                Button("Codes Match") { model.sync.confirmPairing() }
+                    .keyboardShortcut(.defaultAction)
+            }
+        }
+        .frame(maxWidth: .infinity)
+    }
+}
+
+struct WaitingForConfirmation: View {
+    @Environment(AppModel.self) private var model
+    let device: String
+
+    var body: some View {
+        VStack(spacing: 14) {
+            ProgressView()
+            Text("Confirm on “\(device)”")
+                .font(.title2.weight(.semibold))
+            Text("Tap **Codes Match** on the other device to finish pairing.")
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+            Button("Cancel") { model.sync.rejectPairing() }
+                .keyboardShortcut(.cancelAction)
+        }
+        .frame(maxWidth: .infinity)
+    }
+}
+
+/// Finds a device that's ready to pair (or takes an address) and joins its group.
 struct JoinDeviceSheet: View {
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss
     @State private var selectedHost: String?
     @State private var address = ""
-    @State private var code = ""
 
     var body: some View {
         let sync = model.sync
         VStack(alignment: .leading, spacing: 14) {
-            if case .paired(let name) = sync.pairingStatus {
+            if case .confirm(let device, let code) = sync.pairingStatus {
+                ConfirmCodeView(device: device, code: code)
+            } else if case .waiting(let device) = sync.pairingStatus {
+                WaitingForConfirmation(device: device)
+            } else if case .paired(let name) = sync.pairingStatus {
                 VStack(spacing: 14) {
                     Image(systemName: "checkmark.circle.fill").font(.system(size: 52)).foregroundStyle(.green)
                     Text("Joined \(name)'s sync group").font(.title2.weight(.semibold))
@@ -334,7 +389,7 @@ struct JoinDeviceSheet: View {
                 .frame(maxWidth: .infinity)
             } else {
                 Text("Join Another Device").font(.title2.weight(.semibold))
-                Text("On the other device, choose **Pair New Device** in Settings › Sync. It appears below.")
+                Text("On the other device, choose **Pair New Device** in Settings › Sync. It appears below; pick it, then compare the codes both devices show.")
                     .foregroundStyle(.secondary)
 
                 GroupBox {
@@ -374,20 +429,6 @@ struct JoinDeviceSheet: View {
                         .onChange(of: address) { _, value in if !value.isEmpty { selectedHost = nil } }
                 }
 
-                HStack {
-                    Text("Code:")
-                    TextField("123456", text: $code)
-                        .textFieldStyle(.roundedBorder)
-                        .font(.system(size: 20, weight: .semibold, design: .rounded))
-                        .frame(width: 130)
-                        .onChange(of: code) { _, value in
-                            let digits = String(value.filter(\.isNumber).prefix(6))
-                            if digits != value { code = digits }
-                        }
-                        .onSubmit(join)
-                    Spacer()
-                }
-
                 switch sync.pairingStatus {
                 case .joining:
                     HStack(spacing: 8) {
@@ -407,7 +448,7 @@ struct JoinDeviceSheet: View {
                         .keyboardShortcut(.cancelAction)
                     Button("Join", action: join)
                         .keyboardShortcut(.defaultAction)
-                        .disabled(host == nil || code.count != 6 || sync.pairingStatus == .joining)
+                        .disabled(host == nil || sync.pairingStatus == .joining)
                 }
             }
         }
@@ -439,7 +480,7 @@ struct JoinDeviceSheet: View {
     }
 
     private func join() {
-        guard let host, code.count == 6 else { return }
-        model.sync.join(host, code: code)
+        guard let host else { return }
+        model.sync.join(host)
     }
 }
