@@ -143,6 +143,8 @@ final class StoreTests: XCTestCase {
         XCTAssertEqual(When.parse("tonight", today: today), .evening)
         XCTAssertEqual(When.parse("tom", today: today), .date(Day(year: 2026, month: 11, day: 4)))
         XCTAssertEqual(When.parse("fri", today: today), .date(Day(year: 2026, month: 11, day: 6)))
+        XCTAssertEqual(When.parse("friday", today: today), .date(Day(year: 2026, month: 11, day: 6)))
+        XCTAssertEqual(When.parse("next monday", today: today), .date(Day(year: 2026, month: 11, day: 16)))
         XCTAssertEqual(When.parse("in 2 weeks", today: today), .date(Day(year: 2026, month: 11, day: 17)))
         XCTAssertEqual(When.parse("dec 25", today: today), .date(Day(year: 2026, month: 12, day: 25)))
         XCTAssertEqual(When.parse("1/15", today: today), .date(Day(year: 2027, month: 1, day: 15)))

@@ -8,6 +8,7 @@
 # Produces in <output-dir>:
 #   Dabble-macOS.zip           Dabble.app (ad-hoc signed), zipped with ditto
 #   Dabble-macOS.dmg           Disk image with Dabble.app and an /Applications link
+#   dabble-cli-macOS.zip       The dabble command-line tool / MCP server on its own (also inside Dabble.app)
 #   Dabble-iOS-unsigned.ipa    Unsigned iOS/iPadOS app (re-sign with AltStore, Sideloadly, …)
 #   SHA256SUMS.txt             Checksums for the files above
 #
@@ -87,6 +88,17 @@ if [[ "${SKIP_MAC:-0}" != 1 ]]; then
     -ov \
     "$OUT/Dabble-macOS.dmg" 2> >(grep -v 'deprecated' >&2) >/dev/null
   artifacts+=("Dabble-macOS.dmg")
+
+  log "Packaging dabble-cli-macOS.zip"
+  CLI="$MAC_APP/Contents/Helpers/dabble"
+  "$CLI" --version
+  echo "Architectures: $(lipo -archs "$CLI")"
+  CLI_ROOT="$STAGING/cli"
+  mkdir -p "$CLI_ROOT"
+  ditto "$CLI" "$CLI_ROOT/dabble"
+  rm -f "$OUT/dabble-cli-macOS.zip"
+  (cd "$CLI_ROOT" && ditto -c -k --sequesterRsrc dabble "$OUT/dabble-cli-macOS.zip")
+  artifacts+=("dabble-cli-macOS.zip")
 fi
 
 # ---------------------------------------------------------------- iOS

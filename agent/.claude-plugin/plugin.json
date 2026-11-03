@@ -1,0 +1,10 @@
+{
+  "name": "dabble",
+  "description": "Read and manage your Dabble to-dos from Claude: Today, Inbox, projects, areas, tags, deadlines and more. Bundles the dabble skill and the dabble MCP server.",
+  "version": "1.2.0",
+  "author": { "name": "Dabble contributors", "url": "https://github.com/nearbycoder/dabble" },
+  "homepage": "https://nearbycoder.github.io/dabble/#agents",
+  "repository": "https://github.com/nearbycoder/dabble",
+  "license": "MIT",
+  "keywords": ["todo", "tasks", "things", "productivity", "mcp"]
+}

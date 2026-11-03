@@ -53,14 +53,22 @@ public enum When: Hashable, Sendable {
             weekdayText.removeFirst(5)
             skipWeek = true
         }
-        let symbols = calendar.weekdaySymbols.map { $0.lowercased() }
-        if weekdayText.count >= 2, let index = symbols.firstIndex(where: { $0.hasPrefix(weekdayText) }) {
+        if weekdayText.count >= 2, let index = weekdayIndex(weekdayText, calendar: calendar) {
             return .date(nextWeekday(index + 1, after: today, calendar: calendar, skipWeek: skipWeek))
         }
 
         if let day = Day(text) { return .date(day) }
         if let day = parseCalendarDate(text, today: today, calendar: calendar) { return .date(day) }
         return nil
+    }
+
+    static let englishWeekdays = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
+
+    /// 0-based weekday (Sunday = 0) for a full or abbreviated name, in English or the calendar's language.
+    static func weekdayIndex(_ text: String, calendar: Calendar = .current) -> Int? {
+        let lowered = text.lowercased()
+        let localized = calendar.standaloneWeekdaySymbols.map { $0.lowercased() }
+        return englishWeekdays.firstIndex { $0.hasPrefix(lowered) } ?? localized.firstIndex { $0.hasPrefix(lowered) }
     }
 
     private static func nextWeekday(_ weekday: Int, after today: Day, calendar: Calendar, skipWeek: Bool, includeToday: Bool = false) -> Day {

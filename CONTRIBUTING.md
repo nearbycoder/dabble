@@ -37,3 +37,5 @@ open Dabble.xcodeproj
 ## License
 
 By contributing, you agree that your contributions are licensed under the [MIT License](LICENSE).
+
+If you change `agent/skills/dabble/SKILL.md`, run `scripts/embed-skill.sh` so the copy built into the `dabble` CLI matches (a test checks this). Check the plugin with `claude plugin validate ./agent` and `claude plugin validate .`.

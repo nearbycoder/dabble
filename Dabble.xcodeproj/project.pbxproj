@@ -9,18 +9,22 @@
 /* Begin PBXBuildFile section */
 		00897C93DDB2CC7267B9DFE5 /* ListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A203A9D0EC88C17E384AFC6D /* ListScreen.swift */; };
 		08030625AA06592DBC0AC550 /* SyncServerSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F789D4FAD78B1067BA89096 /* SyncServerSection.swift */; };
+		117EA367F5BA7D1D8D0DD34E /* DabbleKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0CDDC5DB4DC8E3F24EC8E4E2 /* DabbleKit */; };
 		1796D97E1671E991A93149D1 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A895E33689551206F7F0BF /* RootView.swift */; };
+		23A32886FF3AE31D6A5E0192 /* AgentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B9B834C2E12DA39978E1F7 /* AgentSettingsView.swift */; };
 		29603726FFDC7D8D65C17C6D /* WelcomeContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BE369E889EBD85944E6D31 /* WelcomeContent.swift */; };
 		30369F1341138B68E2464079 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3C260662505D9593BB37A3 /* SettingsView.swift */; };
 		33F0A60F9B3A3B29210D791B /* ToDoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10FDA86C978A823F5E649C45 /* ToDoRow.swift */; };
 		423EA2E27CD3512274C77E86 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 051158CA0090E64DE1546158 /* Components.swift */; };
 		44AC68D6A30A3167A4424933 /* QuickEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C88FABCA4D22ADABA1E9B3 /* QuickEntry.swift */; };
 		48558628D9D6BF0E690F215E /* Support.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74CBCB0B598D966F4EE25880 /* Support.swift */; };
+		4A5F636D4478C01DF377934E /* Replica.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614859A7869B9F2E25B4A40C /* Replica.swift */; };
 		4CB83866556DB3963188045D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904D2A9ADDF4555C50BF9E3B /* Theme.swift */; };
 		4F99990F8FB75300F8F3B7C6 /* DabbleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AADA3753E8E755F91D25AD8 /* DabbleApp.swift */; };
 		4FCBF5B7ADBE309D04D6290C /* DabbleKit in Frameworks */ = {isa = PBXBuildFile; productRef = 60F24BE729FB873FD303E037 /* DabbleKit */; };
 		565D03B9AF6E23D716A164BA /* QuickFind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9FC0EAD29A32EDAEA78D00 /* QuickFind.swift */; };
 		598F2206B501EC9090DA5594 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2484CB450A45405AAE28E940 /* ListView.swift */; };
+		5C266A8E18980E8CDCAE082E /* DabbleCLI in Embed Dependencies */ = {isa = PBXBuildFile; fileRef = B743147A1B1FF67EE244D7DB /* DabbleCLI */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5CEB9C4B14AD27F77D36A859 /* Pickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328F99527009E4DF4FB1CC1E /* Pickers.swift */; };
 		5E254F51E42F924DE11C920E /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99ED7F29F8EC5C5F9E9CBC1 /* Commands.swift */; };
 		669B942E0AC2DF3B952096E5 /* ToDoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5BD3ED143ECEF82BC64A4F /* ToDoDetailView.swift */; };
@@ -31,10 +35,12 @@
 		78E750BFD17367059C0E2256 /* DabbleKit in Frameworks */ = {isa = PBXBuildFile; productRef = 02BD733382F9EF74F822634C /* DabbleKit */; };
 		7EF11152C7B4F9D6156A1D60 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DD086A9DAAFE98FBDA62A7 /* AppModel.swift */; };
 		7F53BDF16A873E315AA998F6 /* ListHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8926662DB9AD244113667E /* ListHeader.swift */; };
+		834313B272C415DC49C52CD7 /* DabbleCLI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BF458EDE7A7DD06BC0A3E6 /* DabbleCLI.swift */; };
 		84757DE8315F27C607DFB090 /* WindowState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74D0C6C0042E208F50B0836E /* WindowState.swift */; };
 		8AD6CBF3B531B4839EEFAD4E /* MovePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9B37AAF8C511E4E7202AD2 /* MovePicker.swift */; };
 		8D4B6498E37D0A1A93446799 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DD086A9DAAFE98FBDA62A7 /* AppModel.swift */; };
 		90792B5C6EE5700A0FE0C7EF /* ListTitleHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF4C4091A8361679D163770 /* ListTitleHeader.swift */; };
+		92EEECBBDDA3B4744021213E /* Render.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F291D0B052CCD97E95F8AD9 /* Render.swift */; };
 		93E1EEFCADF59AC4098210D8 /* AppIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F54AAD8E03332E5C625F0BF /* AppIntents.swift */; };
 		98542382244B5BBB69418AD4 /* SyncServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209E1D131CE6C17D002007A8 /* SyncServerView.swift */; };
 		9CE003ED43BD35893CA23CC0 /* MagicPlusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EFAC78950B298B834A8D81 /* MagicPlusButton.swift */; };
@@ -44,11 +50,13 @@
 		AE38E4D896629B10530DAE48 /* MainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B323F8541B0881C677D6CB8 /* MainWindow.swift */; };
 		AE6AFE08714AFB7DED84A3F1 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31074EB9CA7CAE1AD8448F84 /* Router.swift */; };
 		B30C114F2FC2372F51850536 /* ToDoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B50E6650604C869C36DA26 /* ToDoRow.swift */; };
+		B95E36B216058999F77E33ED /* MCPServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD1E273D9667B7B240DF5F1 /* MCPServer.swift */; };
 		BA9E73B49A2DF0717EEB48D6 /* KeyPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278C3F75EA5E51771BB1AA67 /* KeyPopover.swift */; };
 		C4161BE4BF5E51616A50B803 /* WhenPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B1CFF08B11D85A45D5FAD40 /* WhenPicker.swift */; };
 		CD158F75B3FA2F2A7D205580 /* TextFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2981FEC13C7C7FAA6454BA /* TextFields.swift */; };
 		D1E7ECFBC6D03E94668A0658 /* ItemMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409F24F434D05740DB3C9E9A /* ItemMenu.swift */; };
 		D84CB920C92DBAA85E9BF2D3 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8380AF2F1B4F3F746BF1A /* Sidebar.swift */; };
+		D8E69D7E3A4D097C6448995C /* Setup.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB9F4E0F20A5ADE6EA337BD /* Setup.swift */; };
 		E1EE10EB679996552DBB904C /* RepeatPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5765C91227C97E3893993A5 /* RepeatPicker.swift */; };
 		EF031E2E42194338ED07B89C /* WelcomeContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BE369E889EBD85944E6D31 /* WelcomeContent.swift */; };
 		F3873B720BDD59EBC6F45D53 /* HotKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74969CD6336A5463E006261B /* HotKey.swift */; };
@@ -58,10 +66,35 @@
 		FCE8E572A91EF031D667544D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A3081A150E8C6FEE0611250 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		8E44F365EA4E56C45E2EF280 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 322CC5D0C7C79DE7E2E6F4AC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A4599A7B4F6F8E4FC546B772;
+			remoteInfo = DabbleCLI;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		36D1D1CA76290B80AC1D9933 /* Embed Dependencies */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Helpers;
+			dstSubfolderSpec = 1;
+			files = (
+				5C266A8E18980E8CDCAE082E /* DabbleCLI in Embed Dependencies */,
+			);
+			name = "Embed Dependencies";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		00EFAC78950B298B834A8D81 /* MagicPlusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicPlusButton.swift; sourceTree = "<group>"; };
 		0267A4C71452BA5544255695 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		051158CA0090E64DE1546158 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		05BF458EDE7A7DD06BC0A3E6 /* DabbleCLI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DabbleCLI.swift; sourceTree = "<group>"; };
 		07A895E33689551206F7F0BF /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		0B323F8541B0881C677D6CB8 /* MainWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindow.swift; sourceTree = "<group>"; };
 		0BC8380AF2F1B4F3F746BF1A /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
@@ -72,13 +105,16 @@
 		2484CB450A45405AAE28E940 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		278C3F75EA5E51771BB1AA67 /* KeyPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPopover.swift; sourceTree = "<group>"; };
 		2B5BD3ED143ECEF82BC64A4F /* ToDoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoDetailView.swift; sourceTree = "<group>"; };
+		2CD1E273D9667B7B240DF5F1 /* MCPServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCPServer.swift; sourceTree = "<group>"; };
 		31074EB9CA7CAE1AD8448F84 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		328F99527009E4DF4FB1CC1E /* Pickers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pickers.swift; sourceTree = "<group>"; };
 		35FBCABE755399E0E9B062C4 /* DabbleMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DabbleMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A3081A150E8C6FEE0611250 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		409F24F434D05740DB3C9E9A /* ItemMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemMenu.swift; sourceTree = "<group>"; };
 		44B50E6650604C869C36DA26 /* ToDoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoRow.swift; sourceTree = "<group>"; };
+		4F291D0B052CCD97E95F8AD9 /* Render.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Render.swift; sourceTree = "<group>"; };
 		5AABA97634C2D08E0CE92763 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		614859A7869B9F2E25B4A40C /* Replica.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Replica.swift; sourceTree = "<group>"; };
 		65D7B408C1D313509D3ACC7C /* DabbleMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DabbleMacApp.swift; sourceTree = "<group>"; };
 		6D3C260662505D9593BB37A3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		6F54AAD8E03332E5C625F0BF /* AppIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntents.swift; sourceTree = "<group>"; };
@@ -93,6 +129,7 @@
 		867BCA8B983DB56ABBF86A2F /* TagPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagPicker.swift; sourceTree = "<group>"; };
 		8B9B37AAF8C511E4E7202AD2 /* MovePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovePicker.swift; sourceTree = "<group>"; };
 		904D2A9ADDF4555C50BF9E3B /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		91B9B834C2E12DA39978E1F7 /* AgentSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentSettingsView.swift; sourceTree = "<group>"; };
 		98C88FABCA4D22ADABA1E9B3 /* QuickEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickEntry.swift; sourceTree = "<group>"; };
 		9AAA64972382EFF06CD43C21 /* ItemSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSheet.swift; sourceTree = "<group>"; };
 		9B1CFF08B11D85A45D5FAD40 /* WhenPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhenPicker.swift; sourceTree = "<group>"; };
@@ -102,6 +139,8 @@
 		A203A9D0EC88C17E384AFC6D /* ListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListScreen.swift; sourceTree = "<group>"; };
 		A270A201B2E8295CB10BE167 /* Dabble.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Dabble.entitlements; sourceTree = "<group>"; };
 		AE07485A2145196546560B25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		AFB9F4E0F20A5ADE6EA337BD /* Setup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setup.swift; sourceTree = "<group>"; };
+		B743147A1B1FF67EE244D7DB /* DabbleCLI */ = {isa = PBXFileReference; includeInIndex = 0; path = DabbleCLI; sourceTree = BUILT_PRODUCTS_DIR; };
 		B99ED7F29F8EC5C5F9E9CBC1 /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
 		D5765C91227C97E3893993A5 /* RepeatPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatPicker.swift; sourceTree = "<group>"; };
 		D5C752EA1769A0E6BB918D21 /* SyncSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncSettingsView.swift; sourceTree = "<group>"; };
@@ -111,6 +150,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		081AFCC96E3145A9A0CD7B20 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				117EA367F5BA7D1D8D0DD34E /* DabbleKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BCA0B57FC35EA776C5C1687E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -150,6 +197,7 @@
 		106EF5184D4D5FA4B0AE1656 /* macOS */ = {
 			isa = PBXGroup;
 			children = (
+				91B9B834C2E12DA39978E1F7 /* AgentSettingsView.swift */,
 				B99ED7F29F8EC5C5F9E9CBC1 /* Commands.swift */,
 				A270A201B2E8295CB10BE167 /* Dabble.entitlements */,
 				65D7B408C1D313509D3ACC7C /* DabbleMacApp.swift */,
@@ -173,6 +221,14 @@
 				74D0C6C0042E208F50B0836E /* WindowState.swift */,
 			);
 			path = macOS;
+			sourceTree = "<group>";
+		};
+		1D0E65DB0DEB4668B91017E8 /* DabbleKit */ = {
+			isa = PBXGroup;
+			children = (
+				578E24E79DAC3AA675B341CF /* Sources */,
+			);
+			path = DabbleKit;
 			sourceTree = "<group>";
 		};
 		1EC7F40A2A58949A58DEFF00 = {
@@ -215,6 +271,14 @@
 			path = Apps;
 			sourceTree = "<group>";
 		};
+		578E24E79DAC3AA675B341CF /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				FE4830735ACB037B7FEA43AB /* dabble */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
 		6F0F471537DBF617DE0AE029 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
@@ -226,6 +290,7 @@
 		7CAA55091450154B81AE465E /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				B743147A1B1FF67EE244D7DB /* DabbleCLI */,
 				84235A6EE2DE9F7E8877AC7A /* DabbleiOS.app */,
 				35FBCABE755399E0E9B062C4 /* DabbleMac.app */,
 			);
@@ -235,6 +300,7 @@
 		8ED51E6DB26F17A09040FE90 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
+				1D0E65DB0DEB4668B91017E8 /* DabbleKit */,
 				9BA31720323CB6C91F320E76 /* DabbleKit */,
 			);
 			path = Packages;
@@ -281,6 +347,18 @@
 			path = Support;
 			sourceTree = "<group>";
 		};
+		FE4830735ACB037B7FEA43AB /* dabble */ = {
+			isa = PBXGroup;
+			children = (
+				05BF458EDE7A7DD06BC0A3E6 /* DabbleCLI.swift */,
+				2CD1E273D9667B7B240DF5F1 /* MCPServer.swift */,
+				4F291D0B052CCD97E95F8AD9 /* Render.swift */,
+				614859A7869B9F2E25B4A40C /* Replica.swift */,
+				AFB9F4E0F20A5ADE6EA337BD /* Setup.swift */,
+			);
+			path = dabble;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -291,10 +369,12 @@
 				E98F7C400BE649420ED1E74F /* Sources */,
 				80164E776A03A2D9683D7EDD /* Resources */,
 				BD6893D267AF94732F673C00 /* Frameworks */,
+				36D1D1CA76290B80AC1D9933 /* Embed Dependencies */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				ABE4D2A303B5553632C8E198 /* PBXTargetDependency */,
 			);
 			name = DabbleMac;
 			packageProductDependencies = (
@@ -324,6 +404,25 @@
 			productReference = 84235A6EE2DE9F7E8877AC7A /* DabbleiOS.app */;
 			productType = "com.apple.product-type.application";
 		};
+		A4599A7B4F6F8E4FC546B772 /* DabbleCLI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BEB763AD416481239971FB75 /* Build configuration list for PBXNativeTarget "DabbleCLI" */;
+			buildPhases = (
+				1456DCF55EF8707742F9844D /* Sources */,
+				081AFCC96E3145A9A0CD7B20 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DabbleCLI;
+			packageProductDependencies = (
+				0CDDC5DB4DC8E3F24EC8E4E2 /* DabbleKit */,
+			);
+			productName = DabbleCLI;
+			productReference = B743147A1B1FF67EE244D7DB /* DabbleCLI */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -340,6 +439,10 @@
 					37D8B23FF6F57908DFF7182A = {
 						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
+					};
+					A4599A7B4F6F8E4FC546B772 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -361,6 +464,7 @@
 			projectRoot = "";
 			targets = (
 				0615F4F528FD3AE36FE83D8F /* DabbleMac */,
+				A4599A7B4F6F8E4FC546B772 /* DabbleCLI */,
 				37D8B23FF6F57908DFF7182A /* DabbleiOS */,
 			);
 		};
@@ -386,6 +490,18 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1456DCF55EF8707742F9844D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				834313B272C415DC49C52CD7 /* DabbleCLI.swift in Sources */,
+				B95E36B216058999F77E33ED /* MCPServer.swift in Sources */,
+				92EEECBBDDA3B4744021213E /* Render.swift in Sources */,
+				4A5F636D4478C01DF377934E /* Replica.swift in Sources */,
+				D8E69D7E3A4D097C6448995C /* Setup.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B9C0B68D84426167435552A3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -420,6 +536,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23A32886FF3AE31D6A5E0192 /* AgentSettingsView.swift in Sources */,
 				7EF11152C7B4F9D6156A1D60 /* AppModel.swift in Sources */,
 				5E254F51E42F924DE11C920E /* Commands.swift in Sources */,
 				F730BB5A530E42DBC21AC9F2 /* DabbleMacApp.swift in Sources */,
@@ -446,6 +563,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		ABE4D2A303B5553632C8E198 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A4599A7B4F6F8E4FC546B772 /* DabbleCLI */;
+			targetProxy = 8E44F365EA4E56C45E2EF280 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		066A145741B4806D664F8556 /* Release */ = {
@@ -483,6 +608,46 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.nearbycoder.dabble;
 				PRODUCT_NAME = Dabble;
 				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		1B755EB94D97C8B4DC8BD1F2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.nearbycoder.dabble.cli;
+				PRODUCT_NAME = dabble;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = NO;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
+			};
+			name = Debug;
+		};
+		45A14AC8E624C971FFD3C342 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.nearbycoder.dabble.cli;
+				PRODUCT_NAME = dabble;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = NO;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
 			};
 			name = Release;
 		};
@@ -558,7 +723,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.2.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -628,7 +793,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.2.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -671,6 +836,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
+		BEB763AD416481239971FB75 /* Build configuration list for PBXNativeTarget "DabbleCLI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1B755EB94D97C8B4DC8BD1F2 /* Debug */,
+				45A14AC8E624C971FFD3C342 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		CBFA19994190520B3A2AB441 /* Build configuration list for PBXNativeTarget "DabbleMac" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -700,6 +874,10 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		02BD733382F9EF74F822634C /* DabbleKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DabbleKit;
+		};
+		0CDDC5DB4DC8E3F24EC8E4E2 /* DabbleKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DabbleKit;
 		};

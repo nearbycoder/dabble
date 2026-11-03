@@ -6,9 +6,11 @@ let package = Package(
     platforms: [.macOS(.v15), .iOS(.v18)],
     products: [
         .library(name: "DabbleKit", targets: ["DabbleKit"]),
+        .executable(name: "dabble", targets: ["dabble"]),
     ],
     targets: [
         .target(name: "DabbleKit"),
+        .executableTarget(name: "dabble", dependencies: ["DabbleKit"]),
         .testTarget(name: "DabbleKitTests", dependencies: ["DabbleKit"]),
     ],
     swiftLanguageModes: [.v5]

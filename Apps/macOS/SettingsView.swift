@@ -4,7 +4,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 enum SettingsTab: String {
-    case general, sync, tags, backup
+    case general, sync, agents, tags, backup
 }
 
 enum AppAppearance: String, CaseIterable {
@@ -33,6 +33,9 @@ struct SettingsView: View {
             SyncSettingsView()
                 .tabItem { Label("Sync", systemImage: "arrow.triangle.2.circlepath") }
                 .tag(SettingsTab.sync)
+            AgentSettingsView()
+                .tabItem { Label("Agents", systemImage: "sparkles") }
+                .tag(SettingsTab.agents)
             TagSettingsView()
                 .tabItem { Label("Tags", systemImage: "tag") }
                 .tag(SettingsTab.tags)

@@ -1,0 +1,13 @@
+{
+  "name": "dabble",
+  "owner": { "name": "Dabble contributors", "url": "https://github.com/nearbycoder/dabble" },
+  "description": "The Dabble plugin: manage your Dabble to-dos from Claude.",
+  "plugins": [
+    {
+      "name": "dabble",
+      "source": "./agent",
+      "description": "Read and manage your Dabble to-dos from Claude. Bundles the dabble skill and MCP server (needs the dabble CLI on your PATH).",
+      "version": "1.2.0"
+    }
+  ]
+}

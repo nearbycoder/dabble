@@ -80,6 +80,7 @@ jobs:
           files=(
             build/release/Dabble-macOS.zip
             build/release/Dabble-macOS.dmg
+            build/release/dabble-cli-macOS.zip
             build/release/Dabble-iOS-unsigned.ipa
             build/release/SHA256SUMS.txt
           )

@@ -378,3 +378,9 @@ footer .legal { flex-basis: 100%; }
 @media (max-width: 900px) { .server-grid { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 520px) { .server-points { grid-template-columns: minmax(0, 1fr); } .server-card { padding: 22px 20px; } .server-card .btn { width: 100%; justify-content: center; } }
 .server-card li code { white-space: nowrap; }
+.server-card li .term { margin: 8px 0 4px; }
+.server-card li code { white-space: normal; }
+.server-card .term code { white-space: pre; }
+.server-card ol { grid-template-columns: minmax(0, 1fr); }
+.server-card li { min-width: 0; }
+.server-card .term { max-width: 100%; }

@@ -114,12 +114,13 @@ public final class SyncEngine {
     public var groupID: String? { settings.groupKey.map(Self.groupID(for:)) }
 
     public var platform: String {
+        if let platformOverride { return platformOverride }
         #if os(macOS)
-        "macOS"
+        return "macOS"
         #elseif os(iOS)
-        UIDevice.current.userInterfaceIdiom == .pad ? "iPadOS" : "iOS"
+        return UIDevice.current.userInterfaceIdiom == .pad ? "iPadOS" : "iOS"
         #else
-        "Apple"
+        return "Apple"
         #endif
     }
 
@@ -190,6 +191,9 @@ public final class SyncEngine {
     private let settingsURL: URL?
     private let preferredPort: UInt16?
     private let discovery: Bool
+    private let platformOverride: String?
+    /// Bumps whenever changes arrive from a peer or the server.
+    public private(set) var syncEvents = 0
     @ObservationIgnored private var settings: Settings
     @ObservationIgnored private var listener: NWListener?
     @ObservationIgnored private var browser: NWBrowser?
@@ -211,8 +215,9 @@ public final class SyncEngine {
     ///   - directory: where sync settings live (next to the store). Nil keeps them in memory.
     ///   - port: listening port. Nil tries `defaultPort` and falls back to any free port; 0 means any.
     ///   - discovery: advertise and browse with Bonjour. Turned off in tests.
-    public init(store: DabbleStore, directory: URL?, port: UInt16? = nil, discovery: Bool = true) {
+    public init(store: DabbleStore, directory: URL?, port: UInt16? = nil, discovery: Bool = true, platform: String? = nil) {
         self.store = store
+        platformOverride = platform
         settingsURL = directory?.appendingPathComponent("sync.json")
         preferredPort = port
         self.discovery = discovery
@@ -725,6 +730,7 @@ public final class SyncEngine {
             record.lastSync = Date()
             settings.peers[peerID] = record
             lastSync = record.lastSync
+            syncEvents += 1
             saveSettings()
             refreshPeers()
 
@@ -1026,6 +1032,7 @@ public final class SyncEngine {
             }
             settings.serverCursor = result.cursor
             serverLastSync = Date()
+            syncEvents += 1
             saveSettings()
             if !result.more { return }
             wait = 0
@@ -1058,6 +1065,43 @@ public final class SyncEngine {
                 guard !Swift.Task.isCancelled else { return }
                 write()
             }
+        }
+    }
+
+    /// Creates a sync group for this device if it doesn't have one, so others can join it.
+    public func createGroupIfNeeded() {
+        _ = ensureGroup()
+    }
+
+    /// Waits until this device has caught up with at least one peer or the
+    /// server (changes arrived, then things went quiet), or until `timeout`.
+    /// Returns true if anything was heard from.
+    @discardableResult
+    public func waitForSync(timeout: Duration = .seconds(4), quiet: Duration = .milliseconds(500)) async -> Bool {
+        let start = ContinuousClock.now
+        let initial = syncEvents
+        var lastEvents = syncEvents
+        var lastChange = start
+        while ContinuousClock.now - start < timeout {
+            try? await Swift.Task.sleep(for: .milliseconds(50))
+            if syncEvents != lastEvents {
+                lastEvents = syncEvents
+                lastChange = .now
+            }
+            if syncEvents != initial && ContinuousClock.now - lastChange >= quiet { return true }
+        }
+        return syncEvents != initial
+    }
+
+    /// Sends anything not yet sent to connected peers and the server right away.
+    public func pushNow() async {
+        pushTask?.cancel()
+        for session in sessions.values where session.purpose == .sync && session.requested && store.seq > session.sentCursor {
+            pushChanges(to: session, since: session.sentCursor)
+        }
+        if relayTask != nil, let client = relayClient {
+            relayPushTask?.cancel()
+            try? await relayPush(client)
         }
     }
 

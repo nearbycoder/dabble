@@ -36,6 +36,7 @@ Dabble is a native SwiftUI to-do app modeled on [Things 3](https://culturedcode.
 - [Features](#features)
 - [Download & install](#download--install)
 - [How sync works](#how-sync-works)
+- [AI agents: MCP, CLI and Agent Skill](#ai-agents-mcp-cli-and-agent-skill)
 - [Privacy](#privacy)
 - [URL scheme](#url-scheme)
 - [Keyboard shortcuts](#keyboard-shortcuts)
@@ -83,7 +84,12 @@ Dabble is a native SwiftUI to-do app modeled on [Things 3](https://culturedcode.
 - Optional manual addresses, e.g. over [Tailscale](https://tailscale.com), for syncing away from home
 - Pair by comparing a 6-digit code on both devices; no account
 - Conflict-free merging, field by field
+- Optional self-hosted, end-to-end encrypted sync server
 - Light and dark mode everywhere
+
+**AI agents**
+- An MCP server and a `dabble` CLI. Claude, Cursor or your scripts can do anything the app can
+- An Agent Skill and a Claude Code plugin that teach agents how Dabble works
 
 ## Download & install
 
@@ -213,6 +219,57 @@ Put it behind HTTPS (Caddy, Cloudflare Tunnel, `tailscale serve`, Fly.io…). Th
 
 **Joining from far away.** Pairing needs the devices to be near each other. To add a device that never is, copy the **sync key** on a device that's already set up (**Settings → Sync → Advanced**, or the Sync tab's Advanced section on the Mac). Then choose **Join with Sync Key** on the new device and paste it. Treat the key like a password, because it grants full access.
 
+## AI agents: MCP, CLI and Agent Skill
+
+Agents can do anything you can do in Dabble. They can read Today, triage the Inbox, plan your week, turn meeting notes into a project, reschedule, tag, complete or clean up to-dos. There are three ways in, and all three use the same 24 tools (`Packages/DabbleKit/Sources/DabbleKit/Agent/`):
+
+| | |
+|---|---|
+| **MCP server** | `dabble mcp` speaks the Model Context Protocol over stdio, for Claude Code, Claude Desktop, Cursor, Zed, VS Code and others. |
+| **CLI** | `dabble today`, `dabble add "Call mom" --when tomorrow`, `dabble complete <id>`… for scripts and agents that use a shell. `--json` gives machine-readable output. |
+| **Agent Skill** | [`agent/skills/dabble/SKILL.md`](agent/skills/dabble/SKILL.md) teaches an agent Dabble's concepts (when vs deadline, Today vs Anytime…) and good habits (look before changing; ask before deleting). |
+
+**No server, still.** `dabble` is its own Dabble device. It keeps a replica in `~/.dabble`, joins your sync group with your sync key, and syncs with your Mac, iPhone and iPad (or your sync server) like any other device. Nothing reads or writes the app's files directly. The app and the agent never fight over a database; changes merge like any other sync.
+
+### Set it up
+
+1. **Install the tool.** It ships inside the Mac app. **Dabble → Settings → Agents** shows the one-line command to link it into your PATH. Or:
+   ```sh
+   curl -fsSL https://nearbycoder.github.io/dabble/install-cli.sh | sh
+   ```
+2. **Connect it to your to-dos.** Settings → Agents also shows `dabble join DBL1-…` with your sync key filled in. Or run `dabble pair` and compare codes with a device showing **Pair New Device**.
+3. **Add it to your agent:**
+   ```sh
+   # Claude Code: plugin with the MCP server + skill
+   claude plugin marketplace add nearbycoder/dabble
+   claude plugin install dabble@dabble
+   # (or, inside Claude Code: /plugin install dabble --marketplace nearbycoder/dabble)
+
+   # or only the MCP server
+   claude mcp add --scope user dabble -- dabble mcp
+
+   # or only the skill, for any agent that reads SKILL.md
+   dabble skill install            # → ~/.claude/skills/dabble/SKILL.md
+   ```
+   For Claude Desktop, Cursor and other MCP apps, add this to their MCP config:
+   ```json
+   { "mcpServers": { "dabble": { "command": "/usr/local/bin/dabble", "args": ["mcp"] } } }
+   ```
+
+Then ask *"What's on my plate today?"*, *"Plan my week from Anytime"* or *"Turn these notes into to-dos in the Launch project."*
+
+### Tools
+
+`overview` · `list_items` · `search` · `get_item` · `add_todo` · `add_project` · `add_area` · `add_heading` · `add_tag` · `update_item` · `set_status` · `schedule` · `move` · `edit_checklist` · `reorder` · `duplicate` · `convert_to_project` · `trash` · `restore` · `delete_permanently` · `empty_trash` · `open_url` · `sync_status` · `sync_now`
+
+Run `dabble tools` for the list or `dabble help <tool>` for each one's parameters. Every tool is also a CLI command: `dabble <tool> [main argument] [--param value]`, or `dabble call <tool> '<json>'`. Ids can be shortened to their first 8 characters.
+
+**Notes**
+- **Dabble open?** The agent syncs while one of your devices is reachable (Dabble open on your Mac, say) or through your sync server. A CLI command waits up to `--wait` seconds (default 4) to catch up first, then pushes its changes before exiting. `dabble mcp` stays connected while your agent runs, so changes appear within a second or two.
+- **One copy per computer.** While `dabble mcp` is running, other `dabble` commands on that computer go through it (over a loopback socket guarded by a random token), so there's only ever one copy of the replica.
+- **Safety.** `delete_permanently` and `empty_trash` are marked destructive for MCP clients, and the skill tells agents to ask first. Everything else is reversible from the app.
+- **Not connected?** If `dabble` hasn't joined your group, it refuses to work and explains how to connect, so an agent can't quietly fill a separate list nobody sees. Pass `--local` if you want a separate list on purpose.
+
 ## Privacy
 
 Dabble collects nothing. There is no Dabble-run server, account, analytics, crash reporting or tracking. The optional sync server is one you run, and it only stores ciphertext.
@@ -305,10 +362,13 @@ Packages/DabbleKit/ The core, a Swift package with no UI
     Model/          Record (CRDT), HLC, entities, When, Day, RepeatRule
     Store/          DabbleStore, actions, list queries, reminders, URL scheme
     Sync/           SyncEngine (discovery, pairing, delta sync), SecureChannel, Relay (server client)
+    Agent/          Agent tools shared by the CLI and MCP server, embedded skill
+  Sources/dabble/   The dabble CLI and MCP server
   Tests/            Unit tests for the store, merging, sync and the relay
 server/             Optional zero-dependency sync relay (Node) + Dockerfile
+agent/              Claude Code plugin: Agent Skill + MCP config (.claude-plugin/marketplace.json at the root)
 docs/               This project's website (GitHub Pages, plain HTML/CSS)
-scripts/            make-icon.swift, package-release.sh
+scripts/            make-icon.swift, package-release.sh, embed-skill.sh
 project.yml         XcodeGen spec → Dabble.xcodeproj
 .github/workflows/  CI, release and Pages workflows
 ```
@@ -321,7 +381,7 @@ Things features not built yet, plus sync improvements. Contributions welcome.
 - [ ] Widgets (Home Screen, Lock Screen, desktop)
 - [ ] Share extension
 - [ ] Apple Watch app
-- [ ] Siri and Shortcuts actions beyond the basics
+- [ ] Siri and Shortcuts actions beyond the basics (App Intents for every agent tool)
 - [ ] Mail to Dabble
 - [ ] Import from Things
 - [ ] Markdown in notes

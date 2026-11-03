@@ -8,7 +8,7 @@ options:
   groupSortPosition: top
 settings:
   base:
-    MARKETING_VERSION: "1.1.0"
+    MARKETING_VERSION: "1.2.0"
     CURRENT_PROJECT_VERSION: "1"
     SWIFT_VERSION: "5.0"
     DEVELOPMENT_TEAM: ""
@@ -29,6 +29,12 @@ targets:
       - Apps/Shared
     dependencies:
       - package: DabbleKit
+      - target: DabbleCLI
+        embed: true
+        codeSign: true
+        copy:
+          destination: wrapper
+          subpath: Contents/Helpers
     settings:
       base:
         PRODUCT_NAME: Dabble
@@ -56,6 +62,23 @@ targets:
         CFBundleURLTypes:
           - CFBundleURLName: com.nearbycoder.dabble
             CFBundleURLSchemes: [dabble]
+  DabbleCLI:
+    type: tool
+    platform: macOS
+    sources:
+      - Packages/DabbleKit/Sources/dabble
+    dependencies:
+      - package: DabbleKit
+    settings:
+      base:
+        PRODUCT_NAME: dabble
+        PRODUCT_BUNDLE_IDENTIFIER: com.nearbycoder.dabble.cli
+        CODE_SIGN_STYLE: Manual
+        CODE_SIGN_IDENTITY: "-"
+        ENABLE_HARDENED_RUNTIME: YES
+        SKIP_INSTALL: YES
+        SWIFT_DEFAULT_ACTOR_ISOLATION: nonisolated
+        SWIFT_APPROACHABLE_CONCURRENCY: NO
   DabbleiOS:
     type: application
     platform: iOS

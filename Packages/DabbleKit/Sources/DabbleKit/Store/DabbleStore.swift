@@ -266,7 +266,7 @@ public final class DabbleStore {
             let data = try JSONEncoder().encode(file)
             try data.write(to: fileURL, options: [.atomic])
         } catch {
-            print("Dabble: failed to save store: \(error)")
+            FileHandle.standardError.write(Data("Dabble: failed to save store: \(error)\n".utf8))
         }
     }
 

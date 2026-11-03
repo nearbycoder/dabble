@@ -48,6 +48,12 @@ It **can't** read or forge your to-dos without the group key. The bearer token p
 
 The **sync key** (`DBL1-…`) that you can copy to join a group from far away *is* the group key. Anyone who has it can read and change everything you sync. Share it only between your own devices, and don't leave it in a notes app or chat history.
 
+### AI agents
+
+The `dabble` CLI and MCP server are a device in your sync group like any other. They hold your group key in `~/.dabble/sync.json` (in a folder only your user can read), so anything running as your user can use them. That includes an AI agent you've connected. Give agents access the way you'd give access to any app, and prefer agents that ask before destructive actions. `delete_permanently` and `empty_trash` are marked destructive for MCP clients. To revoke an agent, run `dabble leave` (or delete `~/.dabble`) on that computer. Then see "Every device in the group is fully trusted" below.
+
+While `dabble mcp` runs, it listens on a loopback-only port so other `dabble` commands on the same computer can go through it. Requests need a random token from `~/.dabble/control.json`, which only your user can read.
+
 ### Every device in the group is fully trusted
 
 - Any member can read and change everything, and can claim any device name or id. There's no per-device signing.
