@@ -1,0 +1,517 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		29603726FFDC7D8D65C17C6D /* WelcomeContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BE369E889EBD85944E6D31 /* WelcomeContent.swift */; };
+		4CB83866556DB3963188045D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904D2A9ADDF4555C50BF9E3B /* Theme.swift */; };
+		4F99990F8FB75300F8F3B7C6 /* DabbleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AADA3753E8E755F91D25AD8 /* DabbleApp.swift */; };
+		4FCBF5B7ADBE309D04D6290C /* DabbleKit in Frameworks */ = {isa = PBXBuildFile; productRef = 60F24BE729FB873FD303E037 /* DabbleKit */; };
+		7225B695B341F0A024E46BEE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A3081A150E8C6FEE0611250 /* Assets.xcassets */; };
+		78E750BFD17367059C0E2256 /* DabbleKit in Frameworks */ = {isa = PBXBuildFile; productRef = 02BD733382F9EF74F822634C /* DabbleKit */; };
+		7EF11152C7B4F9D6156A1D60 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DD086A9DAAFE98FBDA62A7 /* AppModel.swift */; };
+		8D4B6498E37D0A1A93446799 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DD086A9DAAFE98FBDA62A7 /* AppModel.swift */; };
+		ACA5CD4E95C6284AB0E05CEE /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904D2A9ADDF4555C50BF9E3B /* Theme.swift */; };
+		EF031E2E42194338ED07B89C /* WelcomeContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BE369E889EBD85944E6D31 /* WelcomeContent.swift */; };
+		F730BB5A530E42DBC21AC9F2 /* DabbleMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D7B408C1D313509D3ACC7C /* DabbleMacApp.swift */; };
+		FCE8E572A91EF031D667544D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A3081A150E8C6FEE0611250 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		14DD086A9DAAFE98FBDA62A7 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		35FBCABE755399E0E9B062C4 /* DabbleMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DabbleMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A3081A150E8C6FEE0611250 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5AABA97634C2D08E0CE92763 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		65D7B408C1D313509D3ACC7C /* DabbleMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DabbleMacApp.swift; sourceTree = "<group>"; };
+		72BE369E889EBD85944E6D31 /* WelcomeContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeContent.swift; sourceTree = "<group>"; };
+		7AADA3753E8E755F91D25AD8 /* DabbleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DabbleApp.swift; sourceTree = "<group>"; };
+		84235A6EE2DE9F7E8877AC7A /* DabbleiOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = DabbleiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		904D2A9ADDF4555C50BF9E3B /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		9BA31720323CB6C91F320E76 /* DabbleKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DabbleKit; path = Packages/DabbleKit; sourceTree = SOURCE_ROOT; };
+		A270A201B2E8295CB10BE167 /* Dabble.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Dabble.entitlements; sourceTree = "<group>"; };
+		AE07485A2145196546560B25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BCA0B57FC35EA776C5C1687E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4FCBF5B7ADBE309D04D6290C /* DabbleKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BD6893D267AF94732F673C00 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				78E750BFD17367059C0E2256 /* DabbleKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0ACCE4B504FA90C49EAE004D /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				7AADA3753E8E755F91D25AD8 /* DabbleApp.swift */,
+				5AABA97634C2D08E0CE92763 /* Info.plist */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		106EF5184D4D5FA4B0AE1656 /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				A270A201B2E8295CB10BE167 /* Dabble.entitlements */,
+				65D7B408C1D313509D3ACC7C /* DabbleMacApp.swift */,
+				AE07485A2145196546560B25 /* Info.plist */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		1EC7F40A2A58949A58DEFF00 = {
+			isa = PBXGroup;
+			children = (
+				49FBCC2AE3DB490BCB6872F4 /* Apps */,
+				8ED51E6DB26F17A09040FE90 /* Packages */,
+				7CAA55091450154B81AE465E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		474B36A23A3792BCDB476010 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				14DD086A9DAAFE98FBDA62A7 /* AppModel.swift */,
+				3A3081A150E8C6FEE0611250 /* Assets.xcassets */,
+				904D2A9ADDF4555C50BF9E3B /* Theme.swift */,
+				72BE369E889EBD85944E6D31 /* WelcomeContent.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		49FBCC2AE3DB490BCB6872F4 /* Apps */ = {
+			isa = PBXGroup;
+			children = (
+				0ACCE4B504FA90C49EAE004D /* iOS */,
+				106EF5184D4D5FA4B0AE1656 /* macOS */,
+				474B36A23A3792BCDB476010 /* Shared */,
+			);
+			path = Apps;
+			sourceTree = "<group>";
+		};
+		7CAA55091450154B81AE465E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				84235A6EE2DE9F7E8877AC7A /* DabbleiOS.app */,
+				35FBCABE755399E0E9B062C4 /* DabbleMac.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8ED51E6DB26F17A09040FE90 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				9BA31720323CB6C91F320E76 /* DabbleKit */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0615F4F528FD3AE36FE83D8F /* DabbleMac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CBFA19994190520B3A2AB441 /* Build configuration list for PBXNativeTarget "DabbleMac" */;
+			buildPhases = (
+				E98F7C400BE649420ED1E74F /* Sources */,
+				80164E776A03A2D9683D7EDD /* Resources */,
+				BD6893D267AF94732F673C00 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DabbleMac;
+			packageProductDependencies = (
+				02BD733382F9EF74F822634C /* DabbleKit */,
+			);
+			productName = DabbleMac;
+			productReference = 35FBCABE755399E0E9B062C4 /* DabbleMac.app */;
+			productType = "com.apple.product-type.application";
+		};
+		37D8B23FF6F57908DFF7182A /* DabbleiOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2BE642CBC4A6F8A51F992FF3 /* Build configuration list for PBXNativeTarget "DabbleiOS" */;
+			buildPhases = (
+				B9C0B68D84426167435552A3 /* Sources */,
+				CD6EF757E5634E8023303415 /* Resources */,
+				BCA0B57FC35EA776C5C1687E /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DabbleiOS;
+			packageProductDependencies = (
+				60F24BE729FB873FD303E037 /* DabbleKit */,
+			);
+			productName = DabbleiOS;
+			productReference = 84235A6EE2DE9F7E8877AC7A /* DabbleiOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		322CC5D0C7C79DE7E2E6F4AC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					0615F4F528FD3AE36FE83D8F = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Manual;
+					};
+					37D8B23FF6F57908DFF7182A = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = F98269BDCC2EAAE676B397BF /* Build configuration list for PBXProject "Dabble" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 1EC7F40A2A58949A58DEFF00;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				7819BD46AC0135773DCE38AF /* XCLocalSwiftPackageReference "Packages/DabbleKit" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 7CAA55091450154B81AE465E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0615F4F528FD3AE36FE83D8F /* DabbleMac */,
+				37D8B23FF6F57908DFF7182A /* DabbleiOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		80164E776A03A2D9683D7EDD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7225B695B341F0A024E46BEE /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CD6EF757E5634E8023303415 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FCE8E572A91EF031D667544D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B9C0B68D84426167435552A3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D4B6498E37D0A1A93446799 /* AppModel.swift in Sources */,
+				4F99990F8FB75300F8F3B7C6 /* DabbleApp.swift in Sources */,
+				4CB83866556DB3963188045D /* Theme.swift in Sources */,
+				EF031E2E42194338ED07B89C /* WelcomeContent.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E98F7C400BE649420ED1E74F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7EF11152C7B4F9D6156A1D60 /* AppModel.swift in Sources */,
+				F730BB5A530E42DBC21AC9F2 /* DabbleMacApp.swift in Sources */,
+				ACA5CD4E95C6284AB0E05CEE /* Theme.swift in Sources */,
+				29603726FFDC7D8D65C17C6D /* WelcomeContent.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		066A145741B4806D664F8556 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = Apps/iOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.nearbycoder.dabble;
+				PRODUCT_NAME = Dabble;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		10C8A4C8BE214DFBDFBB610D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Apps/macOS/Dabble.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = Apps/macOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.nearbycoder.dabble;
+				PRODUCT_NAME = Dabble;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		564442CB22A4E8627C925D4E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Apps/macOS/Dabble.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = Apps/macOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.nearbycoder.dabble;
+				PRODUCT_NAME = Dabble;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		90104FBC27634F6FC286E1BB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		F2221BE78EDAC34EB9F11BEA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		F4469CC74D4BFE7C98536F94 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = Apps/iOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.nearbycoder.dabble;
+				PRODUCT_NAME = Dabble;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2BE642CBC4A6F8A51F992FF3 /* Build configuration list for PBXNativeTarget "DabbleiOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F4469CC74D4BFE7C98536F94 /* Debug */,
+				066A145741B4806D664F8556 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CBFA19994190520B3A2AB441 /* Build configuration list for PBXNativeTarget "DabbleMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				564442CB22A4E8627C925D4E /* Debug */,
+				10C8A4C8BE214DFBDFBB610D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F98269BDCC2EAAE676B397BF /* Build configuration list for PBXProject "Dabble" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F2221BE78EDAC34EB9F11BEA /* Debug */,
+				90104FBC27634F6FC286E1BB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		7819BD46AC0135773DCE38AF /* XCLocalSwiftPackageReference "Packages/DabbleKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/DabbleKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		02BD733382F9EF74F822634C /* DabbleKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DabbleKit;
+		};
+		60F24BE729FB873FD303E037 /* DabbleKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DabbleKit;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 322CC5D0C7C79DE7E2E6F4AC /* Project object */;
+}

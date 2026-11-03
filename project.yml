@@ -1,0 +1,112 @@
+name: Dabble
+options:
+  bundleIdPrefix: com.nearbycoder
+  deploymentTarget:
+    iOS: "18.0"
+    macOS: "15.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+settings:
+  base:
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.0"
+    DEVELOPMENT_TEAM: ""
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+    SWIFT_DEFAULT_ACTOR_ISOLATION: MainActor
+    SWIFT_APPROACHABLE_CONCURRENCY: YES
+packages:
+  DabbleKit:
+    path: Packages/DabbleKit
+targets:
+  DabbleMac:
+    type: application
+    platform: macOS
+    sources:
+      - Apps/macOS
+      - Apps/Shared
+    dependencies:
+      - package: DabbleKit
+    settings:
+      base:
+        PRODUCT_NAME: Dabble
+        PRODUCT_BUNDLE_IDENTIFIER: com.nearbycoder.dabble
+        CODE_SIGN_ENTITLEMENTS: Apps/macOS/Dabble.entitlements
+        CODE_SIGN_STYLE: Manual
+        CODE_SIGN_IDENTITY: "-"
+        ENABLE_HARDENED_RUNTIME: YES
+        COMBINE_HIDPI_IMAGES: YES
+    info:
+      path: Apps/macOS/Info.plist
+      properties:
+        CFBundleDisplayName: Dabble
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSApplicationCategoryType: public.app-category.productivity
+        LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
+        NSHumanReadableCopyright: "Open source under the MIT License."
+        NSLocalNetworkUsageDescription: Dabble syncs your to-dos directly with your other devices on the local network. There is no server.
+        NSBonjourServices:
+          - _dabble._tcp
+          - _dabble-pair._tcp
+        CFBundleURLTypes:
+          - CFBundleURLName: com.nearbycoder.dabble
+            CFBundleURLSchemes: [dabble]
+  DabbleiOS:
+    type: application
+    platform: iOS
+    sources:
+      - Apps/iOS
+      - Apps/Shared
+    dependencies:
+      - package: DabbleKit
+    settings:
+      base:
+        PRODUCT_NAME: Dabble
+        PRODUCT_BUNDLE_IDENTIFIER: com.nearbycoder.dabble
+        TARGETED_DEVICE_FAMILY: "1,2"
+        CODE_SIGN_STYLE: Automatic
+    info:
+      path: Apps/iOS/Info.plist
+      properties:
+        CFBundleDisplayName: Dabble
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen:
+          UIColorName: ""
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: true
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        ITSAppUsesNonExemptEncryption: false
+        NSLocalNetworkUsageDescription: Dabble syncs your to-dos directly with your other devices on the local network. There is no server.
+        NSBonjourServices:
+          - _dabble._tcp
+          - _dabble-pair._tcp
+        CFBundleURLTypes:
+          - CFBundleURLName: com.nearbycoder.dabble
+            CFBundleURLSchemes: [dabble]
+schemes:
+  DabbleMac:
+    build:
+      targets:
+        DabbleMac: all
+    run:
+      config: Debug
+    archive:
+      config: Release
+  DabbleiOS:
+    build:
+      targets:
+        DabbleiOS: all
+    run:
+      config: Debug
+    archive:
+      config: Release
