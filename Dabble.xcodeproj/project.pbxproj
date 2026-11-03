@@ -7,33 +7,103 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00897C93DDB2CC7267B9DFE5 /* ListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A203A9D0EC88C17E384AFC6D /* ListScreen.swift */; };
+		1796D97E1671E991A93149D1 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A895E33689551206F7F0BF /* RootView.swift */; };
 		29603726FFDC7D8D65C17C6D /* WelcomeContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BE369E889EBD85944E6D31 /* WelcomeContent.swift */; };
+		30369F1341138B68E2464079 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3C260662505D9593BB37A3 /* SettingsView.swift */; };
+		33F0A60F9B3A3B29210D791B /* ToDoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10FDA86C978A823F5E649C45 /* ToDoRow.swift */; };
+		423EA2E27CD3512274C77E86 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 051158CA0090E64DE1546158 /* Components.swift */; };
+		44AC68D6A30A3167A4424933 /* QuickEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C88FABCA4D22ADABA1E9B3 /* QuickEntry.swift */; };
+		48558628D9D6BF0E690F215E /* Support.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74CBCB0B598D966F4EE25880 /* Support.swift */; };
 		4CB83866556DB3963188045D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904D2A9ADDF4555C50BF9E3B /* Theme.swift */; };
 		4F99990F8FB75300F8F3B7C6 /* DabbleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AADA3753E8E755F91D25AD8 /* DabbleApp.swift */; };
 		4FCBF5B7ADBE309D04D6290C /* DabbleKit in Frameworks */ = {isa = PBXBuildFile; productRef = 60F24BE729FB873FD303E037 /* DabbleKit */; };
+		565D03B9AF6E23D716A164BA /* QuickFind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9FC0EAD29A32EDAEA78D00 /* QuickFind.swift */; };
+		598F2206B501EC9090DA5594 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2484CB450A45405AAE28E940 /* ListView.swift */; };
+		5CEB9C4B14AD27F77D36A859 /* Pickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328F99527009E4DF4FB1CC1E /* Pickers.swift */; };
+		5E254F51E42F924DE11C920E /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99ED7F29F8EC5C5F9E9CBC1 /* Commands.swift */; };
+		669B942E0AC2DF3B952096E5 /* ToDoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5BD3ED143ECEF82BC64A4F /* ToDoDetailView.swift */; };
+		6A6E56C35C5AC25B00E80396 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827C7AF1867A02E40E561659 /* SettingsView.swift */; };
 		7225B695B341F0A024E46BEE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A3081A150E8C6FEE0611250 /* Assets.xcassets */; };
+		757EE870CFEBCC3C81E073C5 /* SyncSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C752EA1769A0E6BB918D21 /* SyncSettingsView.swift */; };
+		76C9CEA26256EA900E6C0B7A /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0267A4C71452BA5544255695 /* HomeView.swift */; };
 		78E750BFD17367059C0E2256 /* DabbleKit in Frameworks */ = {isa = PBXBuildFile; productRef = 02BD733382F9EF74F822634C /* DabbleKit */; };
 		7EF11152C7B4F9D6156A1D60 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DD086A9DAAFE98FBDA62A7 /* AppModel.swift */; };
+		7F53BDF16A873E315AA998F6 /* ListHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8926662DB9AD244113667E /* ListHeader.swift */; };
+		84757DE8315F27C607DFB090 /* WindowState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74D0C6C0042E208F50B0836E /* WindowState.swift */; };
+		8AD6CBF3B531B4839EEFAD4E /* MovePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9B37AAF8C511E4E7202AD2 /* MovePicker.swift */; };
 		8D4B6498E37D0A1A93446799 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DD086A9DAAFE98FBDA62A7 /* AppModel.swift */; };
+		90792B5C6EE5700A0FE0C7EF /* ListTitleHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF4C4091A8361679D163770 /* ListTitleHeader.swift */; };
+		93E1EEFCADF59AC4098210D8 /* AppIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F54AAD8E03332E5C625F0BF /* AppIntents.swift */; };
+		9CE003ED43BD35893CA23CC0 /* MagicPlusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EFAC78950B298B834A8D81 /* MagicPlusButton.swift */; };
+		9E7829D62F664707F05BA3B0 /* SyncSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7920C1F3F723DB8BA15804D /* SyncSettingsView.swift */; };
 		ACA5CD4E95C6284AB0E05CEE /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904D2A9ADDF4555C50BF9E3B /* Theme.swift */; };
+		ACD0CB80FD9523EAC0B61013 /* ItemSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAA64972382EFF06CD43C21 /* ItemSheet.swift */; };
+		AE38E4D896629B10530DAE48 /* MainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B323F8541B0881C677D6CB8 /* MainWindow.swift */; };
+		AE6AFE08714AFB7DED84A3F1 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31074EB9CA7CAE1AD8448F84 /* Router.swift */; };
+		B30C114F2FC2372F51850536 /* ToDoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B50E6650604C869C36DA26 /* ToDoRow.swift */; };
+		BA9E73B49A2DF0717EEB48D6 /* KeyPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278C3F75EA5E51771BB1AA67 /* KeyPopover.swift */; };
+		C4161BE4BF5E51616A50B803 /* WhenPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B1CFF08B11D85A45D5FAD40 /* WhenPicker.swift */; };
+		CD158F75B3FA2F2A7D205580 /* TextFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2981FEC13C7C7FAA6454BA /* TextFields.swift */; };
+		D1E7ECFBC6D03E94668A0658 /* ItemMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409F24F434D05740DB3C9E9A /* ItemMenu.swift */; };
+		D84CB920C92DBAA85E9BF2D3 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8380AF2F1B4F3F746BF1A /* Sidebar.swift */; };
+		E1EE10EB679996552DBB904C /* RepeatPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5765C91227C97E3893993A5 /* RepeatPicker.swift */; };
 		EF031E2E42194338ED07B89C /* WelcomeContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BE369E889EBD85944E6D31 /* WelcomeContent.swift */; };
+		F3873B720BDD59EBC6F45D53 /* HotKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74969CD6336A5463E006261B /* HotKey.swift */; };
 		F730BB5A530E42DBC21AC9F2 /* DabbleMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D7B408C1D313509D3ACC7C /* DabbleMacApp.swift */; };
+		F85B6BE60A9F70582B3F0910 /* TagPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867BCA8B983DB56ABBF86A2F /* TagPicker.swift */; };
+		F8A9AFA13CBC957D51ED58B7 /* ToDoEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA04B8AF1E8558DE10FA6BD /* ToDoEditor.swift */; };
 		FCE8E572A91EF031D667544D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A3081A150E8C6FEE0611250 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		00EFAC78950B298B834A8D81 /* MagicPlusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicPlusButton.swift; sourceTree = "<group>"; };
+		0267A4C71452BA5544255695 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		051158CA0090E64DE1546158 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		07A895E33689551206F7F0BF /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		0B323F8541B0881C677D6CB8 /* MainWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindow.swift; sourceTree = "<group>"; };
+		0BC8380AF2F1B4F3F746BF1A /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
+		10FDA86C978A823F5E649C45 /* ToDoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoRow.swift; sourceTree = "<group>"; };
 		14DD086A9DAAFE98FBDA62A7 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		1E9FC0EAD29A32EDAEA78D00 /* QuickFind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickFind.swift; sourceTree = "<group>"; };
+		2484CB450A45405AAE28E940 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
+		278C3F75EA5E51771BB1AA67 /* KeyPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPopover.swift; sourceTree = "<group>"; };
+		2B5BD3ED143ECEF82BC64A4F /* ToDoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoDetailView.swift; sourceTree = "<group>"; };
+		31074EB9CA7CAE1AD8448F84 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		328F99527009E4DF4FB1CC1E /* Pickers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pickers.swift; sourceTree = "<group>"; };
 		35FBCABE755399E0E9B062C4 /* DabbleMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DabbleMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A3081A150E8C6FEE0611250 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		409F24F434D05740DB3C9E9A /* ItemMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemMenu.swift; sourceTree = "<group>"; };
+		44B50E6650604C869C36DA26 /* ToDoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoRow.swift; sourceTree = "<group>"; };
 		5AABA97634C2D08E0CE92763 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		65D7B408C1D313509D3ACC7C /* DabbleMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DabbleMacApp.swift; sourceTree = "<group>"; };
+		6D3C260662505D9593BB37A3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		6F54AAD8E03332E5C625F0BF /* AppIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntents.swift; sourceTree = "<group>"; };
 		72BE369E889EBD85944E6D31 /* WelcomeContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeContent.swift; sourceTree = "<group>"; };
+		74969CD6336A5463E006261B /* HotKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotKey.swift; sourceTree = "<group>"; };
+		74CBCB0B598D966F4EE25880 /* Support.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Support.swift; sourceTree = "<group>"; };
+		74D0C6C0042E208F50B0836E /* WindowState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowState.swift; sourceTree = "<group>"; };
 		7AADA3753E8E755F91D25AD8 /* DabbleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DabbleApp.swift; sourceTree = "<group>"; };
+		827C7AF1867A02E40E561659 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		84235A6EE2DE9F7E8877AC7A /* DabbleiOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = DabbleiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		867BCA8B983DB56ABBF86A2F /* TagPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagPicker.swift; sourceTree = "<group>"; };
+		8B9B37AAF8C511E4E7202AD2 /* MovePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovePicker.swift; sourceTree = "<group>"; };
 		904D2A9ADDF4555C50BF9E3B /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		98C88FABCA4D22ADABA1E9B3 /* QuickEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickEntry.swift; sourceTree = "<group>"; };
+		9AAA64972382EFF06CD43C21 /* ItemSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSheet.swift; sourceTree = "<group>"; };
+		9B1CFF08B11D85A45D5FAD40 /* WhenPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhenPicker.swift; sourceTree = "<group>"; };
 		9BA31720323CB6C91F320E76 /* DabbleKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DabbleKit; path = Packages/DabbleKit; sourceTree = SOURCE_ROOT; };
+		9BF4C4091A8361679D163770 /* ListTitleHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTitleHeader.swift; sourceTree = "<group>"; };
+		9F8926662DB9AD244113667E /* ListHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListHeader.swift; sourceTree = "<group>"; };
+		A203A9D0EC88C17E384AFC6D /* ListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListScreen.swift; sourceTree = "<group>"; };
 		A270A201B2E8295CB10BE167 /* Dabble.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Dabble.entitlements; sourceTree = "<group>"; };
 		AE07485A2145196546560B25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		B99ED7F29F8EC5C5F9E9CBC1 /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
+		D5765C91227C97E3893993A5 /* RepeatPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatPicker.swift; sourceTree = "<group>"; };
+		D5C752EA1769A0E6BB918D21 /* SyncSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncSettingsView.swift; sourceTree = "<group>"; };
+		D7920C1F3F723DB8BA15804D /* SyncSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncSettingsView.swift; sourceTree = "<group>"; };
+		EDA04B8AF1E8558DE10FA6BD /* ToDoEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoEditor.swift; sourceTree = "<group>"; };
+		FF2981FEC13C7C7FAA6454BA /* TextFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFields.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,8 +129,16 @@
 		0ACCE4B504FA90C49EAE004D /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				900A33082D839ADE4492F029 /* Detail */,
+				A349630397A8E4573D877D3D /* Lists */,
+				6F0F471537DBF617DE0AE029 /* Navigation */,
+				C03636DCACDA19E2245DE051 /* Pickers */,
+				2EDF305B214E8EBA5680D750 /* Settings */,
+				EF3BB711653F8C72CE72B62C /* Support */,
 				7AADA3753E8E755F91D25AD8 /* DabbleApp.swift */,
+				0267A4C71452BA5544255695 /* HomeView.swift */,
 				5AABA97634C2D08E0CE92763 /* Info.plist */,
+				07A895E33689551206F7F0BF /* RootView.swift */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -68,9 +146,26 @@
 		106EF5184D4D5FA4B0AE1656 /* macOS */ = {
 			isa = PBXGroup;
 			children = (
+				B99ED7F29F8EC5C5F9E9CBC1 /* Commands.swift */,
 				A270A201B2E8295CB10BE167 /* Dabble.entitlements */,
 				65D7B408C1D313509D3ACC7C /* DabbleMacApp.swift */,
+				74969CD6336A5463E006261B /* HotKey.swift */,
 				AE07485A2145196546560B25 /* Info.plist */,
+				278C3F75EA5E51771BB1AA67 /* KeyPopover.swift */,
+				9F8926662DB9AD244113667E /* ListHeader.swift */,
+				2484CB450A45405AAE28E940 /* ListView.swift */,
+				0B323F8541B0881C677D6CB8 /* MainWindow.swift */,
+				328F99527009E4DF4FB1CC1E /* Pickers.swift */,
+				98C88FABCA4D22ADABA1E9B3 /* QuickEntry.swift */,
+				1E9FC0EAD29A32EDAEA78D00 /* QuickFind.swift */,
+				827C7AF1867A02E40E561659 /* SettingsView.swift */,
+				0BC8380AF2F1B4F3F746BF1A /* Sidebar.swift */,
+				74CBCB0B598D966F4EE25880 /* Support.swift */,
+				D5C752EA1769A0E6BB918D21 /* SyncSettingsView.swift */,
+				FF2981FEC13C7C7FAA6454BA /* TextFields.swift */,
+				EDA04B8AF1E8558DE10FA6BD /* ToDoEditor.swift */,
+				10FDA86C978A823F5E649C45 /* ToDoRow.swift */,
+				74D0C6C0042E208F50B0836E /* WindowState.swift */,
 			);
 			path = macOS;
 			sourceTree = "<group>";
@@ -82,6 +177,15 @@
 				8ED51E6DB26F17A09040FE90 /* Packages */,
 				7CAA55091450154B81AE465E /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		2EDF305B214E8EBA5680D750 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				6D3C260662505D9593BB37A3 /* SettingsView.swift */,
+				D7920C1F3F723DB8BA15804D /* SyncSettingsView.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		474B36A23A3792BCDB476010 /* Shared */ = {
@@ -105,6 +209,14 @@
 			path = Apps;
 			sourceTree = "<group>";
 		};
+		6F0F471537DBF617DE0AE029 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				31074EB9CA7CAE1AD8448F84 /* Router.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
 		7CAA55091450154B81AE465E /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -120,6 +232,47 @@
 				9BA31720323CB6C91F320E76 /* DabbleKit */,
 			);
 			path = Packages;
+			sourceTree = "<group>";
+		};
+		900A33082D839ADE4492F029 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				2B5BD3ED143ECEF82BC64A4F /* ToDoDetailView.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		A349630397A8E4573D877D3D /* Lists */ = {
+			isa = PBXGroup;
+			children = (
+				409F24F434D05740DB3C9E9A /* ItemMenu.swift */,
+				A203A9D0EC88C17E384AFC6D /* ListScreen.swift */,
+				9BF4C4091A8361679D163770 /* ListTitleHeader.swift */,
+				00EFAC78950B298B834A8D81 /* MagicPlusButton.swift */,
+				44B50E6650604C869C36DA26 /* ToDoRow.swift */,
+			);
+			path = Lists;
+			sourceTree = "<group>";
+		};
+		C03636DCACDA19E2245DE051 /* Pickers */ = {
+			isa = PBXGroup;
+			children = (
+				9AAA64972382EFF06CD43C21 /* ItemSheet.swift */,
+				8B9B37AAF8C511E4E7202AD2 /* MovePicker.swift */,
+				D5765C91227C97E3893993A5 /* RepeatPicker.swift */,
+				867BCA8B983DB56ABBF86A2F /* TagPicker.swift */,
+				9B1CFF08B11D85A45D5FAD40 /* WhenPicker.swift */,
+			);
+			path = Pickers;
+			sourceTree = "<group>";
+		};
+		EF3BB711653F8C72CE72B62C /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				6F54AAD8E03332E5C625F0BF /* AppIntents.swift */,
+				051158CA0090E64DE1546158 /* Components.swift */,
+			);
+			path = Support;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -231,10 +384,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93E1EEFCADF59AC4098210D8 /* AppIntents.swift in Sources */,
 				8D4B6498E37D0A1A93446799 /* AppModel.swift in Sources */,
+				423EA2E27CD3512274C77E86 /* Components.swift in Sources */,
 				4F99990F8FB75300F8F3B7C6 /* DabbleApp.swift in Sources */,
+				76C9CEA26256EA900E6C0B7A /* HomeView.swift in Sources */,
+				D1E7ECFBC6D03E94668A0658 /* ItemMenu.swift in Sources */,
+				ACD0CB80FD9523EAC0B61013 /* ItemSheet.swift in Sources */,
+				00897C93DDB2CC7267B9DFE5 /* ListScreen.swift in Sources */,
+				90792B5C6EE5700A0FE0C7EF /* ListTitleHeader.swift in Sources */,
+				9CE003ED43BD35893CA23CC0 /* MagicPlusButton.swift in Sources */,
+				8AD6CBF3B531B4839EEFAD4E /* MovePicker.swift in Sources */,
+				E1EE10EB679996552DBB904C /* RepeatPicker.swift in Sources */,
+				1796D97E1671E991A93149D1 /* RootView.swift in Sources */,
+				AE6AFE08714AFB7DED84A3F1 /* Router.swift in Sources */,
+				30369F1341138B68E2464079 /* SettingsView.swift in Sources */,
+				9E7829D62F664707F05BA3B0 /* SyncSettingsView.swift in Sources */,
+				F85B6BE60A9F70582B3F0910 /* TagPicker.swift in Sources */,
 				4CB83866556DB3963188045D /* Theme.swift in Sources */,
+				669B942E0AC2DF3B952096E5 /* ToDoDetailView.swift in Sources */,
+				B30C114F2FC2372F51850536 /* ToDoRow.swift in Sources */,
 				EF031E2E42194338ED07B89C /* WelcomeContent.swift in Sources */,
+				C4161BE4BF5E51616A50B803 /* WhenPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,9 +414,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				7EF11152C7B4F9D6156A1D60 /* AppModel.swift in Sources */,
+				5E254F51E42F924DE11C920E /* Commands.swift in Sources */,
 				F730BB5A530E42DBC21AC9F2 /* DabbleMacApp.swift in Sources */,
+				F3873B720BDD59EBC6F45D53 /* HotKey.swift in Sources */,
+				BA9E73B49A2DF0717EEB48D6 /* KeyPopover.swift in Sources */,
+				7F53BDF16A873E315AA998F6 /* ListHeader.swift in Sources */,
+				598F2206B501EC9090DA5594 /* ListView.swift in Sources */,
+				AE38E4D896629B10530DAE48 /* MainWindow.swift in Sources */,
+				5CEB9C4B14AD27F77D36A859 /* Pickers.swift in Sources */,
+				44AC68D6A30A3167A4424933 /* QuickEntry.swift in Sources */,
+				565D03B9AF6E23D716A164BA /* QuickFind.swift in Sources */,
+				6A6E56C35C5AC25B00E80396 /* SettingsView.swift in Sources */,
+				D84CB920C92DBAA85E9BF2D3 /* Sidebar.swift in Sources */,
+				48558628D9D6BF0E690F215E /* Support.swift in Sources */,
+				757EE870CFEBCC3C81E073C5 /* SyncSettingsView.swift in Sources */,
+				CD158F75B3FA2F2A7D205580 /* TextFields.swift in Sources */,
 				ACA5CD4E95C6284AB0E05CEE /* Theme.swift in Sources */,
+				F8A9AFA13CBC957D51ED58B7 /* ToDoEditor.swift in Sources */,
+				33F0A60F9B3A3B29210D791B /* ToDoRow.swift in Sources */,
 				29603726FFDC7D8D65C17C6D /* WelcomeContent.swift in Sources */,
+				84757DE8315F27C607DFB090 /* WindowState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

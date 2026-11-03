@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Dabble — open-source to-dos that sync without a server</title>
+  <meta name="description" content="Dabble is a beautiful, open-source to-do app for Mac, iPhone and iPad. Your devices sync directly with each other. No server, no account.">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d0d0f" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Dabble — open-source to-dos that sync without a server">
+  <meta property="og:description" content="A beautiful to-do app for Mac, iPhone and iPad. Your devices sync with each other. No server, no account.">
+  <meta property="og:url" content="https://nearbycoder.github.io/dabble/">
+  <meta property="og:image" content="https://nearbycoder.github.io/dabble/assets/icon.png">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://nearbycoder.github.io/dabble/">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- Icon sprite. Line icons drawn on a 24×24 grid in the spirit of SF Symbols. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M4 13.5 6.6 6h10.8l2.6 7.5V18a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18z"/><path d="M4 13.5h4.6l1.1 2.2h4.6l1.1-2.2H20"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3.6 2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M19.5 14.6A7.8 7.8 0 1 1 9.4 4.5a6.3 6.3 0 0 0 10.1 10.1z"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.6"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path class="fill" d="M7 13h2.5v2.5H7z"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 4 8.5 4.4L12 12.8 3.5 8.4z"/><path d="m3.5 12.4 8.5 4.4 8.5-4.4"/><path d="m3.5 16.2 8.5 4.4 8.5-4.4"/></symbol>
+    <symbol id="i-archive" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="4.6" rx="1.2"/><path d="M5.2 9.1v9.4a1.5 1.5 0 0 0 1.5 1.5h10.6a1.5 1.5 0 0 0 1.5-1.5V9.1M10 13h4"/></symbol>
+    <symbol id="i-logbook" viewBox="0 0 24 24"><rect x="4.5" y="3.5" width="15" height="17" rx="2.6"/><path d="m8.6 12.2 2.4 2.4 4.4-5"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9.2 7V4.6h5.6V7M6.2 7l.9 12.1a1.5 1.5 0 0 0 1.5 1.4h6.8a1.5 1.5 0 0 0 1.5-1.4L17.8 7M10 11v6M14 11v6"/></symbol>
+    <symbol id="i-cube" viewBox="0 0 24 24"><path d="m12 3.2 7.8 4.3v9L12 20.8l-7.8-4.3v-9z"/><path d="m4.2 7.5 7.8 4.3 7.8-4.3M12 11.8v9"/></symbol>
+    <symbol id="i-project" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.4"/><path class="fill" d="M12 6.6V12h5.4A5.4 5.4 0 0 0 12 6.6z"/></symbol>
+    <symbol id="i-checklist" viewBox="0 0 24 24"><path d="m4 6.6 1.6 1.6L8.8 5M4 13.1l1.6 1.6 3.2-3.2M11.8 7h8.2M11.8 13.5h8.2M11.8 19.5h8.2"/><circle cx="6" cy="19.5" r="1.6"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3.6 12.4V4.8a1.2 1.2 0 0 1 1.2-1.2h7.6l8.2 8.2a1.6 1.6 0 0 1 0 2.2l-6.3 6.3a1.6 1.6 0 0 1-2.2 0z"/><circle cx="8.2" cy="8.2" r="1.5"/></symbol>
+    <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5.5 21V4M5.5 4.6h12.2l-2.6 4.1 2.6 4.1H5.5"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16.4V11a6 6 0 0 1 12 0v5.4l1.6 2.1H4.4z"/><path d="M10 20.6a2.1 2.1 0 0 0 4 0"/></symbol>
+    <symbol id="i-repeat" viewBox="0 0 24 24"><path d="M4.5 11.2V9.6A3.6 3.6 0 0 1 8.1 6H19M16 3l3 3-3 3M19.5 12.8v1.6a3.6 3.6 0 0 1-3.6 3.6H5M8 21l-3-3 3-3"/></symbol>
+    <symbol id="i-type" viewBox="0 0 24 24"><rect x="2.8" y="6" width="18.4" height="12.4" rx="2.6"/><path d="M6.6 10h.01M9.8 10h.01M13 10h.01M16.2 10h.01M7.6 14.4h8.8"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13.2 2.8 5.2 13.4h6.1l-1 7.8 8.2-10.8h-6.2z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.6" cy="10.6" r="6.6"/><path d="m15.6 15.6 4.9 4.9"/></symbol>
+    <symbol id="i-command" viewBox="0 0 24 24"><path d="M9 9V6.6A2.4 2.4 0 1 0 6.6 9zm0 0h6M9 9v6m6-6V6.6A2.4 2.4 0 1 1 17.4 9zm0 0v6m0 0H9m6 0v2.4a2.4 2.4 0 1 0 2.4-2.4zm-6 0H6.6A2.4 2.4 0 1 0 9 17.4z"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></symbol>
+    <symbol id="i-swipe" viewBox="0 0 24 24"><rect x="2.8" y="7" width="18.4" height="10" rx="2.6"/><path d="M6.5 12h6M10.5 9.8 12.7 12l-2.2 2.2"/><path class="fill" d="M15.5 7h3.1a2.6 2.6 0 0 1 2.6 2.6v4.8a2.6 2.6 0 0 1-2.6 2.6h-3.1z"/></symbol>
+    <symbol id="i-reorder" viewBox="0 0 24 24"><path d="M8 20V4M4.6 7.4 8 4l3.4 3.4M16 4v16M12.6 16.6 16 20l3.4-3.4"/></symbol>
+    <symbol id="i-multi" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/><path d="m5.4 7 1.3 1.3 2-2.3M15.4 7l1.3 1.3 2-2.3M5.4 17l1.3 1.3 2-2.3"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14.5 4 9.5l5-5"/><path d="M4 9.5h10.4a5.6 5.6 0 0 1 0 11.2H10.5"/></symbol>
+    <symbol id="i-backup" viewBox="0 0 24 24"><path d="M12 3.5v11M7.6 10.1 12 14.5l4.4-4.4M4 15.5V19a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 20 19v-3.5"/></symbol>
+    <symbol id="i-contrast" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.4"/><path class="fill" d="M12 3.6v16.8a8.4 8.4 0 0 0 0-16.8z"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4.2 4.2 0 0 0 6 0l3-3a4.2 4.2 0 0 0-6-6l-1 1"/><path d="M14 10a4.2 4.2 0 0 0-6 0l-3 3a4.2 4.2 0 0 0 6 6l1-1"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.4"/><path d="M8.2 10.5V7.8a3.8 3.8 0 0 1 7.6 0v2.7"/></symbol>
+    <symbol id="i-nocloud" viewBox="0 0 24 24"><path d="M7.2 18.5h10.3a3.8 3.8 0 0 0 .6-7.6 5.6 5.6 0 0 0-10.7-1.3A4.5 4.5 0 0 0 7.2 18.5z"/><path d="M3.5 3.5l17 17"/></symbol>
+    <symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="8.2" r="3.8"/><path d="M4.6 20.2a7.4 7.4 0 0 1 14.8 0"/><path d="M3.5 3.5l17 17"/></symbol>
+    <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M3 9.6a13 13 0 0 1 18 0M6 12.8a8.6 8.6 0 0 1 12 0M9 16a4.2 4.2 0 0 1 6 0"/><circle class="fill" cx="12" cy="19" r="1.4"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m8.5 7.5-5 4.5 5 4.5M15.5 7.5l5 4.5-5 4.5M13.4 4.5l-2.8 15"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3.5v12M7 10.6l5 5 5-5M4.5 20.5h15"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2.8" width="11" height="18.4" rx="2.8"/><path d="M10.5 5.6h3"/></symbol>
+    <symbol id="i-hammer" viewBox="0 0 24 24"><path d="m13.4 9.2-8.6 8.6a1.6 1.6 0 0 0 0 2.3l.1.1a1.6 1.6 0 0 0 2.3 0l8.6-8.6"/><path d="m11.8 5.2 2.4-2.4c1.8 0 3.5.6 4.8 1.9l1.4 1.4-1.5 1.5 1 1-2.4 2.4-1-1-1.6 1.6-3.1-3.1z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.2 19 6v5.6c0 4.4-3 7.9-7 9.2-4-1.3-7-4.8-7-9.2V6z"/><path d="m9 12 2.2 2.2L15.4 10"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.8h.01"/></symbol>
+    <symbol id="i-github" viewBox="0 0 16 16"><path class="fill" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></symbol>
+  </defs>
+</svg>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="./"><img src="assets/icon.png" alt="" width="28" height="28">Dabble</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a class="opt" href="#features">Features</a>
+      <a class="opt" href="#sync">How sync works</a>
+      <a class="opt" href="#download">Download</a>
+      <a class="opt" href="#faq">FAQ</a>
+      <a class="gh" href="https://github.com/nearbycoder/dabble"><svg class="i" aria-hidden="true"><use href="#i-github"/></svg>GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ======================================================== hero -->
+  <section class="hero" aria-labelledby="title">
+    <div class="wrap">
+      <img class="hero-icon" src="assets/icon.png" alt="Dabble app icon" width="112" height="112">
+      <h1 id="title"><span class="grad">Dabble</span></h1>
+      <p class="lede">A beautiful, open-source to-do app.</p>
+      <p class="sub">Your devices sync with each other. <strong>No server, no account.</strong> Plan your day on the Mac, check things off on your iPhone, and keep it all in step over your own network.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="https://github.com/nearbycoder/dabble/releases/latest/download/Dabble-macOS.zip">
+          <svg class="i" aria-hidden="true"><use href="#i-download"/></svg>Download for Mac
+        </a>
+        <a class="btn btn-secondary" href="#ios">
+          <svg class="i" aria-hidden="true"><use href="#i-phone"/></svg>iPhone &amp; iPad
+        </a>
+        <a class="btn btn-ghost" href="https://github.com/nearbycoder/dabble">
+          <svg class="i" aria-hidden="true"><use href="#i-github"/></svg>View on GitHub
+        </a>
+      </div>
+      <p class="fine">Free and MIT licensed · macOS 15 or later · also as a <a href="https://github.com/nearbycoder/dabble/releases/latest/download/Dabble-macOS.dmg">.dmg</a> · <a href="#mac">first launch tips</a></p>
+
+      <div class="mock-stage" aria-hidden="true">
+        <div class="mock">
+          <div class="mock-side">
+            <div class="lights"><i></i><i></i><i></i></div>
+            <div class="side-item"><svg class="i" style="color:var(--c-inbox)"><use href="#i-inbox"/></svg>Inbox<span class="count">3</span></div>
+            <div class="side-gap"></div>
+            <div class="side-item on"><svg class="i" style="color:var(--c-today);fill:var(--c-today)"><use href="#i-star"/></svg>Today<span class="count">6</span></div>
+            <div class="side-item"><svg class="i" style="color:var(--c-upcoming)"><use href="#i-calendar"/></svg>Upcoming</div>
+            <div class="side-item"><svg class="i" style="color:var(--c-anytime)"><use href="#i-layers"/></svg>Anytime</div>
+            <div class="side-item"><svg class="i" style="color:var(--c-someday)"><use href="#i-archive"/></svg>Someday</div>
+            <div class="side-gap"></div>
+            <div class="side-item"><svg class="i" style="color:var(--c-logbook)"><use href="#i-logbook"/></svg>Logbook</div>
+            <div class="side-item"><svg class="i" style="color:var(--c-trash)"><use href="#i-trash"/></svg>Trash</div>
+            <div class="side-gap"></div>
+            <div class="side-area"><svg class="i" style="width:17px;height:17px;color:var(--text-3)"><use href="#i-cube"/></svg>Personal</div>
+            <div class="side-item"><span class="pie" style="--p:65%"></span>Trip to Lisbon</div>
+            <div class="side-item"><span class="pie" style="--p:20%"></span>Kitchen refresh</div>
+            <div class="side-area"><svg class="i" style="width:17px;height:17px;color:var(--text-3)"><use href="#i-cube"/></svg>Work</div>
+            <div class="side-item"><span class="pie" style="--p:45%"></span>Q4 launch</div>
+          </div>
+          <div class="mock-main">
+            <div class="mock-title"><svg class="i"><use href="#i-star"/></svg>Today</div>
+            <div class="row"><span class="box"></span><span class="t">Book flights</span><span class="proj">Trip to Lisbon</span><span class="meta"><span class="chip">Travel</span></span></div>
+            <div class="row"><span class="box"></span><span class="t">Send launch notes to the team</span><span class="meta"><span class="flag"><svg class="i"><use href="#i-flag"/></svg>2 days left</span></span></div>
+            <div class="row done"><span class="box"></span><span class="t">Pick up dry cleaning</span><span class="meta"><span class="chip">Errands</span></span></div>
+            <div class="row"><span class="box"></span><span class="t">Call Mom</span><span class="meta"><svg class="i note-ico"><use href="#i-repeat"/></svg></span></div>
+            <div class="evening"><svg class="i"><use href="#i-moon"/></svg>This Evening</div>
+            <div class="row"><span class="box"></span><span class="t">Read 20 pages</span><span class="meta"><svg class="i note-ico"><use href="#i-checklist"/></svg></span></div>
+            <div class="row"><span class="box"></span><span class="t">Plan the weekend</span><span class="meta"><span class="chip">Home</span></span></div>
+          </div>
+        </div>
+        <div class="synced"><span class="dot"></span>Synced with iPhone and iPad</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== screenshots -->
+  <section id="screenshots" class="screens" aria-label="Screenshots" style="padding-top:64px">
+    <div class="wrap">
+      <div class="shots shots-mac">
+        <figure class="mac"><img src="assets/screens/mac-today.png" alt="Dabble on the Mac showing the Today list" onerror="this.closest('figure').remove()"><figcaption>Today on the Mac</figcaption></figure>
+        <figure class="mac"><img src="assets/screens/mac-project.png" alt="A project with headings and a progress pie on the Mac" onerror="this.closest('figure').remove()"><figcaption>Projects with headings</figcaption></figure>
+      </div>
+      <div class="shots shots-ios">
+        <figure class="phone"><img src="assets/screens/ios-home.png" alt="Dabble's home screen on iPhone" onerror="this.closest('figure').remove()"><figcaption>Your lists on iPhone</figcaption></figure>
+        <figure class="phone"><img src="assets/screens/ios-today.png" alt="The Today list on iPhone" onerror="this.closest('figure').remove()"><figcaption>Today on iPhone</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== features -->
+  <section id="features" class="alt">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Features</span>
+        <h2>Everything you love about a great to-do app.</h2>
+        <p>Dabble follows the shape of Things: a calm place for today, a clear view of what's coming, and projects that show you how far you've come.</p>
+      </div>
+
+      <div class="group">
+        <h3 class="group-title">Plan your day</h3>
+        <div class="grid">
+          <article class="card"><div class="tile" style="--tc:var(--c-today)"><svg class="i"><use href="#i-star"/></svg></div><h3>Today &amp; This Evening</h3><p>One list for what you'll do today, with a separate section for tonight. Due and scheduled items show up on their own.</p></article>
+          <article class="card"><div class="tile" style="--tc:var(--c-upcoming)"><svg class="i"><use href="#i-calendar"/></svg></div><h3>Upcoming</h3><p>See the days and weeks ahead at a glance, including the next instance of every repeating to-do.</p></article>
+          <article class="card"><div class="tile" style="--tc:var(--c-anytime)"><svg class="i"><use href="#i-layers"/></svg></div><h3>Anytime &amp; Someday</h3><p>Everything you could do now lives in Anytime. Maybes and big ideas wait in Someday until you're ready.</p></article>
+          <article class="card"><div class="tile" style="--tc:var(--c-evening)"><svg class="i"><use href="#i-type"/></svg></div><h3>Type a date, naturally</h3><p>Write "tomorrow", "fri", "next week", "in 3 days" or "Dec 25" into When and Dabble understands.</p></article>
+          <article class="card"><div class="tile" style="--tc:var(--red)"><svg class="i"><use href="#i-flag"/></svg></div><h3>Deadlines</h3><p>Give a to-do a due date and get a countdown, "2 days left", so nothing sneaks up on you.</p></article>
+          <article class="card"><div class="tile" style="--tc:#e98a15"><svg class="i"><use href="#i-bell"/></svg></div><h3>Reminders</h3><p>Pick a time and get a notification on that device, scheduled locally. No push server involved.</p></article>
+          <article class="card"><div class="tile" style="--tc:var(--c-anytime)"><svg class="i"><use href="#i-repeat"/></svg></div><h3>Repeating to-dos</h3><p>Repeat on a schedule (every Monday, the 1st of the month) or a set time after you complete it.</p></article>
+        </div>
+      </div>
+
+      <div class="group">
+        <h3 class="group-title">Organize</h3>
+        <div class="grid">
+          <article class="card"><div class="tile" style="--tc:var(--c-inbox)"><svg class="i"><use href="#i-inbox"/></svg></div><h3>Inbox</h3><p>Get it out of your head now and sort it later. Anything without a place lands here.</p></article>
+          <article class="card"><div class="tile" style="--tc:var(--c-inbox)"><svg class="i"><use href="#i-project"/></svg></div><h3>Projects &amp; headings</h3><p>Break big goals into steps, group them under headings, and watch the progress pie fill up.</p></article>
+          <article class="card"><div class="tile" style="--tc:#6e6e73"><svg class="i"><use href="#i-cube"/></svg></div><h3>Areas</h3><p>Keep the parts of your life apart: Work, Home, Health. Areas hold projects and loose to-dos.</p></article>
+          <article class="card"><div class="tile" style="--tc:var(--c-anytime)"><svg class="i"><use href="#i-checklist"/></svg></div><h3>Checklists &amp; notes</h3><p>Every to-do has room for notes and a checklist of small steps you can tick off one by one.</p></article>
+          <article class="card"><div class="tile" style="--tc:#8a63d2"><svg class="i"><use href="#i-tag"/></svg></div><h3>Tags</h3><p>Nested tags that projects and areas pass down to their to-dos. Filter any list by tag in a click.</p></article>
+          <article class="card"><div class="tile" style="--tc:var(--c-logbook)"><svg class="i"><use href="#i-logbook"/></svg></div><h3>Logbook &amp; Trash</h3><p>Completed to-dos move to the Logbook so you can look back. Deleted ones wait in the Trash.</p></article>
+        </div>
+      </div>
+
+      <div class="group">
+        <h3 class="group-title">Capture &amp; find</h3>
+        <div class="grid">
+          <article class="card"><div class="tile" style="--tc:#e98a15"><svg class="i"><use href="#i-bolt"/></svg></div><h3>Quick Entry</h3><p>Press a global hotkey from any app on your Mac and jot a to-do down without switching windows.</p></article>
+          <article class="card"><div class="tile" style="--tc:var(--c-inbox)"><svg class="i"><use href="#i-search"/></svg></div><h3>Quick Find</h3><p>Jump to any list, project, tag or to-do by typing a few letters.</p></article>
+          <article class="card"><div class="tile" style="--tc:var(--red)"><svg class="i"><use href="#i-plus"/></svg></div><h3>Magic Plus</h3><p>On iPhone and iPad, tap the plus to add a to-do, or drag it to drop one exactly where you want.</p></article>
+          <article class="card"><div class="tile" style="--tc:#6e6e73"><svg class="i"><use href="#i-link"/></svg></div><h3>URL scheme</h3><p>Automate with <code>dabble:///add</code>, <code>add-project</code>, <code>show</code> and <code>search</code>, the way <code>things:///</code> works.</p></article>
+        </div>
+      </div>
+
+      <div class="group">
+        <h3 class="group-title">Feels right on every device</h3>
+        <div class="grid">
+          <article class="card"><div class="tile" style="--tc:#6e6e73"><svg class="i"><use href="#i-command"/></svg></div><h3>Keyboard shortcuts</h3><p>On the Mac you can plan, schedule, tag and complete without touching the mouse.</p></article>
+          <article class="card"><div class="tile" style="--tc:var(--c-logbook)"><svg class="i"><use href="#i-swipe"/></svg></div><h3>Swipe actions</h3><p>On iPhone, swipe a to-do to schedule it, move it, or delete it.</p></article>
+          <article class="card"><div class="tile" style="--tc:var(--c-inbox)"><svg class="i"><use href="#i-reorder"/></svg></div><h3>Drag &amp; drop</h3><p>Reorder to-dos, move them between lists, or drop them onto Today.</p></article>
+          <article class="card"><div class="tile" style="--tc:#8a63d2"><svg class="i"><use href="#i-multi"/></svg></div><h3>Multi-select</h3><p>Select a handful of to-dos and schedule, tag, move or complete them all at once.</p></article>
+          <article class="card"><div class="tile" style="--tc:#6e6e73"><svg class="i"><use href="#i-undo"/></svg></div><h3>Undo</h3><p>Completed the wrong thing? Deleted a project? Undo puts it back.</p></article>
+          <article class="card"><div class="tile" style="--tc:var(--c-anytime)"><svg class="i"><use href="#i-backup"/></svg></div><h3>Backups you own</h3><p>Export everything to a JSON file and import it anywhere. Your data is never locked in.</p></article>
+          <article class="card"><div class="tile" style="--tc:var(--text-2)"><svg class="i"><use href="#i-contrast"/></svg></div><h3>Light &amp; dark</h3><p>Follows your system appearance on Mac, iPhone and iPad.</p></article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== sync -->
+  <section id="sync">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">How sync works</span>
+        <h2>Your devices talk to each other. Nobody else is listening.</h2>
+        <p>Most to-do apps keep your list on a company's server. Dabble keeps it on your devices and moves changes directly between them, encrypted, over your own network.</p>
+      </div>
+
+      <div class="sync-grid">
+        <figure class="diagram" style="margin:0">
+          <svg viewBox="0 0 640 450" role="img" aria-labelledby="dg-title dg-desc">
+            <title id="dg-title">Mac, iPhone and iPad syncing directly</title>
+            <desc id="dg-desc">A Mac, an iPad and an iPhone connected to each other by encrypted links over the local network. A crossed-out cloud above them shows that no server is involved.</desc>
+
+            <!-- crossed-out cloud -->
+            <path class="dg-cloud" d="M290 76H352A18 18 0 0 0 355 40.3A26 26 0 0 0 305 34A21 21 0 0 0 290 76Z"/>
+            <path class="dg-strike" d="M286 26 358 88"/>
+            <text class="dg-small" x="320" y="112" text-anchor="middle">No server. No account.</text>
+
+            <!-- links -->
+            <path class="dg-link" d="M228 212H432"/>
+            <path class="dg-link rev" d="M168 290 282 352"/>
+            <path class="dg-link" d="M464 324 362 360"/>
+
+            <!-- wifi -->
+            <g transform="translate(305 238) scale(1.3)"><path class="dg-wifi" d="M3 9.6a13 13 0 0 1 18 0M6 12.8a8.6 8.6 0 0 1 12 0M9 16a4.2 4.2 0 0 1 6 0"/><circle cx="12" cy="19" r="1.4" fill="var(--text-3)"/></g>
+            <text class="dg-small" x="320" y="290" text-anchor="middle">Same Wi‑Fi, or</text>
+            <text class="dg-small" x="320" y="306" text-anchor="middle">peer‑to‑peer</text>
+
+            <!-- Mac -->
+            <rect class="dg-device" x="40" y="150" width="180" height="118" rx="9"/>
+            <rect class="dg-screen" x="49" y="159" width="162" height="100" rx="3"/>
+            <rect x="49" y="159" width="42" height="100" fill="var(--surface-2)"/>
+            <path class="dg-line" d="M56 172h26M56 184h20M56 196h24M56 208h18"/>
+            <rect class="dg-check on" x="101" y="173" width="9" height="9" rx="2.5"/><path class="dg-line" d="M117 177.5h70"/>
+            <rect class="dg-check" x="101" y="192" width="9" height="9" rx="2.5"/><path class="dg-line" d="M117 196.5h56"/>
+            <rect class="dg-check" x="101" y="211" width="9" height="9" rx="2.5"/><path class="dg-line" d="M117 215.5h76"/>
+            <rect class="dg-check" x="101" y="230" width="9" height="9" rx="2.5"/><path class="dg-line" d="M117 234.5h48"/>
+            <path class="dg-device" d="M20 268H240L232 282H28Z"/>
+            <text class="dg-label" x="130" y="310" text-anchor="middle">Mac</text>
+
+            <!-- iPad -->
+            <rect class="dg-device" x="440" y="128" width="148" height="190" rx="16"/>
+            <rect class="dg-screen" x="451" y="139" width="126" height="168" rx="6"/>
+            <path class="dg-line" style="stroke-width:3" d="M463 160h44"/>
+            <rect class="dg-check on" x="463" y="178" width="9" height="9" rx="2.5"/><path class="dg-line" d="M479 182.5h74"/>
+            <rect class="dg-check" x="463" y="201" width="9" height="9" rx="2.5"/><path class="dg-line" d="M479 205.5h60"/>
+            <rect class="dg-check" x="463" y="224" width="9" height="9" rx="2.5"/><path class="dg-line" d="M479 228.5h80"/>
+            <rect class="dg-check on" x="463" y="247" width="9" height="9" rx="2.5"/><path class="dg-line" d="M479 251.5h50"/>
+            <rect class="dg-check" x="463" y="270" width="9" height="9" rx="2.5"/><path class="dg-line" d="M479 274.5h66"/>
+            <text class="dg-label" x="514" y="346" text-anchor="middle">iPad</text>
+
+            <!-- iPhone -->
+            <rect class="dg-device" x="290" y="318" width="64" height="122" rx="14"/>
+            <rect class="dg-screen" x="296" y="324" width="52" height="110" rx="9"/>
+            <rect class="dg-check on" x="302" y="344" width="7" height="7" rx="2"/><path class="dg-line" d="M314 347.5h26"/>
+            <rect class="dg-check" x="302" y="362" width="7" height="7" rx="2"/><path class="dg-line" d="M314 365.5h20"/>
+            <rect class="dg-check" x="302" y="380" width="7" height="7" rx="2"/><path class="dg-line" d="M314 383.5h28"/>
+            <rect class="dg-check" x="302" y="398" width="7" height="7" rx="2"/><path class="dg-line" d="M314 401.5h18"/>
+            <rect class="dg-check" x="302" y="416" width="7" height="7" rx="2"/><path class="dg-line" d="M314 419.5h24"/>
+            <text class="dg-label" x="366" y="410">iPhone</text>
+
+            <!-- locks -->
+            <g transform="translate(330 212)"><circle class="dg-lock-bg" r="17"/><rect class="dg-lock" x="-6.5" y="-2" width="13" height="10" rx="2.2"/><path class="dg-lock" d="M-3.6-2v-3a3.6 3.6 0 0 1 7.2 0v3"/></g>
+            <g transform="translate(225 321)"><circle class="dg-lock-bg" r="17"/><rect class="dg-lock" x="-6.5" y="-2" width="13" height="10" rx="2.2"/><path class="dg-lock" d="M-3.6-2v-3a3.6 3.6 0 0 1 7.2 0v3"/></g>
+            <g transform="translate(413 342)"><circle class="dg-lock-bg" r="17"/><rect class="dg-lock" x="-6.5" y="-2" width="13" height="10" rx="2.2"/><path class="dg-lock" d="M-3.6-2v-3a3.6 3.6 0 0 1 7.2 0v3"/></g>
+          </svg>
+        </figure>
+
+        <div>
+          <ol class="steps">
+            <li><div><h3>Pair once with a 6-digit code</h3><p>One device shows a code, you type it on the other. Now they share a secret sync key. That key is the only "account" there is.</p></div></li>
+            <li><div><h3>Find each other nearby</h3><p>Devices discover each other on your Wi‑Fi, or over Apple's peer-to-peer Wi‑Fi when there's no router at all. Away from home? Add an address, for example over Tailscale.</p></div></li>
+            <li><div><h3>Talk privately</h3><p>Every connection starts with a fresh key exchange mixed with your sync key, then everything is encrypted. Devices without the key can't connect or read a thing.</p></div></li>
+            <li><div><h3>Send only what changed</h3><p>Devices ask each other for "everything since last time", so syncs are tiny. Changes hop along too: iPad → Mac → iPhone, even if the iPad and iPhone never meet.</p></div></li>
+            <li><div><h3>Merge without conflicts</h3><p>Each field of a to-do carries a timestamp. Rename it on your Mac and set a deadline on your iPhone, and you keep both. All devices settle on the same result.</p></div></li>
+          </ol>
+          <div class="pills">
+            <span class="pill"><svg class="i"><use href="#i-nocloud"/></svg>No server</span>
+            <span class="pill"><svg class="i"><use href="#i-person"/></svg>No account</span>
+            <span class="pill"><svg class="i"><use href="#i-lock"/></svg>Encrypted end to end</span>
+            <span class="pill"><svg class="i"><use href="#i-wifi"/></svg>Works without internet</span>
+            <span class="pill"><svg class="i"><use href="#i-code"/></svg>Open source</span>
+          </div>
+        </div>
+      </div>
+      <div class="callout" style="max-width:860px;margin:44px auto 0">
+        <svg class="i" aria-hidden="true"><use href="#i-info"/></svg>
+        <div><p><strong>Good to know:</strong> devices sync while Dabble is open on both of them. iOS doesn't let apps keep a network connection in the background, so open Dabble on your iPhone and it catches up in a second or two.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== download -->
+  <section id="download" class="alt">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Download</span>
+        <h2>Get Dabble.</h2>
+        <p>Free, open source and built from the code you can read on GitHub.</p>
+      </div>
+
+      <div class="install">
+        <article class="card" id="mac">
+          <div class="tile"><svg class="i"><use href="#i-download"/></svg></div>
+          <h3>Mac</h3>
+          <p style="color:var(--text-2)">Requires macOS 15 Sequoia or later. Unzip, then drag Dabble into Applications.</p>
+          <div class="cta" style="justify-content:flex-start;margin:0 0 26px">
+            <a class="btn btn-primary" style="margin:0" href="https://github.com/nearbycoder/dabble/releases/latest/download/Dabble-macOS.zip"><svg class="i" aria-hidden="true"><use href="#i-download"/></svg>Download .zip</a>
+            <a class="btn btn-secondary" style="margin:0" href="https://github.com/nearbycoder/dabble/releases/latest/download/Dabble-macOS.dmg">.dmg</a>
+          </div>
+          <span class="badge">First launch</span>
+          <ol>
+            <li>Dabble is signed ad hoc and not notarized by Apple, so the first time, <strong>right-click Dabble.app → Open</strong> and confirm.</li>
+            <li>Or try to open it once, then go to <strong>System Settings → Privacy &amp; Security</strong> and click <strong>Open Anyway</strong>.</li>
+            <li>Or clear the quarantine flag in Terminal:</li>
+          </ol>
+          <div class="term"><code><span class="p">$ </span>xattr -dr com.apple.quarantine /Applications/Dabble.app</code><button class="copy" type="button" data-copy="xattr -dr com.apple.quarantine /Applications/Dabble.app">Copy</button></div>
+          <span class="badge" style="margin-top:22px">Prefer to build it yourself?</span>
+          <p style="color:var(--text-2);font-size:15.5px;margin-top:10px">Open <code>Dabble.xcodeproj</code> in Xcode 26 or later, pick the <strong>DabbleMac</strong> scheme and press Run. Every release also lists SHA-256 checksums in <code>SHA256SUMS.txt</code>. Details are in the <a href="https://github.com/nearbycoder/dabble#building-from-source">README</a>.</p>
+
+        </article>
+
+        <article class="card" id="ios">
+          <div class="tile"><svg class="i"><use href="#i-phone"/></svg></div>
+          <h3>iPhone &amp; iPad</h3>
+          <p style="color:var(--text-2)">Requires iOS or iPadOS 18 or later. Dabble isn't on the App Store, so pick one of two ways in:</p>
+          <span class="badge">Option 1 · Build with Xcode</span>
+          <ol>
+            <li>Install Xcode 26 or later and clone the repo:<div class="term" style="margin-top:8px"><code><span class="p">$ </span>git clone https://github.com/nearbycoder/dabble.git
+<span class="p">$ </span>open dabble/Dabble.xcodeproj</code><button class="copy" type="button" data-copy="git clone https://github.com/nearbycoder/dabble.git &amp;&amp; open dabble/Dabble.xcodeproj">Copy</button></div></li>
+            <li>Choose the <strong>DabbleiOS</strong> scheme, then under <strong>Signing &amp; Capabilities</strong> pick your team. A free Apple ID works.</li>
+            <li>Connect your iPhone or iPad, select it and press <strong>Run</strong>.</li>
+          </ol>
+          <span class="badge" style="margin-top:20px">Option 2 · Sideload</span>
+          <ol>
+            <li>Download <a href="https://github.com/nearbycoder/dabble/releases/latest/download/Dabble-iOS-unsigned.ipa"><code>Dabble-iOS-unsigned.ipa</code></a> from the latest release.</li>
+            <li>Open it with <a href="https://altstore.io">AltStore</a> or <a href="https://sideloadly.io">Sideloadly</a>, which sign it with your Apple ID and install it.</li>
+            <li>On the device, turn on <strong>Developer Mode</strong> if asked, and trust your profile in <strong>Settings → General → VPN &amp; Device Management</strong>.</li>
+          </ol>
+          <p style="color:var(--text-3);font-size:14px;margin-top:16px">Apps signed with a free Apple ID stop opening after 7 days. Re-run from Xcode, or let AltStore refresh it. Your data stays put either way.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== shortcuts -->
+  <section id="shortcuts">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Keyboard shortcuts</span>
+        <h2>Fly through your list on the Mac.</h2>
+        <p>The shortcuts follow the conventions you may already know from Things.</p>
+      </div>
+      <div class="kb-wrap">
+        <table class="kb">
+          <caption>Create &amp; find</caption>
+          <tbody>
+            <tr><td>New to-do</td><td><kbd>⌘</kbd><kbd>N</kbd></td></tr>
+            <tr><td>New to-do below selection</td><td><kbd>Space</kbd></td></tr>
+            <tr><td>New project</td><td><kbd>⌥</kbd><kbd>⌘</kbd><kbd>N</kbd></td></tr>
+            <tr><td>New heading</td><td><kbd>⇧</kbd><kbd>⌘</kbd><kbd>N</kbd></td></tr>
+            <tr><td>Quick Entry, from any app</td><td><kbd>⌃</kbd><kbd>Space</kbd></td></tr>
+            <tr><td>Quick Find</td><td>just start typing</td></tr>
+            <tr><td>Undo / Redo</td><td><kbd>⌘</kbd><kbd>Z</kbd> · <kbd>⇧</kbd><kbd>⌘</kbd><kbd>Z</kbd></td></tr>
+          </tbody>
+        </table>
+        <table class="kb">
+          <caption>Selected to-dos</caption>
+          <tbody>
+            <tr><td>Open / edit</td><td><kbd>Return</kbd></td></tr>
+            <tr><td>Complete</td><td><kbd>⌘</kbd><kbd>K</kbd></td></tr>
+            <tr><td>When…</td><td><kbd>⌘</kbd><kbd>S</kbd></td></tr>
+            <tr><td>Start Today / This Evening</td><td><kbd>⌘</kbd><kbd>T</kbd> · <kbd>⌘</kbd><kbd>E</kbd></td></tr>
+            <tr><td>Anytime / Someday</td><td><kbd>⌘</kbd><kbd>R</kbd> · <kbd>⌘</kbd><kbd>O</kbd></td></tr>
+            <tr><td>Deadline</td><td><kbd>⇧</kbd><kbd>⌘</kbd><kbd>D</kbd></td></tr>
+            <tr><td>Tags</td><td><kbd>⇧</kbd><kbd>⌘</kbd><kbd>T</kbd></td></tr>
+            <tr><td>Move to…</td><td><kbd>⇧</kbd><kbd>⌘</kbd><kbd>M</kbd></td></tr>
+            <tr><td>Move up / down</td><td><kbd>⌥</kbd><kbd>⌘</kbd><kbd>↑</kbd> · <kbd>⌥</kbd><kbd>⌘</kbd><kbd>↓</kbd></td></tr>
+            <tr><td>Extend selection</td><td><kbd>⇧</kbd><kbd>↑</kbd> · <kbd>⇧</kbd><kbd>↓</kbd></td></tr>
+            <tr><td>Move to Trash</td><td><kbd>⌫</kbd></td></tr>
+          </tbody>
+        </table>
+        <table class="kb">
+          <caption>Go to</caption>
+          <tbody>
+            <tr><td>Inbox</td><td><kbd>⌘</kbd><kbd>1</kbd></td></tr>
+            <tr><td>Today</td><td><kbd>⌘</kbd><kbd>2</kbd></td></tr>
+            <tr><td>Upcoming</td><td><kbd>⌘</kbd><kbd>3</kbd></td></tr>
+            <tr><td>Anytime</td><td><kbd>⌘</kbd><kbd>4</kbd></td></tr>
+            <tr><td>Someday</td><td><kbd>⌘</kbd><kbd>5</kbd></td></tr>
+            <tr><td>Logbook</td><td><kbd>⌘</kbd><kbd>6</kbd></td></tr>
+            <tr><td>Settings</td><td><kbd>⌘</kbd><kbd>,</kbd></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== FAQ -->
+  <section id="faq" class="alt">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">FAQ</span>
+        <h2>Questions, answered.</h2>
+      </div>
+      <div class="faq">
+        <details>
+          <summary>Is there a server?</summary>
+          <div class="a"><p>No. There is no Dabble server, no account and no sign-up. Your to-dos live in a file on each of your devices, and devices send changes straight to each other. If this website disappeared tomorrow, your copy of Dabble would keep working and syncing.</p></div>
+        </details>
+        <details>
+          <summary>What happens when I'm offline?</summary>
+          <div class="a"><p>Everything keeps working. Add, edit and complete to-dos as usual. The next time two of your devices can see each other with Dabble open, they swap what changed and merge it.</p><p>Edits don't clash: each field (title, notes, when, deadline, tags…) is merged on its own, so changes to different fields are all kept. If the same field was edited on two devices, the most recent edit wins. Repeating to-dos completed on two offline devices still produce just one next instance.</p></div>
+        </details>
+        <details>
+          <summary>Can I sync over the internet?</summary>
+          <div class="a"><p>Yes, through a private network you control. Install a VPN such as <a href="https://tailscale.com">Tailscale</a> on your devices, then in <strong>Settings → Sync</strong> add the other device's address, for example <code>my-mac.tailnet.ts.net:52384</code>. Dabble listens on port <code>52384</code> by default. We don't recommend opening that port on your router to the whole internet.</p></div>
+        </details>
+        <details>
+          <summary>Is my data encrypted?</summary>
+          <div class="a"><p>On the wire, always. Every connection uses a fresh X25519 key exchange combined with your 256-bit sync key, and every message is sealed with ChaCha20-Poly1305. Devices that don't have your sync key can't connect, read or tamper with anything.</p><p>On disk, your data is a JSON file in Dabble's sandboxed app container, protected by your device's own encryption (FileVault on the Mac, Data Protection on iPhone and iPad). See <a href="https://github.com/nearbycoder/dabble/blob/main/SECURITY.md">SECURITY.md</a> for the full threat model.</p></div>
+        </details>
+        <details>
+          <summary>How do I add another device?</summary>
+          <div class="a"><p>On a device that's already set up, open <strong>Settings → Sync</strong> and choose <strong>Pair New Device</strong>. It shows a 6-digit code for five minutes. On the new device, pick the first one from the list and type the code. You can pair as many devices as you like, from any device already in the group.</p><p>Pair on a network you trust, like your home Wi‑Fi. The short code is safe against people who only listen in, but not against someone actively attacking your network during those five minutes. <a href="https://github.com/nearbycoder/dabble/blob/main/SECURITY.md">Here's why</a>.</p></div>
+        </details>
+        <details>
+          <summary>Does it import from Things?</summary>
+          <div class="a"><p>Not yet. It's on the <a href="https://github.com/nearbycoder/dabble#roadmap">roadmap</a>. You can move your data between Dabble installs with the JSON backup export and import, and the <code>dabble:///</code> URL scheme makes it easy to script adding to-dos and projects.</p></div>
+        </details>
+        <details>
+          <summary>Why isn't it on the App Store?</summary>
+          <div class="a"><p>Dabble is a community project with no company behind it to pay for and run a developer account. You can build it yourself in a few minutes or sideload the release build. See <a href="#ios">iPhone &amp; iPad</a>.</p></div>
+        </details>
+        <details>
+          <summary>What does it cost?</summary>
+          <div class="a"><p>Nothing. Dabble is free and open source under the MIT License. Contributions are welcome on <a href="https://github.com/nearbycoder/dabble">GitHub</a>.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== closing -->
+  <section class="closing">
+    <div class="wrap">
+      <img src="assets/icon.png" alt="" width="84" height="84">
+      <h2>Get things done. Keep them yours.</h2>
+      <p>Free for Mac, iPhone and iPad.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="https://github.com/nearbycoder/dabble/releases/latest/download/Dabble-macOS.zip"><svg class="i" aria-hidden="true"><use href="#i-download"/></svg>Download for Mac</a>
+        <a class="btn btn-secondary" href="#ios"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg>iPhone &amp; iPad</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="./"><img src="assets/icon.png" alt="" width="22" height="22">Dabble</a>
+    <nav aria-label="Footer">
+      <a href="https://github.com/nearbycoder/dabble">GitHub</a>
+      <a href="https://github.com/nearbycoder/dabble/releases">Releases</a>
+      <a href="https://github.com/nearbycoder/dabble/blob/main/SECURITY.md">Security</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="https://github.com/nearbycoder/dabble/blob/main/LICENSE">MIT License</a>
+    </nav>
+    <p class="legal">© 2026 Dabble contributors. Released under the MIT License. Dabble is an independent project and is not affiliated with Cultured Code or Apple.</p>
+  </div>
+</footer>
+
+<script>
+  // Copy buttons.
+  document.querySelectorAll('[data-copy]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      if (!navigator.clipboard) return;
+      navigator.clipboard.writeText(button.getAttribute('data-copy')).then(function () {
+        button.textContent = 'Copied';
+        setTimeout(function () { button.textContent = 'Copy'; }, 1600);
+      });
+    });
+  });
+
+  // Screenshots are optional: hide whatever didn't load, and the section if nothing did.
+  window.addEventListener('load', function () {
+    var section = document.getElementById('screenshots');
+    section.querySelectorAll('img').forEach(function (img) {
+      if (img.complete && img.naturalWidth === 0) { var f = img.closest('figure'); if (f) f.remove(); }
+    });
+    section.querySelectorAll('.shots').forEach(function (grid) {
+      if (!grid.querySelector('figure')) grid.remove();
+    });
+    if (!section.querySelector('figure')) section.hidden = true;
+  });
+</script>
+</body>
+</html>

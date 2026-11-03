@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: Test & build
+    runs-on: macos-26
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select newest Xcode
+        run: |
+          sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
+          xcodebuild -version
+          swift --version
+
+      - name: Regenerate Xcode project
+        run: |
+          brew install xcodegen
+          xcodegen generate
+          if ! git diff --quiet -- Dabble.xcodeproj; then
+            echo "::warning title=Project drift::Dabble.xcodeproj differs from what xcodegen generates from project.yml. Run 'xcodegen generate' and commit the result."
+            git diff --stat -- Dabble.xcodeproj
+          fi
+
+      - name: Test DabbleKit
+        working-directory: Packages/DabbleKit
+        run: swift test
+
+      - name: Build macOS app
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -project Dabble.xcodeproj \
+            -scheme DabbleMac \
+            -destination 'generic/platform=macOS' \
+            -derivedDataPath build/dd-ci \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Build iOS app
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -project Dabble.xcodeproj \
+            -scheme DabbleiOS \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build/dd-ci \
+            CODE_SIGNING_ALLOWED=NO

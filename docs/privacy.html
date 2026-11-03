@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Privacy · Dabble</title>
+  <meta name="description" content="Dabble collects nothing. There is no server, no account and no analytics.">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d0d0f" media="(prefers-color-scheme: dark)">
+  <link rel="canonical" href="https://nearbycoder.github.io/dabble/privacy.html">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="./"><img src="assets/icon.png" alt="" width="28" height="28">Dabble</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a class="opt" href="./#features">Features</a>
+      <a class="opt" href="./#sync">How sync works</a>
+      <a class="opt" href="./#download">Download</a>
+      <a href="https://github.com/nearbycoder/dabble">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <article class="prose">
+    <h1>Privacy</h1>
+    <p class="updated">Last updated November 3, 2026</p>
+
+    <p class="summary">Dabble doesn't collect anything. There's no server, no account, no analytics, no ads and no tracking. Your to-dos stay on your devices.</p>
+
+    <h2>What the apps store</h2>
+    <p>Your to-dos, projects, areas, tags and settings are saved as a JSON file inside Dabble's sandboxed app container on each device. Your sync group key and the list of devices you've paired are saved next to it in <code>sync.json</code>. Nothing is stored anywhere else unless you export a backup yourself.</p>
+
+    <h2>What the apps send</h2>
+    <p>Dabble talks only to your own devices:</p>
+    <ul>
+      <li>It announces itself on your local network with Bonjour (<code>_dabble._tcp</code>) so your other devices can find it. The announcement carries the device name you chose, a random device ID and a short fingerprint of your sync group. It never contains your to-dos.</li>
+      <li>It connects directly to devices in your sync group, or to addresses you type in yourself, and exchanges changes over an encrypted channel. Devices without your sync key can't read anything.</li>
+    </ul>
+    <p>The apps don't contact any server run by us or by anyone else. There is no telemetry, crash reporting or update check.</p>
+
+    <h2>Notifications</h2>
+    <p>Reminders are scheduled as local notifications by your device's operating system. No push notification service is involved.</p>
+
+    <h2>This website</h2>
+    <p>This site is a static page hosted on GitHub Pages. It uses no cookies, no analytics and no third-party scripts. GitHub may keep standard server logs; see <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub's privacy statement</a>. Downloads are served from GitHub Releases.</p>
+
+    <h2>Deleting your data</h2>
+    <p>Delete the app and its data goes with it. To take a device out of your sync group, leave the group from Settings → Sync on that device. Leaving keeps the data that is already on it.</p>
+
+    <h2>Questions</h2>
+    <p>Dabble is open source, so you can check every claim on this page in the <a href="https://github.com/nearbycoder/dabble">code</a>. Questions are welcome as a <a href="https://github.com/nearbycoder/dabble/issues">GitHub issue</a>, and security reports go through the process in <a href="https://github.com/nearbycoder/dabble/blob/main/SECURITY.md">SECURITY.md</a>.</p>
+  </article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="./"><img src="assets/icon.png" alt="" width="22" height="22">Dabble</a>
+    <nav aria-label="Footer">
+      <a href="https://github.com/nearbycoder/dabble">GitHub</a>
+      <a href="https://github.com/nearbycoder/dabble/releases">Releases</a>
+      <a href="https://github.com/nearbycoder/dabble/blob/main/SECURITY.md">Security</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="https://github.com/nearbycoder/dabble/blob/main/LICENSE">MIT License</a>
+    </nav>
+    <p class="legal">© 2026 Dabble contributors. Released under the MIT License. Dabble is an independent project and is not affiliated with Cultured Code or Apple.</p>
+  </div>
+</footer>
+</body>
+</html>
